@@ -53,7 +53,7 @@
   <div class="navbar-container">
     <nav>
       <ul class="navbar">
-        <li><a href="#">채용정보</a></li>
+        <li><a href="/Post/List">채용정보</a></li>
         <li><a href="#">인재정보</a></li>
         <li><a href="#">고객센터</a></li>
         <li><a href="#">커뮤니티</a></li>

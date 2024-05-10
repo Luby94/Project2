@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>개인로그인 화면</title>
+<title>로그인 화면</title>
 
 <style>
 
@@ -54,13 +54,15 @@
   }
   
   #firstrow {
-    height: 80px;
+    height: 60px;
+  }
+  #firstrow a {
+    width: 100px;
   }
   
   .login-table button,
-  #plogincss,
-  #clogincss {
-    width: 100px;
+  #plogincss {
+    width: 120px;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
@@ -71,14 +73,26 @@
     text-decoration: none;
   }
   
+  #clogincss {
+    width: 120px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: cyan;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
 </style>
 
 </head>
 <body>
 
-    <%@include file="/WEB-INF/views/include/header.jsp" %>
+    <%@include file="/WEB-INF/views/include/pheader.jsp" %>
 
-	<form action="/PLogin" method="POST">
+	<form action="/Login" method="POST">
 		
 		<div class="table-container">
 		
@@ -86,17 +100,10 @@
 			 
 			 <tr>
 			   <td colspan="2" id="firstrow">
-			     <a role="tab" href="PLoginForm" class="btn btn-info">개인용</a>
-			     <a role="tab" href="#" class="btn btn-info" id="showCompanyLoginForm">기업용</a>
+			     <a href="LoginForm" class="btn btn-info">개인용</a>
+			     <a href="LoginForm" class="btn btn-info" id="showCompanyLoginForm">기업용</a>
 			   </td>
 			 </tr>
-			 
-			 <!--  <section class="login-tab" style="display: flex;">
-			   <ul id="devMemTab">
-			   	 <li class="on" role="tab" data-tab="tab1"><a href="#" data-m-type="M">개인회원</a></li>
-			     <li  role="tab" data-tab="tab2"><a href="#" data-m-type="Co">기업회원</a></li>
-			   </ul>
-			 </section> -->
 			 
 			  <!-- 기업용 로그인 폼 -->
 			  <tr id="companyLoginFormRow1" style="display: none;">
@@ -118,19 +125,18 @@
 			   <td><input type="password" name="user_pw" placeholder="개인용 비밀번호" /></td>
 			 </tr>
 			 
-			 <!-- 기업용 로그인 폼2 -->
+			 <!-- 기업용 로그인 버튼 -->
 			 <tr id="companyLoginFormRow3" style="display: none;">
 			   <td colspan="2">
-			    <button type="button" class="btn btn-primary" id="cwriteForm" >(기업)회원가입</button>
-			    <!-- <input type="submit" value="로그인" id="clogincss" /> -->
-			    <a href="/CLogin" id="clogincss" >(기업)로그인</a>
+			    <button type="button" class="btn btn-primary" id="cwriteForm" >회원가입</button>
+			    <input type="submit" value="(기업)로그인" id="clogincss" />
 			   </td>
 			 </tr>
 
-			 <!-- 개인용 로그인 폼2 -->
+			 <!-- 개인용 로그인 버튼 -->
 			 <tr id="userLoginFormRow3">
 			   <td colspan="2">
-			    <button type="button" class="btn btn-primary" id="pwriteForm" >(개인)회원가입</button>
+			    <button type="button" class="btn btn-primary" id="pwriteForm" >회원가입</button>
 			    <input type="submit" value="(개인)로그인" id="plogincss" />
 			   </td>
 			 </tr>

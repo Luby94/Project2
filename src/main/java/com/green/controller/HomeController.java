@@ -27,40 +27,50 @@ public class HomeController {
 	}
 	
 	//--------------------------------------------------------------------------------------------
-	// 개인
 	
-	// 개인-로그인 화면
-	@RequestMapping("/PLoginForm")
-	public ModelAndView ploginForm() {
+	// 로그인 화면
+	@RequestMapping("/LoginForm")
+	public ModelAndView loginForm() {
 		
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("user/plogin");
+		mv.setViewName("user/login");
 		
 		return mv;
 	}
 	
-	// 개인-로그인
-	@RequestMapping("/PLogin")
-	public ModelAndView plogin( HttpServletRequest request ) {
+	// 로그인
+	@RequestMapping("/Login")
+	public ModelAndView login( HttpServletRequest request ) {
 		
 		String user_id  = request.getParameter("user_id");
 		String user_pw  = request.getParameter("user_pw");
+		String com_id   = request.getParameter("com_id");
+		String com_pw   = request.getParameter("com_pw");
 		
-		UserVo UserVo      = userMapper.pLogin( user_id, user_pw );
+		UserVo    UserVo     = userMapper.pLogin( user_id, user_pw );
+		CompanyVo companyVo  = userMapper.cLogin( com_id, com_pw );
+		
+		System.out.println("=======================UserVo" + UserVo);
+		System.out.println("=======================companyVo" + companyVo);
+		
 		String loc          = "";
 		HttpSession session = request.getSession();
 		
 		//아이디 암호가 일치하면
-		if(UserVo !=null) {
-			session.setAttribute("pLogin", UserVo);
-					
-			// 이건 이제 30분 후에 움직임이 없으면 자동 종료한다는 소리
-			//session.setMaxInactiveInterval(30 *60);
-					
-			loc = "redirect:/";
+		if(UserVo != null && companyVo == null) {
 			
+		    session.setAttribute("plogin", UserVo);
+		    loc = "user/phome";
+		    
+		} else if(companyVo != null && UserVo == null) {
+			
+		    session.setAttribute("clogin", companyVo);
+		    loc = "company/chome";
+		    
 		} else {
-			loc = "user/plogin";
+			
+		    loc = "user/login";
+		    
 		}
 		
 		ModelAndView mv = new ModelAndView();
@@ -70,6 +80,9 @@ public class HomeController {
 		
 	}
 	
+	//--------------------------------------------------------------------------------------------
+	// 개인
+		
 	// 개인-회원가입 화면
 	@RequestMapping("/PWriteForm")
 	public ModelAndView pwriteForm() {
@@ -89,54 +102,13 @@ public class HomeController {
 		userMapper.insertPUser( userVo );
 		
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("user/plogin");
+		mv.setViewName("user/login");
 		return mv;
 		
 	}
 	
 	//--------------------------------------------------------------------------------------------
 	// 기업
-	
-	// 기업-로그인 화면
-	@RequestMapping("/CLoginForm")
-	public ModelAndView cloginForm() {
-		
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("company/clogin");
-		
-		return mv;
-	}
-	
-	// 기업-로그인
-	@RequestMapping("/CLogin")
-	public ModelAndView clogin( HttpServletRequest request ) {
-			
-		String com_id  = request.getParameter("com_id");
-		String com_pw  = request.getParameter("com_pw");
-			
-		CompanyVo companyVo = userMapper.cLogin( com_id, com_pw );
-		String loc          = "";
-		HttpSession session = request.getSession();
-			
-		//아이디 암호가 일치하면
-		if(companyVo !=null) {
-			session.setAttribute("cLogin", companyVo);
-						
-			// 이건 이제 30분 후에 움직임이 없으면 자동 종료한다는 소리
-			//session.setMaxInactiveInterval(30 *60);
-						
-			loc = "redirect:/";
-				
-		} else {
-			loc = "company/clogin";
-		}
-			
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName(loc);
-			
-		return mv;
-			
-	}
 	
 	// 기업-회원가입 화면
 	@RequestMapping("/CWriteForm")
@@ -157,11 +129,16 @@ public class HomeController {
 		userMapper.insertCUser( companyVo );
 			
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("company/clogin");
+		mv.setViewName("user/login");
 		return mv;
 			
 	}
-
+	//logout
+	@RequestMapping("/Logout")
+	public   String   logout(  HttpSession  session    ) {
+		session.invalidate();
+		return  "user/login";
+	}
 	
 	
 }
