@@ -2,20 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.users.post.mapper.PostMapper">
 
-  <!-- <resultMap id="postResultMap" type="com.green.company.domain.PostVo">
-    <result property="po_num" column="PO_NUM"/>
-    <result property="region" column="REGION"/>
-    <result property="po_title" column="PO_TITLE"/>
-  </resultMap> -->
-
-  <select id="getPostList">
+        <select id="getPostList">
+         SELECT  
+            PO_NUM,
+            COM_ID,
+            PO_TITLE,
+            SKILL,
+            CAREER,
+            REGION,
+            PO_QUAL,
+            PO_CONTENT,
+            PO_IMAGE
+    	 FROM  
+        	POST
+        </select>
+  
+  <select id="getView">
   
     SELECT
       PO_NUM,
-      REGION,
-      PO_TITLE
-    FROM
-      POST
+	  COM_ID,
+	  PO_TITLE,
+	  SKILL,
+	  CAREER,
+	  REGION,
+	  PO_QUAL,
+	  PO_CONTENT,
+	  PO_IMAGE
+    FROM POST
+    WHERE
+      PO_NUM = #{ po_num } 
   
   </select>
 

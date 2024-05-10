@@ -68,6 +68,7 @@
 			<option value="제주">제주</option>
 			<option value="울산">울산</option>
 		</select>
+	</div>
 
 	<!-- 채용 공고 -->
 	

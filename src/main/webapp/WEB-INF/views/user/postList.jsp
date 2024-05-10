@@ -13,7 +13,7 @@
     height: 100vh;
   }
 
-  .container {
+  .select_box.jm_select_box.mt-5 {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -65,47 +65,40 @@
 	 <section>
 	   <article>
 	   
-	   <div class="container">
+	   <div class="select_box jm_select_box mt-5">
 	   
-		   <select name="region" id="region">
-		     <option value="" selected disabled>지역 선택</option>
-	         <option value="서울특별시">서울특별시</option>
-	         <option value="경기도">경기도</option>
-	         <option value="인천광역시">인천광역시</option>
-	         <option value="강원도">강원도</option>
-	         <option value="충청북도">충청북도</option>
-	         <option value="충청남도">충청남도</option>
-	         <option value="대전광역시">대전광역시</option>
-	         <option value="세종특별자치시">세종특별자치시</option>
-	         <option value="전라북도">전라북도</option>
-	         <option value="전라남도">전라남도</option>
-	         <option value="광주광역시">광주광역시</option>
-	         <option value="경상북도">경상북도</option>
-	         <option value="경상남도">경상남도</option>
-	         <option value="대구광역시">대구광역시</option>
-	         <option value="울산광역시">울산광역시</option>
-	         <option value="부산광역시">부산광역시</option>
-	         <option value="제주특별자치도">제주특별자치도</option>
-	       </select>
-	       
-	       <select name="jobshape" id="jobshape">
-		     <option value="" selected disabled>고용형태</option>
-	         <option value="정규직">정규직</option>
-	         <option value="계약직">계약직</option>
-	         <option value="프리랜서">프리랜서</option>
-	       </select>
-	
-	       <select name="career" id="career">
-		     <option value="" selected disabled>경력유무</option>
-	         <option value="신입">신입</option>
-	         <option value="경력">경력</option>
-	         <option value="경력무관">경력무관</option>
-	       </select>
-	       
+		<select id="skill" class="jm_select selectpicker"
+			data-style="btn-info" name="">
+			<option value="none" selected>분야</option>
+			<option value="Java">Java</option>
+			<option value="Springboot">Springboot</option>
+			<option value="C">C</option>
+			<option value="CSS">CSS</option>
+			<option value="html">Html</option>
+			<option value="Flutter">Flutter</option>
+			<option value="JavaScript">JavaScript</option>
+		</select>
+		
+		<select id="career" class="jm_select" name="">
+			<option value="none" selected>고용형태</option>
+			<option value="신입">신입</option>
+			<option value="경력">경력</option>
+		</select>
+		
+		<select id="address" class="jm_select" name="">
+			<option value="none" selected>근무지</option>
+			<option value="경기">전국</option>
+			<option value="경기">경기</option>
+			<option value="서울">서울</option>
+			<option value="부산">부산</option>
+			<option value="경기">경남</option>
+			<option value="제주">제주</option>
+			<option value="울산">울산</option>
+		</select>
+	       <div>&nbsp;</div>
 	       <button onclick="search()">검색</button>
        
        </div>
-       
 	   
 	     <h2 style="text-align:center; padding-top: 2%;">공고보기</h2>
 		 <hr/>
@@ -134,7 +127,7 @@
    
    function search() {
        let region = document.getElementById("region").value;
-       let jobshape = document.getElementById("jobshape").value;
+       let skill = document.getElementById("skill").value;
        let career = document.getElementById("career").value;
 
        // 선택된 값들을 서버로 전송하여 검색 수행
