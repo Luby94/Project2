@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.users.resume.mapper.ResumeMapper">
+
+<resultMap id="resumeList" type="java.util.HashMap">
+    <!-- 각 컬럼에 대한 매핑 정의 -->
+    <result property="javaPropertyName" column="columnName" />
+    <!-- 추가적인 매핑 정의 -->
+    <!-- 예: 다른 데이터 타입, 연관관계 등 -->
+</resultMap>
+
+	<select id="LgetResumeList">
+		SELECT
+			RE_NUM,
+			USER_ID,
+			RE_TITLE,
+			SKILL,
+			CAREER,
+			REGION,
+			USER_EDU,
+			USER_CAR,
+			USER_INTRO,
+			USER_IMG
+		FROM
+			RESUME
+		WHERE
+			USER_ID = #{ user_id }
+	</select>
+	
+	<insert id="LinsertResume">
+		INSERT INTO RESUME (
+		RE_NUM,
+		USER_ID,
+		RE_TITLE,
+		SKILL,
+		CAREER,
+		REGION,
+		USER_EDU,
+		USER_CAR,
+		USER_INTRO,
+		USER_IMG
+		)
+		VALUES (
+		(SELECT NVL(MAX(RE_NUM), 0)+1 FROM RESUME ),
+		#{ user_id },
+		#{ re_title },
+		#{ skill },
+		#{ career },
+		#{ region },
+		#{ user_edu },
+		#{ user_car },
+		#{user_intro },
+		#{user_img }
+		)
+     </insert>
+     
+     <select   id="LgetResumes" >
+    	SELECT  
+			RE_NUM,
+			USER_ID,
+			RE_TITLE,
+			SKILL,
+			CAREER,
+			REGION,
+			USER_EDU,
+			USER_CAR,
+			USER_INTRO,
+			USER_IMG
+    	 FROM  
+           RESUME
+         WHERE
+           RE_NUM = #{ re_num }
+     </select>
+     
+      <update id="LResumeUpdate">
+      UPDATE RESUME
+		SET  
+			RE_NUM = #{re_num},
+			USER_ID = #{user_id},
+			RE_TITLE = #{re_title},
+			SKILL = #{skill},
+			CAREER = #{career},
+			REGION = #{region},
+			USER_EDU = #{user_edu},
+			USER_CAR = #{user_car},
+			USER_INTRO = #{user_intro},
+			USER_IMG = #{user_img}
+		WHERE 
+			USER_ID = #{user_id}
+			AND RE_NUM = #{re_num}
+	</update>
+	
+	<!-- ===================================================== -->
+	
+	<!-- <select id="getResumeList" resultType="com.green.users.apply.domain.ApplyVo"> -->
+	<select id="getResumeList" resultType="com.green.users.resume.domain.ResumeVo">
+  	  SELECT 
+  	    RE_NUM,
+		USER_ID,
+		RE_TITLE,
+		SKILL,
+		CAREER,
+		REGION,
+		USER_EDU,
+		USER_CAR,
+		USER_INTRO,
+		USER_IMG
+  	  FROM
+  	    RESUME
+  	  WHERE
+  	    USER_ID = #{ user_id }
+  	  ORDER BY RE_NUM ASC
+  </select>
+  
+  <!-- <select id="getResumeList"> 
+  SELECT
+    RE_NUM,
+	USER_ID,
+	RE_TITLE,
+	SKILL,
+	CAREER,
+	REGION,
+	USER_EDU,
+	USER_CAR,
+	USER_INTRO,
+	USER_IMG
+  FROM
+    RESUME
+  WHERE
+  	USER_ID = #{ user_id }
+  
+  UNION
+  
+  SELECT
+    PO_NUM,
+	COM_ID,
+	PO_TITLE,
+	SKILL,
+	CAREER,
+	REGION,
+	PO_QUAL,
+	PO_CONTENT,
+	PO_IMAGE
+  FROM
+    POST
+  WHERE
+    COM_ID = #{ com_id }
+  </select> -->
+		
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
