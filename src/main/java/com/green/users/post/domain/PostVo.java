@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostVo {
-
+	
 	private int po_num;
 	private String com_id;
 	private String po_title;

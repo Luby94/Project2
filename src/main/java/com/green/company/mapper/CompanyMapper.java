@@ -12,4 +12,5 @@ public interface CompanyMapper {
 	PostVo getPost(PostVo postVo);
 	//ApplyVo getPost(ApplyVo applyVo);
 
+
 }

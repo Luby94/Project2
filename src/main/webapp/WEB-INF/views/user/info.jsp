@@ -64,6 +64,7 @@
 		<a href="/Users/ResumeForm?user_id=${ sessionScope.plogin.user_id }" class="list-group-item hs_list_effect shadow">이력서 관리</a>
 		<a href="/Users/ApplyList?user_id=${ sessionScope.plogin.user_id }" class="list-group-item shadow">입사지원 관리</a>
 		<a href="#" class="list-group-item shadow">스크랩</a>
+
 	</div>
 </div>
 	<!-- 페이지 내용 -->
