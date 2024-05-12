@@ -1,22 +1,30 @@
 package com.green.users.post.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.green.company.domain.CompanyVo;
 import com.green.company.mapper.CompanyMapper;
 import com.green.users.apply.domain.ApplyVo;
 import com.green.users.apply.mapper.ApplyMapper;
 import com.green.users.domain.UserVo;
 import com.green.users.post.domain.PostVo;
+import com.green.users.post.domain.ResponseDto;
+import com.green.users.post.domain.UserBookVo;
+import com.green.users.post.mapper.BookmarkMapper;
 import com.green.users.post.mapper.PostMapper;
+import com.green.users.post.service.BookmarkService;
 import com.green.users.resume.domain.ResumeVo;
 import com.green.users.resume.mapper.ResumeMapper;
 
@@ -35,6 +43,10 @@ public class PostController {
 	private ResumeMapper resumeMapper;
 	@Autowired
 	private ApplyMapper applyMapper;
+	@Autowired
+	private BookmarkService bookmarkService;
+	@Autowired
+	private BookmarkMapper bookmarkMapper;
 	
 	// 채용공고 목록 조회
 	@RequestMapping("/List")
@@ -52,16 +64,21 @@ public class PostController {
 	// /Post/View?po_num=${ po_num }
 	// 공고 자세히 보기
 	@RequestMapping("/View")
-	public ModelAndView view( @RequestParam(value="po_num") int po_num, PostVo postVo ) {
+	public ModelAndView view( @RequestParam(value="po_num") int po_num, PostVo postVo, UserBookVo userBookVo ) {
 		
 		System.out.println( "==============postVo: " + postVo );
 		
 		List<PostVo> postList = postMapper.getView(postVo);
-		System.out.println( "==============postList: " + postList );		
+		System.out.println( "==============postList: " + postList );
+		
+		UserVo userVo = new UserVo();
+		String user_id = userVo.getUser_id();
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("postList", postList);
 		mv.addObject("po_num", po_num);
+		mv.addObject("userBookVo", userBookVo);
+		mv.addObject("user_id", user_id);
 		mv.setViewName("user/postView");
 		return mv;
 		
@@ -92,8 +109,7 @@ public class PostController {
 	    }
 	    
 	    String  user_id    = resumeVo.getUser_id();
-	    String  user_name  = resumeVo.getUser_name();
-	    int     re_num     = resumeVo.getRe_num();
+	    
 	    PostVo vo = companyMapper.getPost( postVo );
 	    System.out.println( "==============vo: " + vo );
 		
@@ -103,7 +119,6 @@ public class PostController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("goresumeList", goresumeList);
 		mv.addObject("user_id", user_id);
-		//mv.addObject("user_name", user_name);
 		mv.addObject("com_id", comId);
 		mv.addObject("po_title", poTitle);
 		mv.addObject("po_num", poNum);
@@ -138,14 +153,11 @@ public class PostController {
 	    String  user_id    = resumeVo.getUser_id();
 	    int     re_num     = resumeVo.getRe_num();
 	    String  re_title   = resumeVo.getRe_title();
-	    String  com_id     = postVo.getCom_id();
-	    //int     po_num     = postVo.getPo_num();
 	    String  po_title   = postVo.getPo_title();
 	    int     result     = applyVo.getResult();
 	    
 	    postVo.setPo_num(poNum);
 	    
-	    //applyMapper.insertResumeApply( po_num, re_num, re_title, po_title, result );
 	    applyMapper.insertResumeApply( applyVo );
 	    
 	    ModelAndView mv = new ModelAndView();
@@ -160,8 +172,8 @@ public class PostController {
 		return mv;
 	}
 	
-	
-	
 }
+	
+
 
 
