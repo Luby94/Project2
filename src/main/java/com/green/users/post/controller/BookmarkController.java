@@ -1,35 +1,95 @@
 package com.green.users.post.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
-import com.green.company.mapper.CompanyMapper;
-import com.green.users.apply.mapper.ApplyMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.green.users.domain.UserVo;
-import com.green.users.post.domain.ResponseDto;
+import com.green.users.post.domain.PostVo;
 import com.green.users.post.domain.UserBookVo;
 import com.green.users.post.mapper.BookmarkMapper;
-import com.green.users.post.mapper.PostMapper;
-import com.green.users.post.service.BookmarkService;
-import com.green.users.resume.mapper.ResumeMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
-@RestController
+@Slf4j
+@Controller
+@RequestMapping("/Bookmark")
 public class BookmarkController {
 	
     @Autowired
-    private BookmarkService bookmarkService;
+    private BookmarkMapper bookmarkMapper;
+    
+    @RequestMapping("/CheckBoolean")
+    public ModelAndView checkBoolean( HttpServletRequest request, UserVo userVo, PostVo postVo, UserBookVo userBookVo ) {
+    	
+    	/*
+    	HttpSession session = request.getSession();
+		
+		UserVo sessionPUser = (UserVo) session.getAttribute("plogin");
+	    if(sessionPUser == null) {
+	        return new ModelAndView("redirect:/LoginForm");
+	    }
+	    */
+    	
+    	int checkBoolean = bookmarkMapper.checkUBNO( userBookVo );
+    	log.info("=========================================================");
+    	log.info("checkBoolean : {}", checkBoolean);
+    	log.info("=========================================================");
+    	
+    	ModelAndView mv = new ModelAndView();
+    	mv.addObject("checkBoolean", checkBoolean);
+    	mv.setViewName("user/postView");
+    	return mv;
+    	
+    }
+    
+    @RequestMapping("/AddBoolean")
+    public ModelAndView addBoolean( HttpServletRequest request, UserVo userVo, PostVo postVo, UserBookVo userBookVo ) {
+    	
+    	/*
+    	HttpSession session = request.getSession();
+		
+		UserVo sessionPUser = (UserVo) session.getAttribute("plogin");
+	    if(sessionPUser == null) {
+	        return new ModelAndView("redirect:/LoginForm");
+	    }
+	    */
+	    
+    	bookmarkMapper.addBoolean( userBookVo );
+    	    	
+    	ModelAndView mv = new ModelAndView();
+    	mv.setViewName("redirect:/Bookmark/CheckBoolean");
+    	return mv;
+    	
+    }
+    
+    @RequestMapping("/RemoveBoolean")
+    public ModelAndView removeBoolean( HttpServletRequest request, UserVo userVo, PostVo postVo, UserBookVo userBookVo ) {
+    	
+    	/*
+    	HttpSession session = request.getSession();
+		
+		UserVo sessionPUser = (UserVo) session.getAttribute("plogin");
+	    if(sessionPUser == null) {
+	        return new ModelAndView("redirect:/LoginForm");
+	    }
+	    */
+	    
+    	bookmarkMapper.canclBoolean( userBookVo );
+    	    	
+    	ModelAndView mv = new ModelAndView();
+    	mv.setViewName("redirect:/Bookmark/CheckBoolean");
+    	return mv;
+    	
+    }
+    
 
+    /*
     @PostMapping("/api/bookmark/add")
     public ResponseEntity<String> addBookmark(@RequestParam("user_id") String user_id, @RequestParam("po_num") int po_num) {
         bookmarkService.addBookmark(user_id, po_num);
@@ -52,5 +112,6 @@ public class BookmarkController {
         }
         
     }
+    */
 
 }

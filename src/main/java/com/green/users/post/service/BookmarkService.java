@@ -9,6 +9,7 @@ import com.green.users.post.domain.UserBookVo;
 @Service
 public class BookmarkService {
 
+	/*
     @Autowired
     private BookmarkMapper bookmarkMapper;
 
@@ -21,14 +22,21 @@ public class BookmarkService {
     }
     
     public boolean checkScrapStatus(String user_id, int po_num) {
-        return bookmarkMapper.checkScrapStatus(user_id, po_num);
-    }
-    
-    /*
-    public boolean checkScrapStatus(String user_id, int po_num) {
-		
-		return true;
+		return false;
 	}
 	*/
+    
+    /*
+   	public boolean checkScrapStatus(String user_id, int po_num, int ub_boolean) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+        
+    public boolean checkScrapStatus(String user_id, int po_num, int ub_boolean) {
+    	return bookmarkMapper.checkScrapStatus(user_id, po_num, ub_boolean);
+	}
+	*/
+    
+	
 
 }

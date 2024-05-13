@@ -1,5 +1,6 @@
 package com.green.users.post.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,14 +45,12 @@ public class PostController {
 	@Autowired
 	private ApplyMapper applyMapper;
 	@Autowired
-	private BookmarkService bookmarkService;
-	@Autowired
 	private BookmarkMapper bookmarkMapper;
 	
 	// 채용공고 목록 조회
 	@RequestMapping("/List")
 	public ModelAndView list( PostVo postVo ) {
-		
+				
         List<PostVo> postList = postMapper.getPostList(postVo);
         
         ModelAndView   mv  =  new ModelAndView();
@@ -64,21 +63,30 @@ public class PostController {
 	// /Post/View?po_num=${ po_num }
 	// 공고 자세히 보기
 	@RequestMapping("/View")
-	public ModelAndView view( @RequestParam(value="po_num") int po_num, PostVo postVo, UserBookVo userBookVo ) {
-		
-		System.out.println( "==============postVo: " + postVo );
+	public ModelAndView view(
+			@RequestParam(value="po_num") int po_num,
+			PostVo postVo,
+			UserBookVo userBookVo,
+			HttpServletRequest request,
+			@RequestParam(value="user_id") String user_id
+			) {
+				
+		HttpSession session = request.getSession();
 		
 		List<PostVo> postList = postMapper.getView(postVo);
 		System.out.println( "==============postList: " + postList );
 		
-		UserVo userVo = new UserVo();
-		String user_id = userVo.getUser_id();
+		List<UserBookVo> getBookList = bookmarkMapper.getUserbook( userBookVo );
+		System.out.println( "==============getBookList: " + getBookList );
+		
+		//UserVo userVo = new UserVo();
+		//String user_id = userVo.getUser_id();
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("postList", postList);
 		mv.addObject("po_num", po_num);
-		mv.addObject("userBookVo", userBookVo);
 		mv.addObject("user_id", user_id);
+		mv.addObject("getBookList", getBookList);
 		mv.setViewName("user/postView");
 		return mv;
 		

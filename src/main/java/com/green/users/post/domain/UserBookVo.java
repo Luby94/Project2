@@ -9,9 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserBookVo {
 
-	private int po_num;
-	private String user_id;
 	private int ub_num;
 	private int ub_boolean;
+	
+	private String user_id;
+	
+	private int po_num;
+	private String com_id;
 	
 }

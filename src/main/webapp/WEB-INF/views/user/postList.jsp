@@ -66,7 +66,7 @@
 	   <article>
 	   
 	   <form action="/Post/View?po_num=${ po_num }" method="post" >
-	   <<%-- input type="hidden" name="com_id" value="${ com_id }" /> --%>
+	   <input type="hidden" name="user_id" value="${ sessionScope.plogin.user_id }" />
 	   
 	   <div class="select_box jm_select_box mt-5">
 	   
@@ -113,7 +113,7 @@
 			   <tr>
 			     <td class="table-num">${ postList.po_num }</td>
 			     <td class="table-name">${ postList.region }</td>
-			     <td class="table-title"><a href="/Post/View?po_num=${ postList.po_num }">${ postList.po_title }</a></td>
+			     <td class="table-title"><a href="/Post/View?po_num=${ postList.po_num }&user_id=${ sessionScope.plogin.user_id }">${ postList.po_title }</a></td>
 			   </tr>
 			   </table>
 			 </c:forEach>
