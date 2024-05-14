@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>채용공고 목록</title>
+<title>Jik Job</title>
 
 <style>
 
@@ -64,10 +64,8 @@
                   
 	 <section>
 	   <article>
-	   
-	   <form action="/Post/View?po_num=${ po_num }" method="post" >
-	   <input type="hidden" name="user_id" value="${ sessionScope.plogin.user_id }" />
-	   
+	   <form action="/Post/View?po_num=${ po_num }&user_id=${ user_id }" method="post">
+	   <input type="hidden" name="" />
 	   <div class="select_box jm_select_box mt-5">
 	   
 		<select id="skill" class="jm_select selectpicker"
@@ -119,9 +117,7 @@
 			 </c:forEach>
 
 		</div>
-		
 		</form>
-		
 	   </article>
 	 </section>
    </main>

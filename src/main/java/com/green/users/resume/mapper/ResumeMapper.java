@@ -18,6 +18,8 @@ public interface ResumeMapper {
 	ResumeVo LgetResumes(ResumeVo resumeVo);
 
 	void LResumeUpdate(ResumeVo resumeVo);
+	
+	void LResumeDelete(ResumeVo resumeVo);
 
 	// PostController(/Post/GoApply)
 	List<ResumeVo> getResumeList(UserVo sessionPUser);

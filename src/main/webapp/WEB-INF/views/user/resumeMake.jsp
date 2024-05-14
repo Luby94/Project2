@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Jik Job</title>
 <style>
 
 /* 전체 페이지 스타일링 */
@@ -154,7 +154,6 @@ textarea {
 
 						</div>
 					</div>
-				</div>
 				<div class="container" style="width: 85%;">
 					<div class="row justify-content-center">
 						<div class="col-md-14 mx-auto">
@@ -210,14 +209,19 @@ textarea {
 								<textarea name="user_intro" class="w-100 opacity-50" rows="10"
 									placeholder="내용을 입력하세요"></textarea>
 							</div>
-							<button type="submit" class="btn btn-primary">저장</button>
+							<button type="submit" class="btn btn-primary" onclick="showAlert()" >저장</button>
 							<button type="submit" class="btn btn-primary">취소</button>
 								</div>
 							</div>
 						</div>
 					</div>
+				</div>
 		</form>
 	</div>
-
+	<script>
+	  function showAlert() {
+	    alert("이력서가 등록되었습니다");
+	  }
+	</script>
 </body>
 </html>

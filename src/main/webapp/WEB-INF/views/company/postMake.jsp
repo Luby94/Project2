@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@include file="/WEB-INF/views/include/pheader.jsp" %>
+    <%@include file="/WEB-INF/views/include/cheader.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -99,15 +99,15 @@ textarea {
 </head>
 <body>
 
-    <!-- 이력서 -->
+    <!-- 공고 등록 -->
 	 <div class="resume-container">
-        <form action="/Users/UpdateResume" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="user_id" value="${sessionScope.plogin.user_id}">
-            <input type="hidden" name="user_img">
+        <form action="/Company/SavePost" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="po_image">
+            <input type="hidden" name="com_id" value="${sessionScope.clogin.com_id}">
             	<div class="border border-tertiary w-100 p-5 rounded shadow">
 				<h2>
-					<input type="text" value="${rvo.re_title }" style="width: 700px"
-						class="hs_input_title" name="re_title"  >
+					<input type="text" style="width: 700px"
+						class="hs_input_title" name="po_title" >
 				</h2>
 				<hr>
 				<div class="container" style="width: 85%;">
@@ -122,39 +122,27 @@ textarea {
 									<span
 										class="input-group-text w-25 justify-content-center init_color hs_span">회사명</span>
 									<input type="text" class="form-control" style="width: 120px;"
-										value="${uvo.user_name}" readonly>
+										value="${vo.com_name}" readonly>
 								</div>
 
 								<div class="input-group mb-3">
-									<span class="input-group-text w-25 justify-content-center init_color hs_span"> </span>
+									<span class="input-group-text w-25 justify-content-center init_color hs_span">이메일 </span>
 									<input type="text" class="form-control" style="width: 120px;"
-										value="${uvo.user_date}" readonly>
+										value="${vo.com_id}" readonly>
 								</div>
 																<div class="input-group mb-3">
 									<span class="input-group-text w-25 justify-content-center init_color hs_span">주소</span>
 									<input type="text" class="form-control" style="width: 120px;"
-										value="${uvo.user_adr}" readonly>
+										value="${vo.com_adr}" readonly>
 								</div>
-								
-
 								<div class="input-group mb-3">
 									<span class="input-group-text w-25 justify-content-center init_color hs_span">연락처</span>
 									<input type="tel" class="form-control"
-										value="${uvo.user_tell}"  readonly>
-								</div>
-
-								<div class="input-group mb-3">
-
-									<span
-										class="input-group-text w-25 justify-content-center init_color hs_span">이메일</span>
-									<input type="text" class="form-control"
-										value="${uvo.user_id}" readonly>
+										value="${vo.com_tell}"  readonly>
 								</div>
 							</div>
-
 						</div>
 					</div>
-				</div>
 				<div class="container" style="width: 85%;">
 					<div class="row justify-content-center">
 						<div class="col-md-14 mx-auto">
@@ -162,55 +150,47 @@ textarea {
 								onchange="chooseImage(this)" /> <br>  -->
 								
 								<span>분야 &nbsp
-								| &nbsp </span> <select name="skill" >
-							    <option value="JavaScript" <c:if test="${rvo.skill == 'JavaScript'}"> selected</c:if> >JavaScript</option>
-							    <option value="TypeScript" <c:if test="${rvo.skill == 'TypeScript'}"> selected</c:if>>TypeScript</option>
-							    <option value="Java" <c:if test="${rvo.skill == 'Java'}"> selected</c:if>>Java</option>
-							    <option value="Python" <c:if test="${rvo.skill == 'Python'}"> selected</c:if> >Python</option>
-							    <option value="C#" <c:if test="${rvo.skill == 'C#'}"> selected</c:if>>C#</option>
-							    <option value="Kotlin" <c:if test="${rvo.skill == 'Kotlin'}"> selected</c:if>>Kotlin</option> 
-							    <option value="Vue.js" <c:if test="${rvo.skill == 'Vue.js'}"> selected</c:if>>Vue.js</option>
-							    <option value="MySQL" <c:if test="${rvo.skill == 'MySQL'}"> selected</c:if>>MySQL</option>
-							    <option value="MongoDB" <c:if test="${rvo.skill == 'MongoDB'}"> selected</c:if>>MongoDB</option>
-							    <option value="GitHub" <c:if test="${rvo.skill == 'GitHub'}"> selected</c:if>>GitHub</option>
-							    <option value="Swift" <c:if test="${rvo.skill == 'Swift'}"> selected</c:if>>Swift</option>
-							    <option value="Angular" <c:if test="${rvo.skill == 'Angular'}"> selected</c:if>>Angular</option>
-							    <option value="Django" <c:if test="${rvo.skill == 'Django'}"> selected</c:if>>Django</option>
+								| &nbsp </span> <select name="skill">
+								<option value="JavaScript">JavaScript</option>
+								<option value="TypeScript">TypeScript</option>
+								<option value="Java">Java</option>
+								<option value="Python">Python</option>
+								<option value="C#">C#</option>
+								<option value="Kotlin">Vue.js</option>
+								<option value="MySQL">MySQL</option>
+								<option value="MongoDB">MongoDB</option>
+								<option value="GitHub">GitHub</option>
+								<option value="Swift">Swift</option>
+								<option value="Django">Django</option>
 							</select>
 							<span>&ensp;&ensp;</span>
-							 <span>경력 &nbsp | &nbsp </span> <select name="career" >
-							    <option value="신입" <c:if test="${rvo.career == '신입'}"> selected</c:if>>신입</option>
-								<option value="경력" <c:if test="${rvo.career == '경력'}"> selected</c:if>>경력</option>
+							 <span>경력 &nbsp | &nbsp </span> <select name="career">
+								<option value="신입">신입</option>
+								<option value="경력">경력</option>
 							</select>
 								<span>&ensp;&ensp;</span>
-							 <span>근무지 &nbsp | &nbsp </span> <select name="region" >
-								<option value="서울" <c:if test="${rvo.region == '서울'}"> selected</c:if>>서울</option>
-								<option value="부산" <c:if test="${rvo.region == '부산'}"> selected</c:if>>부산</option>
-								<option value="대구" <c:if test="${rvo.region == '대구'}"> selected</c:if>>대구</option>
-								<option value="인천" <c:if test="${rvo.region == '인천'}"> selected</c:if>>인천</option>
-								<option value="광주" <c:if test="${rvo.region == '광주'}"> selected</c:if>>광주</option>
-								<option value="대전" <c:if test="${rvo.region == '대전'}"> selected</c:if>>대전</option>
-								<option value="울산" <c:if test="${rvo.region == '울산'}"> selected</c:if>>울산</option>
-								<option value="강원도"<c:if test="${rvo.region == '강원도'}"> selected</c:if>>강원도</option>
-								<option value="세종" <c:if test="${rvo.region == '세종'}"> selected</c:if>>세종</option>
-								<option value="제주" <c:if test="${rvo.region == '제주'}"> selected</c:if>>제주</option>
+							 <span>근무지 &nbsp | &nbsp </span> <select name="region">
+								<option value="서울">서울</option>
+								<option value="부산">부산</option>
+								<option value="대구">대구</option>
+								<option value="인천">인천</option>
+								<option value="광주">광주</option>
+								<option value="대전">대전</option>
+								<option value="울산">울산</option>
+								<option value="강원도">강원도</option>
+								<option value="세종">세종</option>
+								<option value="제주">제주</option>
 							</select>
 							<div class="mt-5">
-								<h4>학력</h4>
+								<h4>모집조건</h4>
 								<input type="text" class="form-control mt-2" id="floatingInput"
-									value = "${rvo.user_edu}" name="user_edu"
+									placeholder="모집조건을 입력하세요" name="po_qual"
 									style="display: block;" required>
-
-							<div class="mt-5">
-								<h4>경력</h4>
-								<input type="text" class="form-control mt-2" id="floatingInput"
-									value = "${rvo.user_car}" name="user_car" required>
-							</div>
 							<br>
 							<div>
-								<h4>자기소개</h4>
-								<textarea name="user_intro" class="w-100 opacity-50" rows="10"
-									>${rvo.user_intro}</textarea>
+								<h4>근무조건</h4>
+								<textarea name="po_content" class="w-100 opacity-50" rows="10"
+									placeholder="내용을 입력하세요"></textarea>
 							</div>
 							<button type="submit" class="btn btn-primary" >저장</button>
 							<button type="submit" class="btn btn-primary">취소</button>
@@ -218,6 +198,7 @@ textarea {
 							</div>
 						</div>
 					</div>
+				</div>
 		</form>
 	</div>
 

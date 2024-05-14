@@ -1,19 +1,11 @@
 package com.green.users.post.controller;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.green.company.mapper.CompanyMapper;
@@ -21,17 +13,17 @@ import com.green.users.apply.domain.ApplyVo;
 import com.green.users.apply.mapper.ApplyMapper;
 import com.green.users.domain.UserVo;
 import com.green.users.post.domain.PostVo;
-import com.green.users.post.domain.ResponseDto;
 import com.green.users.post.domain.UserBookVo;
 import com.green.users.post.mapper.BookmarkMapper;
 import com.green.users.post.mapper.PostMapper;
-import com.green.users.post.service.BookmarkService;
 import com.green.users.resume.domain.ResumeVo;
 import com.green.users.resume.mapper.ResumeMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/Post")
 public class PostController {
@@ -76,8 +68,10 @@ public class PostController {
 		List<PostVo> postList = postMapper.getView(postVo);
 		System.out.println( "==============postList: " + postList );
 		
-		List<UserBookVo> getBookList = bookmarkMapper.getUserbook( userBookVo );
-		System.out.println( "==============getBookList: " + getBookList );
+		List<UserBookVo> getBookList = bookmarkMapper.getUserBook(user_id, po_num);
+		log.info("=========================================================");
+    	log.info("getBookList : {}", getBookList);
+    	log.info("=========================================================");
 		
 		//UserVo userVo = new UserVo();
 		//String user_id = userVo.getUser_id();
@@ -87,7 +81,7 @@ public class PostController {
 		mv.addObject("po_num", po_num);
 		mv.addObject("user_id", user_id);
 		mv.addObject("getBookList", getBookList);
-		mv.setViewName("user/postView");
+		mv.setViewName("user/postView2");
 		return mv;
 		
 	}

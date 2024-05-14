@@ -1,73 +1,95 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jik Job</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  body {
-    font-family: 'Noto Sans KR', sans-serif; /* 여기에 폰트를 적용합니다 */
-    margin: 0; /* 바디의 마진을 제거하여 전체적인 여유분 조정 시작점을 일관되게 합니다. */
-    padding: 80px; /* 바디 전체에 여유분 추가 */
-  }
-  .header {
-    display: flex;
-    justify-content: space-between; /* 로고와 내비게이션, 마이페이지 로고를 양끝과 중앙으로 배치 */
-    align-items: center;
-    padding: 20px; /* 헤더 내부 여유분 추가 */
-    background-color: #FFFFFF;
-  }
-  .navbar-container {
-    display: flex;
-    justify-content: center; /* 내비게이션 항목들을 중앙으로 정렬 */
-    flex-grow: 1; /* 로고 옆의 공간을 모두 차지하도록 설정 */
-  }
-  .navbar {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    justify-content: center; /* 내비게이션 항목들을 중앙으로 정렬 */
-  }
-  .navbar li {
-    padding: 10px 20px;
-  }
-  .navbar a {
-    text-decoration: none;
-    color: black;
-  }
-  .mypage-logo {
-    height: 50px; /* 마이페이지 로고의 높이 설정 */
-  }
-</style>
+<title>Jick Job</title>
+<meta charset="utf-8">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/32aa2b8683.js"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+<link
+	href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+<link rel="stylesheet" href="/css/style.css">
+
 </head>
+
 <body>
+	<header>
+		<input type="hidden" id="current" val="siteMain" />
+		<nav
+			class="sj_full_container navbar navbar-light sticky-top border-bottom align-self-center py-4 navcolor">
+			<div class="container d-flex justify-content-between">
+				<div>
+					<a class="navbar-brand fs-2" href="/"> <img src="/img/Rogo.png"
+						width="80px;" height="60px;" class="d-inline-block align-text-top">
+					</a>
+				</div>
+				<div>
+					<ul class="nav link-dark"
+						style="position: relative; bottom: -25px; left: -60px;">
+						<c:choose>
+							<c:when test="${ sessionScope.clogin == null || clogin == '' }">
+								<li class="nav-item" id="main" ><a
+									class="nav-link link-dark" aria-current="page"
+									href="/Users/">채용정보</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="nav-item" id="main"><a
+									class="nav-link link-dark" aria-current="page"
+									href="/Users/List?com_id=${ sessionScope.clogin.com_id }">채용정보</a></li>
+							</c:otherwise>
+						</c:choose>
+						<li class="nav-item" id="Jicjob"><a
+							class=" nav-link link-dark" href="#">인재정보</a></li>
+						<li class="nav-item" id="Jicjob"><a
+							class=" nav-link link-dark"
+							href="/Community/ComuHome?com_id=${ sessionScope.clogin.com_id}">커뮤니티</a></li>
+						<li class="nav-item" id="Jicjob"><a
+							class=" nav-link link-dark" href=#">고객센터</a></li>
 
-<header class="header">
-  <div class="site-mark">
-    <img src="/img/Rogo.png" alt="사이트 로고" style="height: 50px;"> <!-- 로고 이미지 -->
-  </div>
-  <div class="navbar-container">
-    <nav>
-      <ul class="navbar">
-        <li><a href="/Post/List">채용정보</a></li>
-        <li><a href="#">인재정보</a></li>
-        <li><a href="#">고객센터</a></li>
-        <li><a href="#">커뮤니티</a></li>
-      </ul>
-    </nav>
-  </div>
 
-  <!-- 마이페이지 로고 추가 -->
-  <div class="site-mark">
-  	<a href="/Users/Info?user_id=${ sessionScope.login.user_id}class="mypage-logo">
-  		<img src="mypage_logo.png" alt="마이페이지 로고">
-    </a>
-</div>
-</header>
+						<c:choose>
+							<c:when test="${ sessionScope.clogin == null || clogin == '' }">
+								<li class="nav-item"><a class="nav-link link-dark"
+									href="/LoginForm">로그인</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="nav-item" id="main"><a
+									class="nav-link link-dark" aria-current="page"
+									href="/Logout">로그아웃</a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
 
-</body>
-</html>
+				</div>
+				<div>
+					<c:choose>
+						<c:when test="${ sessionScope.clogin == null || clogin == '' }">
+						</c:when>
+						<c:otherwise>
+							<a class="nav-link"
+								href="/Company/CInfo?com_id=${ sessionScope.clogin.com_id }">
+								<img src="/img/mypage_logo.png" style="width: 80px;">
+							</a>
+						</c:otherwise>
+					</c:choose>
+				</div>
+
+			</div>
+
+		</nav>
+	</header>

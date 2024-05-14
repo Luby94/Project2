@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인 화면</title>
+<title>Jik Job</title>
 
 <style>
 
@@ -54,15 +54,12 @@
   }
   
   #firstrow {
-    height: 60px;
-  }
-  #firstrow a {
-    width: 100px;
+    height: 80px;
   }
   
   .login-table button,
   #plogincss {
-    width: 120px;
+    width: 100px;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
@@ -74,7 +71,7 @@
   }
   
   #clogincss {
-    width: 120px;
+    width: 100px;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
@@ -137,8 +134,12 @@
 			 <tr id="userLoginFormRow3">
 			   <td colspan="2">
 			    <button type="button" class="btn btn-primary" id="pwriteForm" >회원가입</button>
-			    <input type="submit" value="(개인)로그인" id="plogincss" />
-			   </td>
+  				<!-- 기타 로그인 정보 입력 필드 -->
+				<form action="/Users/Uhome" method="post">
+				<!-- 기타 로그인 정보 입력 필드 -->
+					<input type="submit" value="(개인)로그인" id="plogincss" />
+				</form>
+					</td>
 			 </tr>
 			
 			</table>

@@ -3,115 +3,70 @@ package com.green.users.post.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.green.users.domain.UserVo;
-import com.green.users.post.domain.PostVo;
 import com.green.users.post.domain.UserBookVo;
 import com.green.users.post.mapper.BookmarkMapper;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Controller
-@RequestMapping("/Bookmark")
+@RestController
 public class BookmarkController {
 	
     @Autowired
     private BookmarkMapper bookmarkMapper;
-    
-    @RequestMapping("/CheckBoolean")
-    public ModelAndView checkBoolean( HttpServletRequest request, UserVo userVo, PostVo postVo, UserBookVo userBookVo ) {
+      
+    @GetMapping("/checkUserBook")
+    public List<UserBookVo> checkUserBook(
+    		@RequestParam(value="user_id") String user_id,
+    		@RequestParam(value="po_num") int po_num
+    		) {
     	
-    	/*
-    	HttpSession session = request.getSession();
-		
-		UserVo sessionPUser = (UserVo) session.getAttribute("plogin");
-	    if(sessionPUser == null) {
-	        return new ModelAndView("redirect:/LoginForm");
-	    }
-	    */
-    	
-    	int checkBoolean = bookmarkMapper.checkUBNO( userBookVo );
+    	List<UserBookVo> getCheckBook = bookmarkMapper.getUserBook(user_id, po_num);
     	log.info("=========================================================");
-    	log.info("checkBoolean : {}", checkBoolean);
+    	log.info("getCheckBook : {}", getCheckBook);
     	log.info("=========================================================");
     	
-    	ModelAndView mv = new ModelAndView();
-    	mv.addObject("checkBoolean", checkBoolean);
-    	mv.setViewName("user/postView");
-    	return mv;
+    	int checkUBNO = bookmarkMapper.checkUBNO(user_id, po_num);
+    	log.info("=========================================================");
+    	log.info("checkUBNO : {}", checkUBNO);
+    	log.info("=========================================================");
     	
-    }
-    
-    @RequestMapping("/AddBoolean")
-    public ModelAndView addBoolean( HttpServletRequest request, UserVo userVo, PostVo postVo, UserBookVo userBookVo ) {
+    	System.out.println("==============================user_id: " + user_id);
+    	System.out.println("==============================po_num: " + po_num);
     	
-    	/*
-    	HttpSession session = request.getSession();
-		
-		UserVo sessionPUser = (UserVo) session.getAttribute("plogin");
-	    if(sessionPUser == null) {
-	        return new ModelAndView("redirect:/LoginForm");
-	    }
-	    */
-	    
-    	bookmarkMapper.addBoolean( userBookVo );
-    	    	
-    	ModelAndView mv = new ModelAndView();
-    	mv.setViewName("redirect:/Bookmark/CheckBoolean");
-    	return mv;
-    	
-    }
-    
-    @RequestMapping("/RemoveBoolean")
-    public ModelAndView removeBoolean( HttpServletRequest request, UserVo userVo, PostVo postVo, UserBookVo userBookVo ) {
-    	
-    	/*
-    	HttpSession session = request.getSession();
-		
-		UserVo sessionPUser = (UserVo) session.getAttribute("plogin");
-	    if(sessionPUser == null) {
-	        return new ModelAndView("redirect:/LoginForm");
-	    }
-	    */
-	    
-    	bookmarkMapper.canclBoolean( userBookVo );
-    	    	
-    	ModelAndView mv = new ModelAndView();
-    	mv.setViewName("redirect:/Bookmark/CheckBoolean");
-    	return mv;
-    	
-    }
-    
-
-    /*
-    @PostMapping("/api/bookmark/add")
-    public ResponseEntity<String> addBookmark(@RequestParam("user_id") String user_id, @RequestParam("po_num") int po_num) {
-        bookmarkService.addBookmark(user_id, po_num);
-        return ResponseEntity.ok("Bookmark added successfully");
-    }
-
-    @PostMapping("/api/bookmark/remove")
-    public ResponseEntity<String> removeBookmark(@RequestParam("user_id") String user_id, @RequestParam("po_num") int po_num) {
-        bookmarkService.removeBookmark(user_id, po_num);
-        return ResponseEntity.ok("Bookmark removed successfully");
-    }
-    
-    @GetMapping("/api/bookmark/checkScrapStatus")
-    public String checkScrapStatus(@RequestParam(value="user_id") String user_id, @RequestParam(value="po_num") int po_num) {
-        boolean isScrapped = bookmarkService.checkScrapStatus(user_id, po_num);
-        if (isScrapped) {
-            return "해당 공고가 스크랩되었습니다.";
-        } else {
-            return "해당 공고가 스크랩되지 않았습니다.";
-        }
+    	return getCheckBook;
         
     }
-    */
+    
+    
+    @PostMapping("/addBookmark")
+    public List<UserBookVo> addBookmark(
+    		@RequestParam("user_id") String user_id,
+    		@RequestParam("po_num") int po_num
+    		) {
+        
+    	bookmarkMapper.insertUserbook(user_id, po_num);
+        
+    	return bookmarkMapper.getUserBook(user_id, po_num);
+    }
+
+    @PostMapping("/removeBookmark")
+    public List<UserBookVo> removeBookmark(
+    		@RequestParam("user_id") String user_id,
+    		@RequestParam("po_num") int po_num
+    		) {
+    	
+    	bookmarkMapper.deleteUserbook(user_id, po_num);
+        
+        return bookmarkMapper.getUserBook(user_id, po_num);
+    }
+    
+    
+    
 
 }

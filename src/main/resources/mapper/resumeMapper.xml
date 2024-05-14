@@ -26,7 +26,6 @@
 		WHERE
 			USER_ID = #{ user_id }
 	</select>
-	
 	<insert id="LinsertResume">
 		INSERT INTO RESUME (
 		RE_NUM,
@@ -52,6 +51,7 @@
 		#{user_intro },
 		#{user_img }
 		)
+    
      </insert>
      
      <select   id="LgetResumes" >
@@ -71,28 +71,31 @@
          WHERE
            RE_NUM = #{ re_num }
      </select>
-     
       <update id="LResumeUpdate">
-      UPDATE RESUME
+      	UPDATE RESUME
 		SET  
 			RE_NUM = #{re_num},
-			USER_ID = #{user_id},
+			USER_ID= #{user_id},
 			RE_TITLE = #{re_title},
 			SKILL = #{skill},
 			CAREER = #{career},
 			REGION = #{region},
 			USER_EDU = #{user_edu},
 			USER_CAR = #{user_car},
-			USER_INTRO = #{user_intro},
-			USER_IMG = #{user_img}
-		WHERE 
+			USER_INTRO = #{user_intro}
+		  WHERE 
 			USER_ID = #{user_id}
 			AND RE_NUM = #{re_num}
-	</update>
+		</update>
+		
+		<delete id="LResumeDelete">
+		DELETE  
+  		FROM RESUME
+			WHERE RE_NUM = #{re_num}
+		</delete>
 	
 	<!-- ===================================================== -->
 	
-	<!-- <select id="getResumeList" resultType="com.green.users.apply.domain.ApplyVo"> -->
 	<select id="getResumeList" resultType="com.green.users.resume.domain.ResumeVo">
   	  SELECT 
   	    RE_NUM,
@@ -111,41 +114,6 @@
   	    USER_ID = #{ user_id }
   	  ORDER BY RE_NUM ASC
   </select>
-  
-  <!-- <select id="getResumeList"> 
-  SELECT
-    RE_NUM,
-	USER_ID,
-	RE_TITLE,
-	SKILL,
-	CAREER,
-	REGION,
-	USER_EDU,
-	USER_CAR,
-	USER_INTRO,
-	USER_IMG
-  FROM
-    RESUME
-  WHERE
-  	USER_ID = #{ user_id }
-  
-  UNION
-  
-  SELECT
-    PO_NUM,
-	COM_ID,
-	PO_TITLE,
-	SKILL,
-	CAREER,
-	REGION,
-	PO_QUAL,
-	PO_CONTENT,
-	PO_IMAGE
-  FROM
-    POST
-  WHERE
-    COM_ID = #{ com_id }
-  </select> -->
 		
 </mapper>
 

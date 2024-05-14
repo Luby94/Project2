@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@include file="/WEB-INF/views/include/pheader.jsp" %>
+    <%@include file="/WEB-INF/views/include/cheader.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -99,15 +99,15 @@ textarea {
 </head>
 <body>
 
-    <!-- 이력서 -->
+    <!--공고 -->
 	 <div class="resume-container">
-        <form action="/Users/UpdateResume" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="user_id" value="${sessionScope.plogin.user_id}">
-            <input type="hidden" name="user_img">
+        <form action="/Company/PostUpdate" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="com_id" value="${sessionScope.clogin.com_id}">
+            <input type="hidden" name="po_image">
             	<div class="border border-tertiary w-100 p-5 rounded shadow">
 				<h2>
-					<input type="text" value="${rvo.re_title }" style="width: 700px"
-						class="hs_input_title" name="re_title"  >
+					<input type="text" value="${rvo.po_title }" style="width: 700px"
+						class="hs_input_title" name="po_title"  >
 				</h2>
 				<hr>
 				<div class="container" style="width: 85%;">
@@ -122,45 +122,33 @@ textarea {
 									<span
 										class="input-group-text w-25 justify-content-center init_color hs_span">회사명</span>
 									<input type="text" class="form-control" style="width: 120px;"
-										value="${uvo.user_name}" readonly>
+										value="${uvo.com_name}" readonly>
 								</div>
 
 								<div class="input-group mb-3">
-									<span class="input-group-text w-25 justify-content-center init_color hs_span"> </span>
+									<span class="input-group-text w-25 justify-content-center init_color hs_span">사업자번호 </span>
 									<input type="text" class="form-control" style="width: 120px;"
-										value="${uvo.user_date}" readonly>
+										value="${uvo.com_num}" readonly>
 								</div>
 																<div class="input-group mb-3">
-									<span class="input-group-text w-25 justify-content-center init_color hs_span">주소</span>
+									<span class="input-group-text w-25 justify-content-center init_color hs_span">회사주소</span>
 									<input type="text" class="form-control" style="width: 120px;"
-										value="${uvo.user_adr}" readonly>
+										value="${uvo.com_adr}" readonly>
 								</div>
 								
 
 								<div class="input-group mb-3">
 									<span class="input-group-text w-25 justify-content-center init_color hs_span">연락처</span>
 									<input type="tel" class="form-control"
-										value="${uvo.user_tell}"  readonly>
-								</div>
-
-								<div class="input-group mb-3">
-
-									<span
-										class="input-group-text w-25 justify-content-center init_color hs_span">이메일</span>
-									<input type="text" class="form-control"
-										value="${uvo.user_id}" readonly>
+										value="${uvo.com_tell}"  readonly>
 								</div>
 							</div>
-
 						</div>
 					</div>
 				</div>
 				<div class="container" style="width: 85%;">
 					<div class="row justify-content-center">
 						<div class="col-md-14 mx-auto">
-							<!-- <input type="file" class="form-control mt-2" name="user_img들어갈곳"
-								onchange="chooseImage(this)" /> <br>  -->
-								
 								<span>분야 &nbsp
 								| &nbsp </span> <select name="skill" >
 							    <option value="JavaScript" <c:if test="${rvo.skill == 'JavaScript'}"> selected</c:if> >JavaScript</option>
@@ -195,22 +183,18 @@ textarea {
 								<option value="세종" <c:if test="${rvo.region == '세종'}"> selected</c:if>>세종</option>
 								<option value="제주" <c:if test="${rvo.region == '제주'}"> selected</c:if>>제주</option>
 							</select>
-							<div class="mt-5">
-								<h4>학력</h4>
-								<input type="text" class="form-control mt-2" id="floatingInput"
-									value = "${rvo.user_edu}" name="user_edu"
-									style="display: block;" required>
+
 
 							<div class="mt-5">
-								<h4>경력</h4>
+								<h4>모집조건</h4>
 								<input type="text" class="form-control mt-2" id="floatingInput"
-									value = "${rvo.user_car}" name="user_car" required>
+									value = "${rvo.po_qual}" name="po_qual" required>
 							</div>
 							<br>
 							<div>
-								<h4>자기소개</h4>
-								<textarea name="user_intro" class="w-100 opacity-50" rows="10"
-									>${rvo.user_intro}</textarea>
+								<h4>근무조건</h4>
+								<textarea name="po_content" class="w-100 opacity-50" rows="10"
+									>${rvo.po_content}</textarea>
 							</div>
 							<button type="submit" class="btn btn-primary" >저장</button>
 							<button type="submit" class="btn btn-primary">취소</button>
@@ -220,6 +204,5 @@ textarea {
 					</div>
 		</form>
 	</div>
-
 </body>
 </html>

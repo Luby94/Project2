@@ -131,11 +131,20 @@ ul {
 
 					<c:forEach var="getBookList" items="${getBookList}">
 						<div>
+						<c:choose>
+						<c:when test="${ getBookList.ub_boolean == 0 }">
+							<input class="btn btn-primary scrap-button"
+								type="button" data-po-num="${ getBookList.po_num }"
+								data-user-id="${sessionScope.plogin.user_id}"
+								data-ub-boolean="${ getBookList.ub_boolean }" value="스크랩 하기"  />
+						</c:when>
+						<c:otherwise>
 							<input class="btn btn-outline-secondary scrap-button"
 								type="button" data-po-num="${ getBookList.po_num }"
 								data-user-id="${sessionScope.plogin.user_id}"
-								data-ub-boolean="${ getBookList.ub_boolean }" value="스크랩 하기" />
-
+								data-ub-boolean="${ getBookList.ub_boolean }" value="스크랩 해제"  />
+						</c:otherwise>
+						</c:choose>
 						</div>
 					</c:forEach>
 
@@ -261,9 +270,10 @@ ul {
 										contentType : 'application/json',
 										success : function(isScraped) {
 											button.data('scraped', isScraped);
-											button.toggleClass('btn-primary', isScraped)
-											      .toggleClass('btn-outline-secondary', !isScraped)
-											      .val(isScraped ? '스크랩 해제' : '스크랩 하기');
+											button.val(isScraped ? '스크랩 하기' : '스크랩 해제');
+											//button.toggleClass('btn-outline-secondary', isScraped)
+											//      .toggleClass('btn-primary', !isScraped)
+											//      .val(isScraped ? '스크랩 하기' : '스크랩 해제');
 										},
 										error : function(error) {
 											console.error('Error:', error);
@@ -304,23 +314,7 @@ ul {
 					*/
 					
 								if (isScraped) {
-								    // 스크랩 삭제 요청
-								    $.ajax({
-								        url: `/Bookmark/RemoveBoolean?po_num=` + po_num + '&user_id=' + user_id,
-								        type: 'POST',
-								        contentType: 'application/json',
-								        success: function(response) {
-								            alert('스크랩이 해제되었습니다.');
-								            //checkBookmark(); // 모든 스크랩 버튼 상태 갱신
-								        },
-								        error: function(xhr, status, error) {
-								            console.error('Error:', error);
-								            alert('오류가 발생했습니다. 다시 시도해주세요.');
-								        }
-								    });
-								
-
-								} else {
+									
 									// 스크랩 추가 요청
 									$.ajax({
 										url : `/Bookmark/AddBoolean?po_num=`
@@ -334,13 +328,31 @@ ul {
 										}),
 										success : function(response) {
 											alert('스크랩되었습니다.');
-											//checkBookmark(); // 모든 스크랩 버튼 상태 갱신
+											checkBookmark(); // 모든 스크랩 버튼 상태 갱신
 										},
 										error : function(error) {
 											console.error('Error:', error);
 											alert('오류가 발생했습니다. 다시 시도해주세요.');
 										}
 									});
+
+								} else {
+									
+									// 스크랩 삭제 요청
+									$.ajax({
+								        url: `/Bookmark/RemoveBoolean?po_num=` + po_num + '&user_id=' + user_id,
+								        type: 'POST',
+								        contentType: 'application/json',
+								        success: function(response) {
+								            alert('스크랩이 해제되었습니다.');
+								            checkBookmark(); // 모든 스크랩 버튼 상태 갱신
+								        },
+								        error: function(xhr, status, error) {
+								            console.error('Error:', error);
+								            alert('오류가 발생했습니다. 다시 시도해주세요.');
+								        }
+								    });
+									
 								}
 							});
 						});

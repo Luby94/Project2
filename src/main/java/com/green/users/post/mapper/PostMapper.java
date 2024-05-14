@@ -17,8 +17,22 @@ public interface PostMapper {
 	List<PostVo> getView(PostVo postVo);
 	
 	List<PostVo> getResumePostList(UserVo sessionPUser);
+	
+	List<PostVo> LmainPostList();
 
-	//List<UserBookVo> getView(UserBookVo userBookVo);
+	List<PostVo> LuserMainPostList();
+
+	void LinsertComPost(PostVo postVo);
+
+	List<PostVo> LComPostList(PostVo postVo);
+
+	void LPostDelete(PostVo postVo);
+
+	PostVo LgetPost(PostVo postVo);
+
+	void LPostUpdate(PostVo postVo);
+
+	PostVo Lgetskill(PostVo postVo);
 
 	
 }

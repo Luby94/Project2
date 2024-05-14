@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Jik Job</title>
 <style>
   .select_box {
   display: flex;
@@ -42,6 +42,7 @@
 </style>
 </head>
 <body>
+	<form action =/Users/Umain>
 	<!-- 옵션바 -->
 	<div class="select_box jm_select_box mt-5">
 		<select id="skill" class="jm_select selectpicker"
@@ -70,7 +71,47 @@
 		</select>
 
 	<!-- 채용 공고 -->
-	
+		<div class="container jm_container mt-5">
+			<div class="row row-cols-3 g-4 d-flex flex-wrap">
+				<c:forEach items="${ postList }" var="Vo" varStatus="status">
+					<div class="col-xs-4 post">
+						<a href="/Users/View?po_num=${ Vo.po_num }"
+							style="color: inherit; text-decoration: none;">
+							<div class="card jm_card h-100">
+								<img src="/Company/Images?com_id=${ Vo.com_id }"
+									class="card-img-top jm_card_img_top">
+								<div class="card-body jm_card_body">
+									<div class="jm_company_name">공고번호 : ${ Vo.po_num }</div>
+									<div class="jm_company_title">${ Vo.po_title}</div>
+
+									<div class="jm_company_address">${post.address}</div>
+									<div class="jm_D-day d-flex justify-content-between">
+										<div id="dDay-${status.count}"></div>
+
+										<button type="button" class="btn btn-sm"
+											onclick="scrapOrCancle(event, ${post.postId})">
+											<c:choose>
+												<c:when test="${post.scrap == 0}">
+													<i class="fa-regular text-secondary fa-thumbs-up fa-2xl"
+														id="scrap-${post.postId}" value="${post.scrap}"></i>
+												</c:when>
+
+												<c:otherwise>
+													<i class="fa-solid scrap_icon fa-thumbs-up fa-2xl"
+														id="scrap-${post.postId}" value="${post.scrap}"></i>
+												</c:otherwise>
+											</c:choose>
+										</button>
+									</div>
+								</div>
+							</div>
+						</a> <input type="hidden" value="${post.deadline}" name=""
+							class="deadline" id="deadline-${status.count}" />
+					</div>
+				</c:forEach>
+			</div>
+		</div>
+	</form>
 		<%@include file="/WEB-INF/views/include/footer.jsp"%>
 </body>
 </html>

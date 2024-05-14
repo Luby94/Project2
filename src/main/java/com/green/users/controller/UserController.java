@@ -16,6 +16,8 @@ import com.green.users.post.mapper.PostMapper;
 import com.green.users.resume.domain.ResumeVo;
 import com.green.users.resume.mapper.ResumeMapper;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping("/Users")
 public class UserController {
@@ -25,18 +27,27 @@ public class UserController {
 	@Autowired
 	private UserMapper userMapper;
 	@Autowired
-	private ApplyMapper applyMapper;
-	@Autowired
 	private PostMapper postMapper;
+	@Autowired
+	private ApplyMapper applyMapper;
 	
+	@RequestMapping("/Uhome")
+	public   ModelAndView   uhome() {		
+		ModelAndView   mv  =  new ModelAndView();
+		List<PostVo> postList = postMapper.LuserMainPostList();
+		mv.addObject("postList", postList);
+		mv.setViewName("user/phome");
+		return mv;
+	}
 	@RequestMapping("/Info")
-	public  ModelAndView  Info(UserVo userVo) {
+	   public  ModelAndView  Info(UserVo userVo) {
 		UserVo vo = userMapper.Pgetuser( userVo );
 		ModelAndView   mv  =  new ModelAndView();
 		mv.addObject("vo", vo);
 		mv.setViewName("user/info");
 		return         mv;
-	}
+	   }
+
 	
 	@RequestMapping("/ResumeForm")
 	public  ModelAndView  ResumeForm ( ResumeVo resumeVo  ) {
@@ -46,73 +57,94 @@ public class UserController {
 		mv.setViewName("user/resumeForm");
 		return mv;
 	}
-	
 	@RequestMapping("/ResumeMake")
-	public  ModelAndView  SaveResumeForm ( UserVo userVo  ) {
-		
+	public  ModelAndView  resumeMake ( UserVo userVo  ) {
 		UserVo vo  =  userMapper.LgetUser( userVo );
 		ModelAndView   mv   =  new  ModelAndView();
 		mv.addObject("vo", vo);
 		mv.setViewName("user/resumeMake");
 		return mv;
 	}
-	
 	@RequestMapping("/SaveResume")
 	public  ModelAndView  saveResume ( ResumeVo resumeVo ) {
-		
 		resumeMapper.LinsertResume( resumeVo );
 		
 		String user_id = resumeVo.getUser_id();
-		
 		ModelAndView   mv   =  new  ModelAndView();
 		mv.setViewName("redirect:/Users/ResumeForm?user_id="+ user_id);
 		return mv;
 	}
-	
 	@RequestMapping("/ResumeView")
-	public  ModelAndView  ResumeDetailForm ( ResumeVo resumeVo, UserVo userVo  ) {
-	      //List<ResumeVo> resumeList = resumeMapper.getResumeList( resumeVo );
-	    ResumeVo Rvo  =  resumeMapper.LgetResumes( resumeVo );
-	    UserVo   Uvo  =  userMapper.LgetUser( userVo );
+	   public  ModelAndView  ResumeDetailForm ( ResumeVo resumeVo, UserVo userVo  ) {
+	      ResumeVo Rvo  =  resumeMapper.LgetResumes( resumeVo );
+	      UserVo   Uvo  =  userMapper.LgetUser( userVo );
 	      
-	    ModelAndView   mv   =  new  ModelAndView();
-	    mv.addObject("rvo", Rvo);
-	    mv.addObject("uvo", Uvo);
-	    mv.setViewName("user/resumeView");
-	    return mv;
+	      ModelAndView   mv   =  new  ModelAndView();
+	      mv.addObject("rvo", Rvo);
+	      mv.addObject("uvo", Uvo);
+	      mv.setViewName("user/resumeView");
+	      return mv;
 	}
 
 	@RequestMapping("/UpdateResume")
-	public  ModelAndView  updateResume ( ResumeVo resumeVo  ) {   
-		resumeMapper.LResumeUpdate( resumeVo );
-		
-		ModelAndView   mv   =  new  ModelAndView();
-		String user_id = resumeVo.getUser_id();
-		mv.setViewName("redirect:/Users/ResumeForm?user_id="+ user_id);
-		return mv;
+		public  ModelAndView  updateResume ( ResumeVo resumeVo  ) {   
+			resumeMapper.LResumeUpdate( resumeVo );
+			ModelAndView   mv   =  new  ModelAndView();
+			String user_id = resumeVo.getUser_id();
+			mv.setViewName("redirect:/Users/ResumeForm?user_id="+ user_id);
+			return mv;
 	}
-		
-	@RequestMapping("/List")
-	public ModelAndView list( PostVo postVo ) {
-	    List<PostVo> postList = postMapper.getPostList(postVo);
-	    
-	    ModelAndView   mv  =  new ModelAndView();
-	    mv.addObject("postList", postList);
-	    mv.setViewName("user/postlist");
-	    return mv;
+
+		@RequestMapping("/List")
+		public ModelAndView list( PostVo postVo ) {
+	        List<PostVo> postList = postMapper.getPostList(postVo);
+	        ModelAndView   mv  =  new ModelAndView();
+	        mv.addObject("postList", postList);
+	        mv.setViewName("user/postList");
+	        return mv;
 	}
-	
-	@RequestMapping("/ApplyList")
-	public  ModelAndView  supportList(PostVo postVo, ApplyVo applyVo){
+		@RequestMapping("/ReusmeDelete")
+		   public  ModelAndView  deleteResume(ResumeVo resumeVo){
+		      resumeMapper.LResumeDelete( resumeVo );      
+		      ModelAndView   mv   =  new  ModelAndView();
+		      String user_id = resumeVo.getUser_id();
+		      mv.setViewName("redirect:/Users/ResumeForm?user_id=" + user_id);
+		      return   mv;
+		   }
+		@RequestMapping("/ApplyList")
+		public  ModelAndView  supportList(PostVo postVo, ApplyVo applyVo){
+		         List<ApplyVo> applyList = applyMapper.getApplyList( applyVo );
+		         ModelAndView   mv   =  new  ModelAndView();
+		         mv.addObject("applyList", applyList);
+		         mv.setViewName("user/supportList");
+		         return mv;
+		 }
+		@RequestMapping("/Infoedit")
+		   public  ModelAndView  InfoEdit(UserVo userVo) {
+			UserVo vo = userMapper.Pgetedituser( userVo );
+			ModelAndView   mv  =  new ModelAndView();
+			mv.addObject("vo", vo);
+			mv.setViewName("user/infoedit");
+			return mv;
 		
-	    List<ApplyVo> applyList = applyMapper.getApplyList( applyVo );
-	    System.out.println( "================applyList: " + applyList );
-	         
-	    ModelAndView   mv   =  new  ModelAndView();
-	    mv.addObject("applyList", applyList);
-	    mv.setViewName("user/supportList");
-	    return mv;
-	         
-	}
-	
+		}
+		@RequestMapping("/InfoUpdate")
+		public  ModelAndView  PupdateInfo(UserVo userVo) {
+			userMapper.PupdateInfo(userVo);
+	        ModelAndView   mv   =  new  ModelAndView();
+	        String user_id = userVo.getUser_id();
+	        mv.setViewName("redirect:/Users/Info?user_id="+ user_id);
+			return mv;
+		}
+	    @RequestMapping("/InfoDelete")
+	    public  ModelAndView  InfoDelete(UserVo userVo,HttpServletRequest request){
+	       userMapper.PInfoDelete( userVo );
+	       //세션무효화
+	       request.getSession().invalidate();
+	       
+	       ModelAndView   mv   =  new  ModelAndView();
+	       mv.setViewName("redirect:/");
+	       return   mv;
+	    }
+		
 }

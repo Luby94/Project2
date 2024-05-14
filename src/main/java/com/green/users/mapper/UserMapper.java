@@ -20,4 +20,10 @@ public interface UserMapper {
 
 	UserVo Pgetuser(UserVo userVo);
 	
+	UserVo Pgetedituser(UserVo userVo);
+
+	void PupdateInfo(UserVo userVo);
+
+	void PInfoDelete(UserVo userVo);
+	
 }
