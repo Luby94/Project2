@@ -196,6 +196,21 @@
 		WHERE
 			SKILL = #{ skill }  
 	</select>
+	
+	<select id="getpostbookList">
+	
+	  SELECT
+	    p.*
+	  FROM
+	    POST p
+	  JOIN
+	    USERBOOK u
+	  ON
+	    p.PO_NUM = u.PO_NUM
+	  WHERE
+	    u.USER_ID = #{ arg1 }
+	
+	</select>
 
 </mapper>
 

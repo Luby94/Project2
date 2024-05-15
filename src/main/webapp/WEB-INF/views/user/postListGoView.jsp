@@ -157,25 +157,7 @@ ul {
 
 	<script>
 		$(document).ready(function() {
-			
-			/* $.ajax({
-				type : 'POST',
-				url : '/checkUserBook', // 요청을 처리할 서버의 URL
-				data : {
-					user_id : user_id,
-					po_num : po_num
-				},
-				success: function(response) {
-		            // 성공적으로 데이터를 보냈을 때 처리할 내용
-		            console.log(response);
-		            
-		        },
-				error : function(xhr, status, error) {
-					// 데이터 전송이 실패했을 때 처리할 내용
-					console.error(error);
-				}
-		        
-			}); */
+			// 페이지 로딩
 		});
 
 		const user_id = $('#user_id').val();

@@ -1,13 +1,11 @@
 package com.green.users.post.mapper;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.green.users.domain.UserVo;
 import com.green.users.post.domain.PostVo;
-import com.green.users.post.domain.UserBookVo;
 
 @Mapper
 public interface PostMapper {
@@ -34,5 +32,6 @@ public interface PostMapper {
 
 	PostVo Lgetskill(PostVo postVo);
 
+	List<PostVo> getpostbookList(PostVo postVo, String user_id);
 	
 }

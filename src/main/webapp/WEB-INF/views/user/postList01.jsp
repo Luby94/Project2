@@ -8,46 +8,49 @@
 <title>Jik Job</title>
 
 <style>
-  body {
-	background-color: #f4f4f4;
-	margin: 0;
-}
 
-.post-listings {
-	max-width: 1000px;
-	margin: 0 auto;
-	background-color: #fff;
-	padding: 20px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+  main {
+    height: 100vh;
+  }
 
-table {
-	width: 100%;
-	border-collapse: collapse;
-}
-
-th, td {
-	padding: 15px;
-	text-align: left;
-	border-bottom: 1px solid #ddd;
-}
-
-th {
-	background-color: #f4f4f4;
-}
-
-a {
-	color: #0073e6;
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: underline;
-}
-
-.post-listings tr td:nth-child(3) {
-	width: 400px;
-}
+  .select_box.jm_select_box.mt-5 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 10px;
+  }
+  
+  .info-box,
+  .resume-table {
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 50%;
+  }
+  
+  .resume-table,
+  .resume-table tr,
+  .resume-table tr td {
+    border: 1px solid black;
+    padding: 10px;
+  }
+  
+  .resume-table {
+    table-layout: fixed;
+    border-collapse: collapse; /* 셀 간의 간격을 없애고 테두리를 합침 */
+  }
+  
+  /* 각 셀의 너비를 고정 */
+  .resume-table td:first-child {
+    width: 10%;
+    word-wrap: break-word; /* 텍스트가 셀을 벗어날 경우 줄 바꿈 */
+  }
+  .resume-table td:nth-child(2) {
+    width: 20%;
+    word-wrap: break-word; /* 텍스트가 셀을 벗어날 경우 줄 바꿈 */
+  }
+  
   
 </style>
 
@@ -93,50 +96,15 @@ a:hover {
 			<option value="제주">제주</option>
 			<option value="울산">울산</option>
 		</select>
+	       <div>&nbsp;</div>
+	       <button onclick="search()">검색</button>
        
        </div>
 	   
 	     <h2 style="text-align:center; padding-top: 2%;">공고보기</h2>
 		 <hr/>
 			
-			
-		 <div class=" mx-2 pb-4 w-100">
-			<div class=" border border-tertiary p-5 rounded shadow">
-				<!-- <div class="col-sm-9 page"> -->
-					<div class="d-flex justify-content-center">
-
-						<div>
-							<table class="post-listings">
-								<thead>
-									<tr>
-										<th>No.</th>
-										<th>기업명</th>
-										<th>공고제목</th>
-										<th>근무조건</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach items="${postList}" var="post">
-										<tr>
-											<td>${post.po_num}</td>
-											<td>${post.com_id}</td>
-											<td><a
-												href="/Post/View?po_num=${post.po_num}&user_id=${sessionScope.plogin.user_id}">
-													${post.po_title} </a></td>
-											<td>${post.po_qual}</td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
-						</div>
-					<input type="hidden" id="user_id" value="${ sessionScope.plogin.user_id }" />
-					</div>
-				</div>
-			<!-- </div> -->
-		</div>
-		 
-		 
-		 <%-- <div class="info-box">
+		 <div class="info-box">
 
 			 <c:forEach var="postList" items="${ postList }" >
 			   <table class="resume-table" >	
@@ -148,8 +116,7 @@ a:hover {
 			   </table>
 			 </c:forEach>
 
-		</div> --%>
-		
+		</div>
 		</form>
 	   </article>
 	 </section>

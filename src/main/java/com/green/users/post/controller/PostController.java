@@ -4,9 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.green.company.mapper.CompanyMapper;
 import com.green.users.apply.domain.ApplyVo;
@@ -25,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/Post")
 public class PostController {
 
 	@Autowired
@@ -40,7 +43,7 @@ public class PostController {
 	private BookmarkMapper bookmarkMapper;
 	
 	// 채용공고 목록 조회
-	@RequestMapping("/List")
+	@RequestMapping("/Post/List")
 	public ModelAndView list( PostVo postVo ) {
 				
         List<PostVo> postList = postMapper.getPostList(postVo);
@@ -54,7 +57,7 @@ public class PostController {
 	
 	// /Post/View?po_num=${ po_num }
 	// 공고 자세히 보기
-	@RequestMapping("/View")
+	@RequestMapping("/Post/View")
 	public ModelAndView view(
 			@RequestParam(value="po_num") int po_num,
 			PostVo postVo,
@@ -66,12 +69,14 @@ public class PostController {
 		HttpSession session = request.getSession();
 		
 		List<PostVo> postList = postMapper.getView(postVo);
-		System.out.println( "==============postList: " + postList );
+		log.info("===============/Post/View===============");
+    	log.info("postList : {}", postList);
+    	log.info("========================================");
 		
 		List<UserBookVo> getBookList = bookmarkMapper.getUserBook(user_id, po_num);
-		log.info("=========================================================");
+		log.info("===============/Post/View===============");
     	log.info("getBookList : {}", getBookList);
-    	log.info("=========================================================");
+    	log.info("========================================");
 		
 		//UserVo userVo = new UserVo();
 		//String user_id = userVo.getUser_id();
@@ -81,13 +86,13 @@ public class PostController {
 		mv.addObject("po_num", po_num);
 		mv.addObject("user_id", user_id);
 		mv.addObject("getBookList", getBookList);
-		mv.setViewName("user/postView2");
+		mv.setViewName("user/postListGoView");
 		return mv;
 		
 	}
 	
 	// postView.jsp 지원하기 클릭 시 이력서 선택화면 이동
-	@RequestMapping("/GoApply")
+	@RequestMapping("/Post/GoApply")
 	public ModelAndView goapply(
 			HttpServletRequest request,
 			ResumeVo resumeVo,
@@ -99,9 +104,15 @@ public class PostController {
 			@RequestParam(value="po_num") int poNum
 			) {
 		
-		System.out.println( "================================com_id: " + comId );
-		System.out.println( "================================po_title: " + poTitle );
-		System.out.println( "================================po_num: " + poNum );
+		log.info("===============(/Post/GoApply)===============");
+		log.info("com_id : {}", comId);
+		log.info("=============================================");
+		log.info("===============(/Post/GoApply)===============");
+		log.info("po_title : {}", poTitle);
+		log.info("=============================================");
+		log.info("===============(/Post/GoApply)===============");
+		log.info("po_num : {}", poNum);
+		log.info("=============================================");
 
 		HttpSession session = request.getSession();
 		
@@ -113,10 +124,14 @@ public class PostController {
 	    String  user_id    = resumeVo.getUser_id();
 	    
 	    PostVo vo = companyMapper.getPost( postVo );
-	    System.out.println( "==============vo: " + vo );
+	    log.info("===============(/Post/GoApply)===============");
+		log.info("vo : {}", vo);
+		log.info("=============================================");
 		
 		List<ResumeVo> goresumeList = resumeMapper.getResumeList( sessionPUser );
-		System.out.println( "==============goresumeList: " + goresumeList );
+		log.info("===============(/Post/GoApply)===============");
+		log.info("goresumeList : {}", goresumeList);
+		log.info("=============================================");
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("goresumeList", goresumeList);
@@ -131,7 +146,8 @@ public class PostController {
 	}
 	
 	// 이력서 선택화면 - 지원
-	@RequestMapping("/Apply")
+	//@PostMapping("/Post/Apply")
+	@RequestMapping(value = "/Post/Apply", method=RequestMethod.POST)
 	public ModelAndView apply(
 			HttpServletRequest request,
 			ResumeVo resumeVo,
@@ -141,7 +157,9 @@ public class PostController {
 			@RequestParam(value="po_num") int poNum
 			) {
 		
-		System.out.println( "================================po_num: " + poNum );
+		log.info("===============(/Post/Apply)===============");
+		log.info("po_num : {}", poNum);
+		log.info("===========================================");
 		
 		HttpSession session = request.getSession();
 		
@@ -149,8 +167,9 @@ public class PostController {
 	    if(sessionPUser == null) {
 	        return new ModelAndView("redirect:/LoginForm");
 	    }
-	    System.out.println( "================================sessionPUser: " + sessionPUser );
-	    System.out.println( "================================applyVo: " + applyVo );
+	    log.info("===============(/Post/Apply)===============");
+		log.info("sessionPUser : {}", sessionPUser);
+		log.info("===========================================");
 	    
 	    String  user_id    = resumeVo.getUser_id();
 	    int     re_num     = resumeVo.getRe_num();
@@ -159,6 +178,12 @@ public class PostController {
 	    int     result     = applyVo.getResult();
 	    
 	    postVo.setPo_num(poNum);
+		log.info("===============(/Post/Apply)===============");
+		log.info("postVo : {}", postVo);
+		log.info("===========================================");
+		log.info("===============(/Post/Apply)===============");
+		log.info("applyVo : {}", applyVo);
+		log.info("===========================================");
 	    
 	    applyMapper.insertResumeApply( applyVo );
 	    
@@ -170,9 +195,23 @@ public class PostController {
 		mv.addObject("re_title", re_title);
 		mv.addObject("po_title", po_title);
 		mv.addObject("result", result);
-		mv.setViewName( "redirect:/Post/View" );
+		mv.setViewName( "user/postSuccess" );
 		return mv;
 	}
+	
+	@GetMapping("/Post/Success")
+    public ModelAndView success( String user_id ) {
+		
+		log.info("===============(/Post/Success)===============");
+		log.info("user_id : {}", user_id);
+		log.info("=============================================");
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:/Post/List?user_id=" + user_id);
+		
+        return mv;
+        
+    }
 	
 }
 	

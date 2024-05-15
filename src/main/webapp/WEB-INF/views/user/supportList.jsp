@@ -22,7 +22,8 @@
       margin-left: -20px;
       margin-top:50px
     }
-    /* 본문 */
+    
+        /* 본문 */
     .page {
      margin-top:50px;
      margin-left: 250px;
@@ -181,6 +182,7 @@ main button.bookmarkOn {
    background: url("/img/bookmark-check-fill.svg");
    background-size: cover;
 }
+    
 </style>
 
 </head>
@@ -226,7 +228,7 @@ main button.bookmarkOn {
      							<tbody>
      								<c:forEach var="item" items="${applyList}">
      									<tr>
-     										<td>${item.com_name }</td>
+     										<td>${item.com_id }</td>
      										<td><a href="#">${item.po_title }</a></td>
      										<td><a href="#">${item.re_title }</a></td>
      										<td>${item.career }</td>

@@ -42,7 +42,26 @@
                     <div class="jh_resume mt-5">
                         <button class="jh_resume_button mb-5 rounded jm_card"
                             onclick="location.href=`/Users/ResumeMake?user_id=${ sessionScope.plogin.user_id }`">➕ 새 이력서 등록</button>
+                        
+                        <c:forEach items="${goresumeList}" var="Re">
+						    <div id="resume_del" class="jh_resume_content mt-2 mb-2" style="display: flex; justify-content: space-between">
+						        <div class="d-flex align-items-center">
+						            <a href="/Users/ResumeView?re_num=${Re.re_num}&user_id=${sessionScope.plogin.user_id}"> ${Re.re_title} </a>
+						        </div>
+						        <div>
+						            <form action="/Post/Apply" method="POST">
+						                <input type="hidden" name="re_num" value="${Re.re_num}" />
+						                <input type="hidden" name="user_id" value="${sessionScope.plogin.user_id}" />
+						                <input type="hidden" name="re_title" value="${Re.re_title}" />
+						                <input type="hidden" name="po_title" value="${po_title}" />
+						                <input type="hidden" name="po_num" value="${po_num}" />
+						                <button type="submit" class="btn btn-success">선택</button>
+						            </form>
+						        </div>
+						    </div>
+						</c:forEach>
                             
+                        <!--
                         <c:forEach items="${goresumeList}" var="Re">
 
                             <div id="resume_del" class="jh_resume_content mt-2 mb-2" style="display: flex; justify-content: space-between">
@@ -60,6 +79,7 @@
                             </div>
                             
                         </c:forEach>
+                        -->
                         
                     </div>
                 </div>

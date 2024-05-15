@@ -12,12 +12,15 @@ import com.green.users.apply.mapper.ApplyMapper;
 import com.green.users.domain.UserVo;
 import com.green.users.mapper.UserMapper;
 import com.green.users.post.domain.PostVo;
+import com.green.users.post.domain.UserBookVo;
 import com.green.users.post.mapper.PostMapper;
 import com.green.users.resume.domain.ResumeVo;
 import com.green.users.resume.mapper.ResumeMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/Users")
 public class UserController {
@@ -145,6 +148,22 @@ public class UserController {
 	       ModelAndView   mv   =  new  ModelAndView();
 	       mv.setViewName("redirect:/");
 	       return   mv;
+	    }
+	    @RequestMapping("/BookmarkList")
+	    public ModelAndView bookmarkList( UserVo userVo, PostVo postVo, UserBookVo userBookVo ) {
+	    	
+	    	String user_id = userVo.getUser_id();
+	    	
+	    	List<PostVo> postbookList = postMapper.getpostbookList( postVo, user_id );
+	    	log.info("===============/Post/View===============");
+	    	log.info("postbookList : {}", postbookList);
+	    	log.info("========================================");
+	    	
+	    	ModelAndView mv = new ModelAndView();
+	    	mv.addObject("postbookList", postbookList);
+	    	mv.setViewName("user/bookmarkList");
+	    	return mv;
+	    	
 	    }
 		
 }

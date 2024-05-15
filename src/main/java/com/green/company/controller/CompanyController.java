@@ -90,7 +90,7 @@ public class CompanyController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("uvo", uvo);
 		mv.addObject("rvo", rvo);
-		mv.setViewName("company/postInfoView");
+		mv.setViewName("company/postView");
 		return mv;
 	}
 
