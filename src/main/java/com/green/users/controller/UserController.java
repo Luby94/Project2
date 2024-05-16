@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.green.company.domain.CompanyVo;
 import com.green.users.apply.domain.ApplyVo;
 import com.green.users.apply.mapper.ApplyMapper;
 import com.green.users.domain.UserVo;
@@ -150,11 +151,12 @@ public class UserController {
 	       return   mv;
 	    }
 	    @RequestMapping("/BookmarkList")
-	    public ModelAndView bookmarkList( UserVo userVo, PostVo postVo, UserBookVo userBookVo ) {
+	    public ModelAndView bookmarkList( UserVo userVo, PostVo postVo, UserBookVo userBookVo, CompanyVo companyVo ) {
 	    	
 	    	String user_id = userVo.getUser_id();
 	    	
-	    	List<PostVo> postbookList = postMapper.getpostbookList( postVo, user_id );
+	    	//List<PostVo> postbookList = postMapper.getpostbookList( postVo, user_id );
+	    	List<PostVo> postbookList = postMapper.getpostbookList( postVo, user_id, companyVo );
 	    	log.info("===============/Post/View===============");
 	    	log.info("postbookList : {}", postbookList);
 	    	log.info("========================================");

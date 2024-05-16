@@ -1,5 +1,7 @@
 package com.green.company.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.green.company.domain.CompanyVo;
@@ -21,6 +23,10 @@ public interface CompanyMapper {
 	void PupdateCInfo(CompanyVo companyVo);
 
 	void PCInfoDelete(CompanyVo companyVo);
+
+	List<CompanyVo> KgetCompanyInfoList(CompanyVo companyVo);
+
+	void addRating(String com_id, String user_id, int rating);
 
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.green.company.domain.CompanyVo;
 import com.green.users.domain.UserVo;
 import com.green.users.post.domain.PostVo;
 
@@ -11,8 +12,10 @@ import com.green.users.post.domain.PostVo;
 public interface PostMapper {
 
 	List<PostVo> getPostList(PostVo postVo);
+	List<PostVo> getPostList(PostVo postVo, CompanyVo companyVo);
 
 	List<PostVo> getView(PostVo postVo);
+	List<PostVo> getView(PostVo postVo, CompanyVo companyVo, int po_num);
 	
 	List<PostVo> getResumePostList(UserVo sessionPUser);
 	
@@ -33,5 +36,7 @@ public interface PostMapper {
 	PostVo Lgetskill(PostVo postVo);
 
 	List<PostVo> getpostbookList(PostVo postVo, String user_id);
+	List<PostVo> getpostbookList(PostVo postVo, String user_id, CompanyVo companyVo);
+
 	
 }

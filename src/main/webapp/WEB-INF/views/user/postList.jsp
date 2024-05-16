@@ -48,6 +48,115 @@ a:hover {
 .post-listings tr td:nth-child(3) {
 	width: 400px;
 }
+
+/* 모달 스타일 */
+.modal {
+  position: absolute;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 80%;
+  height: 80%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  border-radius: 10px;
+  margin: 5% auto;
+  padding: 20px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow:0 2px 3px 0 rgba(34,36,38,0.15); /* 테두리 그림자 */
+  transform:translateY(-50%); /* 모듈창열었을때 위치설정 가운데로 */
+  position:absolute;
+  top:40%; /* 모달을 화면가운데 놓기위함. */ 
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.company-logo {
+  width: 100px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.modal-body p {
+  margin-bottom: 10px;
+}
+
+.modal-body p strong {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+/* 모달 내용 간 구분선 */
+.modal-body p {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd; /* 각 내용 사이에 선 추가 */
+}
+
+/* 마지막 내용의 선 제거 */
+.modal-body p:last-child {
+  border-bottom: none; /* 마지막 요소에는 선을 표시하지 않음 */
+}
+
+/* 평점 스타일 */
+.rating {
+  display: inline-block;
+}
+
+.rating input {
+  display: none;
+}
+
+.rating label {
+  cursor: pointer;
+  width: 30px;
+  font-size: 24px;
+  color: #ffd700; /* 별 색상 */
+}
+
+.rating label:hover,
+.rating label:hover ~ label {
+  color: #ffcc00; /* 호버 시 색상 변경 */
+}
+
+.ratingSubmitBtn {
+  background-color: #007bff; /* 제출 버튼 배경색 */
+  color: white; /* 제출 버튼 텍스트 색상 */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.ratingSubmitBtn:hover {
+  background-color: #0056b3; /* 호버 시 배경색 변경 */
+}
   
 </style>
 
@@ -62,7 +171,6 @@ a:hover {
 	 <section>
 	   <article>
 	   <form action="/Post/View?po_num=${ po_num }&user_id=${ user_id }" method="post">
-	   <input type="hidden" name="" />
 	   <div class="select_box jm_select_box mt-5">
 	   
 		<select id="skill" class="jm_select selectpicker"
@@ -102,7 +210,6 @@ a:hover {
 			
 		 <div class=" mx-2 pb-4 w-100">
 			<div class=" border border-tertiary p-5 rounded shadow">
-				<!-- <div class="col-sm-9 page"> -->
 					<div class="d-flex justify-content-center">
 
 						<div>
@@ -119,36 +226,73 @@ a:hover {
 									<c:forEach items="${postList}" var="post">
 										<tr>
 											<td>${post.po_num}</td>
-											<td>${post.com_id}</td>
-											<td><a
-												href="/Post/View?po_num=${post.po_num}&user_id=${sessionScope.plogin.user_id}">
-													${post.po_title} </a></td>
-											<td>${post.po_qual}</td>
+											<td>
+											  <a href="#"
+											     id="com_name"
+											     onclick="openPopup('${ post.com_name }')">
+											  ${post.com_name}
+											  </a>
+											</td>
+											<td>
+											  <a href="/Post/View?po_num=${ post.po_num }&user_id=${ sessionScope.plogin.user_id }">${ post.po_title }</a>
+											</td>
+											<td>${ post.po_qual }</td>
 										</tr>
+							
+										<!-- 모달 팝업 -->
+										<div id="popupModal" class="modal">
+										  <div class="modal-content">
+										    <span class="close" onclick="closePopup()">&times;</span>
+										    <div class="modal-header">
+											    <img src="/img/Rogo.png" alt="회사 로고" class="company-logo">
+											    <h3 id="popupTitle"></h3>
+										    </div>
+										    <div class="modal-body">
+											    <p id="popupContent"></p>
+											    <p id="popupComNum"><input type="hidden" value="${ post.com_num }"/></p>
+											    <p id="popupComBoss"><input type="hidden" value="${ post.com_boss }"/></p>
+											    <p id="popupComAdr"><input type="hidden" value="${ post.com_adr }"/></p>
+											    <p id="popupComTell"><input type="hidden" value="${ post.com_tell }"/></p>
+											    <p><input type="hidden" id="poNum" value="${ post.po_num }"/></p>
+											    <p><input type="hidden" id="comId" value="${ post.com_id }"/></p>
+											    <!-- 평점 입력 폼 -->
+											      <form id="ratingForm" onsubmit="submitRating(event)">
+											        <label for="rating">평점:</label>
+											          <input type="number" id="rating" name="rating" min="1" max="5" required>
+											          <input type="hidden" id="user_id" name="user_id" value="${ sessionScope.plogin.user_id }" />
+											        
+											        <!-- <div class="rating">
+											          <input type="radio" id="star5" name="rating" value="5" required/>
+											          <label for="star5" title="5 stars">&#9733;</label>
+											          <input type="radio" id="star4" name="rating" value="4" required/>
+											          <label for="star4" title="4 stars">&#9733;</label>
+											          <input type="radio" id="star3" name="rating" value="3" required/>
+											          <label for="star3" title="3 stars">&#9733;</label>
+											          <input type="radio" id="star2" name="rating" value="2" required/>
+											          <label for="star2" title="2 stars">&#9733;</label>
+											          <input type="radio" id="star1" name="rating" value="1" required/>
+											          <label for="star1" title="1 star">&#9733;</label>
+											        </div> -->
+											        
+											        <button type="button" class="ratingSubmitBtn"><i class="fas fa-check"></i> 제출</button>
+      
+											      </form>
+											      <!-- 평점 표시 영역 -->
+											      <div id="ratingDisplay"></div>
+										    </div>
+										  </div>
+										</div>
+							
 									</c:forEach>
 								</tbody>
 							</table>
+							
+							
 						</div>
 					<input type="hidden" id="user_id" value="${ sessionScope.plogin.user_id }" />
 					</div>
 				</div>
-			<!-- </div> -->
 		</div>
-		 
-		 
-		 <%-- <div class="info-box">
-
-			 <c:forEach var="postList" items="${ postList }" >
-			   <table class="resume-table" >	
-			   <tr>
-			     <td class="table-num">${ postList.po_num }</td>
-			     <td class="table-name">${ postList.region }</td>
-			     <td class="table-title"><a href="/Post/View?po_num=${ postList.po_num }&user_id=${ sessionScope.plogin.user_id }">${ postList.po_title }</a></td>
-			   </tr>
-			   </table>
-			 </c:forEach>
-
-		</div> --%>
 		
 		</form>
 	   </article>
@@ -156,49 +300,114 @@ a:hover {
    </main>
 
    <%@include file="/WEB-INF/views/include/footer.jsp" %>
-   
+  
    <script>
+   const com_name = document.querySelector('#com_name');
    
-   function search() {
-       let region = document.getElementById("region").value;
-       let skill = document.getElementById("skill").value;
-       let career = document.getElementById("career").value;
+   // 모달 열기
+   function openPopup(com_name) {
+      var modal = document.getElementById("popupModal");
+      var title = document.getElementById("popupTitle");
+      var content = document.getElementById("popupContent");
 
-       // 선택된 값들을 서버로 전송하여 검색 수행
-       // AJAX 요청을 사용하여 서버와 통신하거나, 폼을 제출하여 서버로 데이터 전송 가능
-       // 이 예제에서는 간단히 선택된 값을 콘솔에 출력
-       console.log("Selected Region:", region);
-       console.log("Selected Job Shape:", jobshape);
-       console.log("Selected Career:", career);
-       
-       // AJAX 요청 보내기
-       let xhr = new XMLHttpRequest();
-       let url = "your_server_endpoint"; // 서버 엔드포인트 URL을 여기에 입력
-       xhr.open("POST", url, true);
-       xhr.setRequestHeader("Content-Type", "application/json");
+      // 정보 설정을 위한 객체 배열 생성
+      var infoElements = [
+         {id: "popupComNum", label: "사업자등록번호: "},
+         {id: "popupComBoss", label: "회사대표명: "},
+         {id: "popupComAdr", label: "회사주소: "},
+         {id: "popupComTell", label: "회사번호: "}
+      ];
 
-       // 서버로 전송할 데이터를 JSON 형식으로 만듦
-       let data = JSON.stringify({
-           region: region,
-           jobshape: jobshape,
-           career: career
-       });
+      // 모달 제목과 기본 내용 설정
+      title.innerHTML = com_name + " 정보";
+      content.innerHTML = "이곳에 " + com_name + "의 정보를 표시합니다.";
 
-       // AJAX 요청 보내기
-       xhr.onreadystatechange = function () {
-           if (xhr.readyState === 4 && xhr.status === 200) {
-               // 서버에서 응답을 받았을 때 수행할 작업
-               console.log("서버 응답:", xhr.responseText);
-           }
-       };
+      // 정보 객체 배열을 순회하며 모달 내용 설정
+      infoElements.forEach(function(info) {
+         var element = document.getElementById(info.id);
+         var value = element.querySelector('input').value;
+         element.innerHTML = info.label + value;
+      });
 
-       // AJAX 요청 보내기
-       xhr.send(data);
-       
+      modal.style.display = "block";
+      
+   //-----------------------------------------------------------------------------
+   // 평점
+   
+   // 평점 표시 엘리먼트 가져오기
+   var ratingDisplay = document.getElementById("ratingDisplay");
+   console.log(ratingDisplay)
+   
+   // 이전에 입력된 평점이 있다면 초기화
+   ratingDisplay.innerHTML = "";
+	
+   // 이전에 저장된 평점이 있다면 표시
+   var savedRating = localStorage.getItem("rating");
+   if (savedRating) {
+     ratingDisplay.innerHTML = "이전 평점: " + savedRating;
    }
    
-   </script>
-  
+   }
+	
+   // 평점 제출 처리 함수
+   
+   const ratingSubmitBtnEl = document.querySelector('.ratingSubmitBtn');
+   console.log(ratingSubmitBtnEl)
+   
+   ratingSubmitBtnEl.addEventListener('click', function submitRating(e) {
+	   e.preventDefault();
+	   
+	   /*
+	   const rating = document.querySelector('input[name="rating"]:checked');
+	   if (rating) {
+	       var selectedRating = rating.value;
+	       console.log("선택된 평점:", selectedRating);
+	   } else {
+	       console.log("평점을 선택해주세요.");
+	   }
+	   
+        var comIdEl = document.getElementById('comId');
+       var poNumEl = document.getElementById('poNum');
+       console.log(comIdEl)
+       console.log(poNumEl)
+       */
+       
+       const rating = $('#rating').val();
+       const com_id = $('#comId').val();
+       const user_id = $('#user_id').val();
+       console.log(rating)
+       console.log(com_id)
+       console.log(user_id)
+
+       // 서버로 평점 데이터 전송
+       fetch('/Company/ratings/add?com_id=' + com_id + '&user_id=' + user_id + '&rating=' + rating, {
+           method: 'POST'
+       })
+       .then(response => response.text())
+       .then(data => console.log(data)) // 성공적으로 처리된 경우 메시지 출력
+       .catch(error => console.error(error)); // 오류 발생 시 에러 메시지 출력
+   })
+   
+   //-----------------------------------------------------------------------------
+
+   // 모달 닫기
+   function closePopup() {
+      var modal = document.getElementById("popupModal");
+      modal.style.display = "none";
+      location.reload(); // 페이지 새로고침
+   }
+   
+   // 모달 바깥을 클릭하면 모달이 닫히도록 설정
+   window.onclick = function(event) {
+      var modal = document.getElementById("popupModal");
+      if (event.target == modal) {
+         modal.style.display = "none";
+      location.reload(); // 페이지 새로고침
+      }
+   }
+   
+</script>
+
 
 </body>
 </html>

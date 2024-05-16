@@ -73,24 +73,11 @@
 							<input type="text" class="form-control" name="com_tell" value="${vo.com_tell }"
 								readonly>
 						</div>
-						<div class="d-flex justify-content-between">
-							<button type="button" class="btn btn-dark"
-								style="width: 100px; height: 40px; margin-right: 5px;"
-								onclick="location.href='/Company/CInfoedit?com_id=${ sessionScope.clogin.com_id}'">수정하기
-							</button>
-						</div>
+
 					</form>
-					<form
-						action="/Company/CInfoDelete?com_id=${ sessionScope.clogin.com_id }"
-						id="deleteCompanyBtn" method="POST">
-						<button type="submit" class="btn btn-dark"
-							style="width: 100px; height: 40px;">회원탈퇴</button>
-					</form>
+
 				</div>
 
-
-
-				<!-- 회원탈퇴 페이지 만들고 연결 -->
 			</div>
 		</div>
 	</div>
@@ -98,14 +85,6 @@
 
 </body>
 <script>
-   document.getElementById('deleteCompanyBtn').addEventListener('click', function() {
-	    var result = confirm('정말로 탈퇴하시겠습니까?');
-	    if (result) {
-	        // 사용자가 "확인"을 눌렀을 때 실행될 코드
-	        // 여기서 AJAX 요청을 포함하여 탈퇴 처리를 할 수 있습니다.
-	        // 예시에서는 단순히 홈으로 리다이렉션하는 것으로 보여드리겠습니다.
-	        window.location.href = '/';
-	    }
-	});
+   
    </script>
 </html>

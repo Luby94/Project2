@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class ApplyedVo {
 	// apply 
 	private Long po_num;
-	private int re_numl;
+	private int re_num;
 	private String re_title;
 	private String po_title;
 	private int result;
@@ -28,7 +28,7 @@ public class ApplyedVo {
 	private String po_image;
 	
 	// resume
-	private Long re_num;
+	//private Long re_num;
 	private String user_id;
 //	private String re_title;
 //	private String skill;

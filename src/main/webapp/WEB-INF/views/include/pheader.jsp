@@ -50,7 +50,7 @@
 							<c:otherwise>
 								<li class="nav-item" id="main"><a
 									class="nav-link link-dark" aria-current="page"
-									href="/Users/List?user_id=${ sessionScope.plogin.user_id }">채용정보</a></li>
+									href="/Post/List?user_id=${ sessionScope.plogin.user_id }">채용정보</a></li>
 							</c:otherwise>
 						</c:choose>
 						<li class="nav-item" id="Jicjob"><a

@@ -19,4 +19,10 @@ public class PostVo {
 	private String po_content;
 	private String po_image;
 	
+	private String com_name;
+	private String com_num;
+	private String com_boss;
+	private String com_adr;
+	private String com_tell;
+	
 }

@@ -24,7 +24,6 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 <link rel="stylesheet" href="/css/style.css">
-
 </head>
 
 <body>
@@ -35,7 +34,7 @@
 			<div class="container d-flex justify-content-between">
 				<div>
 					<a class="navbar-brand fs-2" href="/"> <img src="/img/Rogo.png"
-						width="80px;" height="60px;" class="d-inline-block align-text-top">
+						width="60px;" height="50px;" class="d-inline-block align-text-top">
 					</a>
 				</div>
 				<div>
@@ -45,12 +44,12 @@
 							<c:when test="${ sessionScope.clogin == null || clogin == '' }">
 								<li class="nav-item" id="main" ><a
 									class="nav-link link-dark" aria-current="page"
-									href="/Users/">채용정보</a></li>
+									href="/Users/LoginForm">채용정보</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="nav-item" id="main"><a
 									class="nav-link link-dark" aria-current="page"
-									href="/Users/List?com_id=${ sessionScope.clogin.com_id }">채용정보</a></li>
+									href="/Post/List?com_id=${ sessionScope.clogin.com_id }">채용정보</a></li>
 							</c:otherwise>
 						</c:choose>
 						<li class="nav-item" id="Jicjob"><a
@@ -93,3 +92,4 @@
 
 		</nav>
 	</header>
+	<div class="mb-5" style="height: 40px;"></div>

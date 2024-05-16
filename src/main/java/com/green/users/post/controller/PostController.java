@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.green.company.domain.CompanyVo;
 import com.green.company.mapper.CompanyMapper;
 import com.green.users.apply.domain.ApplyVo;
 import com.green.users.apply.mapper.ApplyMapper;
@@ -44,9 +45,13 @@ public class PostController {
 	
 	// 채용공고 목록 조회
 	@RequestMapping("/Post/List")
-	public ModelAndView list( PostVo postVo ) {
+	public ModelAndView list( PostVo postVo, CompanyVo companyVo ) {
 				
-        List<PostVo> postList = postMapper.getPostList(postVo);
+        //List<PostVo> postList = postMapper.getPostList(postVo);
+        List<PostVo> postList = postMapper.getPostList(postVo, companyVo);
+        log.info("===============/Post/List===============");
+    	log.info("postList : {}", postList);
+    	log.info("========================================");
         
         ModelAndView   mv  =  new ModelAndView();
         mv.addObject("postList", postList);
@@ -62,13 +67,15 @@ public class PostController {
 			@RequestParam(value="po_num") int po_num,
 			PostVo postVo,
 			UserBookVo userBookVo,
+			CompanyVo companyVo,
 			HttpServletRequest request,
 			@RequestParam(value="user_id") String user_id
 			) {
 				
 		HttpSession session = request.getSession();
 		
-		List<PostVo> postList = postMapper.getView(postVo);
+		//List<PostVo> postList = postMapper.getView(postVo);
+		List<PostVo> postList = postMapper.getView(postVo, companyVo, po_num);
 		log.info("===============/Post/View===============");
     	log.info("postList : {}", postList);
     	log.info("========================================");
@@ -80,13 +87,15 @@ public class PostController {
 		
 		//UserVo userVo = new UserVo();
 		//String user_id = userVo.getUser_id();
+    	String com_id = postVo.getCom_id();
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("postList", postList);
 		mv.addObject("po_num", po_num);
 		mv.addObject("user_id", user_id);
+		mv.addObject("com_id", com_id);
 		mv.addObject("getBookList", getBookList);
-		mv.setViewName("user/postListGoView");
+		mv.setViewName("user/postListGoView2");
 		return mv;
 		
 	}

@@ -91,7 +91,7 @@ a:hover {
 									<c:forEach items="${postbookList}" var="post">
 										<tr>
 											<td>${post.po_num}</td>
-											<td>${post.com_id}</td>
+											<td>${post.com_name}</td>
 											<td><a
 												href="/Post/View?po_num=${post.po_num}&user_id=${sessionScope.plogin.user_id}">
 													${post.po_title} </a></td>

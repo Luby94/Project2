@@ -124,4 +124,37 @@
 
 	</delete>
 	
+	<select id="KgetCompanyInfoList">
+	
+	  SELECT
+	    COM_ID,
+		COM_NAME,
+		COM_NUM,
+		COM_BOSS,
+		COM_ADR,
+		COM_TELL,
+		COM_DATE
+	  FROM
+	    COMPANY
+	  WHERE
+	    COM_ID = #{ com_id }
+	
+	</select>
+	
+	<insert id="addRating">
+	  INSERT
+	    INTO COMRATINGS (
+	    COM_ID,
+	    USER_ID,
+	    RATING_ID,
+	    RATING
+	  )
+	  VALUES (
+	    #{ arg0 },
+	    #{ arg1 },
+	    NVL((SELECT MAX(RATING_ID) FROM COMRATINGS), 0) + 1,
+	    #{ arg2 }
+	  )
+	</insert>
+	
 </mapper>
