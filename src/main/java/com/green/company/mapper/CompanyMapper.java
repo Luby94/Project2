@@ -26,7 +26,11 @@ public interface CompanyMapper {
 
 	List<CompanyVo> KgetCompanyInfoList(CompanyVo companyVo);
 
-	void addRating(String com_id, String user_id, int rating);
+	Integer KgetRating(String user_id, String com_id, Integer rating);
+
+	void KaddRating(String com_id, String user_id, int rating);
+
+	void KupdateRating(String com_id, String user_id, int rating);
 
 
 }

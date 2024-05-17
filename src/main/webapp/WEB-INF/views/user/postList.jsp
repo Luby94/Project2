@@ -45,7 +45,7 @@ a:hover {
 	text-decoration: underline;
 }
 
-.post-listings tr td:nth-child(3) {
+.post-listings tr td:nth-child(4) {
 	width: 400px;
 }
 
@@ -157,6 +157,18 @@ a:hover {
 .ratingSubmitBtn:hover {
   background-color: #0056b3; /* 호버 시 배경색 변경 */
 }
+
+/* CSS 파일에 추가 */
+/* 별점을 표시하기 위한 스타일 */
+.star {
+    font-size: 30px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.star.filled {
+    color: gold;
+}
   
 </style>
 
@@ -218,6 +230,7 @@ a:hover {
 									<tr>
 										<th>No.</th>
 										<th>기업명</th>
+										<th>평점</th>
 										<th>공고제목</th>
 										<th>근무조건</th>
 									</tr>
@@ -228,11 +241,15 @@ a:hover {
 											<td>${post.po_num}</td>
 											<td>
 											  <a href="#"
-											     id="com_name"
-											     onclick="openPopup('${ post.com_name }')">
+											     id="comName"
+											     onclick="openPopup('${ post.com_name }','${ post.com_num }',
+											     '${ post.com_boss }','${ post.com_adr }','${ post.com_tell }',
+											     '${ post.com_id }', '${ post.rating }'
+											     )">
 											  ${post.com_name}
 											  </a>
 											</td>
+											<td>${post.rating}</td>
 											<td>
 											  <a href="/Post/View?po_num=${ post.po_num }&user_id=${ sessionScope.plogin.user_id }">${ post.po_title }</a>
 											</td>
@@ -240,7 +257,8 @@ a:hover {
 										</tr>
 							
 										<!-- 모달 팝업 -->
-										<div id="popupModal" class="modal">
+										<!-- <div id="popupModal" class="modal"> -->
+										<div class="modal">
 										  <div class="modal-content">
 										    <span class="close" onclick="closePopup()">&times;</span>
 										    <div class="modal-header">
@@ -249,36 +267,32 @@ a:hover {
 										    </div>
 										    <div class="modal-body">
 											    <p id="popupContent"></p>
-											    <p id="popupComNum"><input type="hidden" value="${ post.com_num }"/></p>
-											    <p id="popupComBoss"><input type="hidden" value="${ post.com_boss }"/></p>
-											    <p id="popupComAdr"><input type="hidden" value="${ post.com_adr }"/></p>
-											    <p id="popupComTell"><input type="hidden" value="${ post.com_tell }"/></p>
-											    <p><input type="hidden" id="poNum" value="${ post.po_num }"/></p>
-											    <p><input type="hidden" id="comId" value="${ post.com_id }"/></p>
+											    <p id="popupComNum"></p>
+											    <p id="popupComBoss"></p>
+											    <p id="popupComAdr"></p>
+											    <p id="popupComTell"></p>
 											    <!-- 평점 입력 폼 -->
 											      <form id="ratingForm" onsubmit="submitRating(event)">
 											        <label for="rating">평점:</label>
-											          <input type="number" id="rating" name="rating" min="1" max="5" required>
+											          <!-- <input type="number" id="rating" name="rating" min="1" max="5" required> -->
 											          <input type="hidden" id="user_id" name="user_id" value="${ sessionScope.plogin.user_id }" />
-											        
-											        <!-- <div class="rating">
-											          <input type="radio" id="star5" name="rating" value="5" required/>
-											          <label for="star5" title="5 stars">&#9733;</label>
-											          <input type="radio" id="star4" name="rating" value="4" required/>
-											          <label for="star4" title="4 stars">&#9733;</label>
-											          <input type="radio" id="star3" name="rating" value="3" required/>
-											          <label for="star3" title="3 stars">&#9733;</label>
-											          <input type="radio" id="star2" name="rating" value="2" required/>
-											          <label for="star2" title="2 stars">&#9733;</label>
-											          <input type="radio" id="star1" name="rating" value="1" required/>
-											          <label for="star1" title="1 star">&#9733;</label>
-											        </div> -->
-											        
+											    	  <input type="hidden" id="poNum" value="${ post.po_num }"/>
+											    	  
+											    	  <div class="ratingStar">
+													    <span class="star" data-value="1">&#9733;</span>
+													    <span class="star" data-value="2">&#9733;</span>
+													    <span class="star" data-value="3">&#9733;</span>
+													    <span class="star" data-value="4">&#9733;</span>
+													    <span class="star" data-value="5">&#9733;</span>
+													    <span>&nbsp;&nbsp;&nbsp;</span>
 											        <button type="button" class="ratingSubmitBtn"><i class="fas fa-check"></i> 제출</button>
-      
+													</div>
+											      
+
+												      <!-- 평점 표시 영역 -->
+												      <div class="ratingDisplay"></div>											      
+											        
 											      </form>
-											      <!-- 평점 표시 영역 -->
-											      <div id="ratingDisplay"></div>
 										    </div>
 										  </div>
 										</div>
@@ -298,111 +312,139 @@ a:hover {
 	   </article>
 	 </section>
    </main>
-
-   <%@include file="/WEB-INF/views/include/footer.jsp" %>
-  
-   <script>
-   const com_name = document.querySelector('#com_name');
    
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <script>
+   
+   //-----------------------------------------------------------------------------
    // 모달 열기
-   function openPopup(com_name) {
-      var modal = document.getElementById("popupModal");
-      var title = document.getElementById("popupTitle");
-      var content = document.getElementById("popupContent");
+   
+   function openPopup(com_name, com_num, com_boss, com_adr, com_tell, com_id, rating) {
+	  const modal = document.querySelector(".modal");
+	  const title = document.getElementById("popupTitle");
+	  const content = document.getElementById("popupContent");
+	  const comNum  = document.querySelector('#popupComNum');
+	  const comBoss = document.querySelector('#popupComBoss');
+	  const comAdr  = document.querySelector('#popupComAdr');
+	  const comTell = document.querySelector('#popupComTell');
 
-      // 정보 설정을 위한 객체 배열 생성
-      var infoElements = [
-         {id: "popupComNum", label: "사업자등록번호: "},
-         {id: "popupComBoss", label: "회사대표명: "},
-         {id: "popupComAdr", label: "회사주소: "},
-         {id: "popupComTell", label: "회사번호: "}
-      ];
-
-      // 모달 제목과 기본 내용 설정
-      title.innerHTML = com_name + " 정보";
-      content.innerHTML = "이곳에 " + com_name + "의 정보를 표시합니다.";
-
-      // 정보 객체 배열을 순회하며 모달 내용 설정
-      infoElements.forEach(function(info) {
-         var element = document.getElementById(info.id);
-         var value = element.querySelector('input').value;
-         element.innerHTML = info.label + value;
-      });
+	  // 모달 제목과 기본 내용 설정
+      title.innerHTML   = com_name + ' 정보';
+      content.innerHTML = '이곳에 ' + com_name + '의 정보를 표시합니다.';
+      comNum.innerHTML = '사업자등록번호: ' + com_num;
+      comBoss.innerHTML = '회사 대표명: ' + com_boss;
+      comAdr.innerHTML = '회사 주소: ' + com_adr;
+      comTell.innerHTML = '회사 전화번호: ' + com_tell;
 
       modal.style.display = "block";
-      
+  
    //-----------------------------------------------------------------------------
-   // 평점
+   // 평점 표시
    
-   // 평점 표시 엘리먼트 가져오기
-   var ratingDisplay = document.getElementById("ratingDisplay");
-   console.log(ratingDisplay)
+      $(document).ready(function() {
+    	  const user_id = $('#user_id').val();
+    	  //console.log(user_id)
+    	  //console.log('GET 시 com_id: ' + com_id)
+    	  
+    	  
+    	    // Ajax를 사용하여 서버로부터 평점을 가져옴
+		    fetch('/Company/getRating?user_id=' + user_id + '&com_id=' + com_id + '&rating=' + rating, {
+		        method : 'GET'
+		    })
+		    .then(response => response.text())
+		    .then(data => {
+		        // 서버로부터 받은 평점을 설정
+		        const rating = parseInt(data);
+		        const starEls = document.querySelectorAll('.star');
+		        starEls.forEach(star => {
+		            const starValue = parseInt(star.getAttribute('data-value'));
+		            if (starValue <= rating) {
+		                star.classList.add('filled');
+		            } else {
+		                star.classList.remove('filled');
+		            }
+		        });
+		    })
+		    .catch(error => console.error(error));
+    	  
+    	  
+   		// 별점을 클릭했을 때 이벤트 처리
+   		const starEls = document.querySelectorAll('.star');
+   		
+    	  starEls.forEach( star => {
+   			
+   			star.addEventListener('click', function() {
+   				
+   				// 클릭한 별의 값을 가져옴
+		        const value = parseInt(this.getAttribute('data-value'));
+   				console.log('클릭한 별의 값: ' + value);
+   				
+		        // 클릭한 별보다 작거나 같은 별에 'filled' 클래스 추가
+		        document.querySelectorAll('.star').forEach(star => {
+		        	
+		            const starValue = parseInt(star.getAttribute('data-value'));
+		            
+		            if (starValue <= value) {
+		                star.classList.add('filled');
+		            } else {
+		                star.classList.remove('filled');
+		            }
+		            
+		        });
+		        
+		        // 평점 제출 처리 함수
+			   const ratingSubmitBtnEl = document.querySelector('.ratingSubmitBtn');
+			
+			   ratingSubmitBtnEl.addEventListener('click', function submitRating(e) {
+				   e.preventDefault();
+			       const rating = value;
+			       const user_id = $('#user_id').val();
+			       console.log('rating: ' + rating)
+			
+			       // 서버로 평점 데이터 전송
+			       fetch('/Company/ratings/add?com_id=' + com_id + '&user_id=' + user_id + '&rating=' + rating, {
+			           method: 'POST'
+			       })
+			       .then(response => response.text())
+			       .then(data => {
+				        console.log(data);
+				        const ratingDisplayEl = document.querySelector('.ratingDisplay');
+				        
+				     	// 이전 평점을 업데이트하기 위한 FETCH 요청
+				        fetch('/Company/getRating?user_id=' + user_id + '&com_id=' + com_id + '&rating=' + rating, {
+				            method : 'GET'
+				        })
+				        .then(response => response.text())
+				        .then(data => {
+				        	
+				        	const ratingDisplayEl = document.querySelector('.ratingDisplay');
+		    	            console.log(ratingDisplayEl)
+		    	            
+				        })
+			       .catch(error => console.error(error));
+			   })
+		        
+   			})
+   			
+   		} )
    
-   // 이전에 입력된 평점이 있다면 초기화
-   ratingDisplay.innerHTML = "";
-	
-   // 이전에 저장된 평점이 있다면 표시
-   var savedRating = localStorage.getItem("rating");
-   if (savedRating) {
-     ratingDisplay.innerHTML = "이전 평점: " + savedRating;
+      })
+      });
    }
-   
-   }
-	
-   // 평점 제출 처리 함수
-   
-   const ratingSubmitBtnEl = document.querySelector('.ratingSubmitBtn');
-   console.log(ratingSubmitBtnEl)
-   
-   ratingSubmitBtnEl.addEventListener('click', function submitRating(e) {
-	   e.preventDefault();
-	   
-	   /*
-	   const rating = document.querySelector('input[name="rating"]:checked');
-	   if (rating) {
-	       var selectedRating = rating.value;
-	       console.log("선택된 평점:", selectedRating);
-	   } else {
-	       console.log("평점을 선택해주세요.");
-	   }
-	   
-        var comIdEl = document.getElementById('comId');
-       var poNumEl = document.getElementById('poNum');
-       console.log(comIdEl)
-       console.log(poNumEl)
-       */
-       
-       const rating = $('#rating').val();
-       const com_id = $('#comId').val();
-       const user_id = $('#user_id').val();
-       console.log(rating)
-       console.log(com_id)
-       console.log(user_id)
-
-       // 서버로 평점 데이터 전송
-       fetch('/Company/ratings/add?com_id=' + com_id + '&user_id=' + user_id + '&rating=' + rating, {
-           method: 'POST'
-       })
-       .then(response => response.text())
-       .then(data => console.log(data)) // 성공적으로 처리된 경우 메시지 출력
-       .catch(error => console.error(error)); // 오류 발생 시 에러 메시지 출력
-   })
-   
-   //-----------------------------------------------------------------------------
 
    // 모달 닫기
    function closePopup() {
-      var modal = document.getElementById("popupModal");
+	  const modal = document.querySelector(".modal");
       modal.style.display = "none";
-      location.reload(); // 페이지 새로고침
+      location.reload();
    }
    
    // 모달 바깥을 클릭하면 모달이 닫히도록 설정
    window.onclick = function(event) {
-      var modal = document.getElementById("popupModal");
+	  const modal = document.querySelector(".modal");
       if (event.target == modal) {
          modal.style.display = "none";
-      location.reload(); // 페이지 새로고침
+      location.reload();
       }
    }
    

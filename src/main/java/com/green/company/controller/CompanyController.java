@@ -191,6 +191,7 @@ public class CompanyController {
 	
 	//----------------------------------------------------------------------------------------------
 	
+	// 기업정보 - 모달
 	@RequestMapping("/CompanyInfo")
 	public ModelAndView companyinfo( CompanyVo companyVo ) {
 		
@@ -206,16 +207,45 @@ public class CompanyController {
 		
 	}
 	
-	@PostMapping("/ratings/add")
+	// 구직자-기업평점 조회
+	@GetMapping("/getRating")
     @ResponseBody
-    public String addRating(
-    		@RequestParam("com_id") String com_id,
+    public Integer getRating(
     		@RequestParam("user_id") String user_id,
+    		@RequestParam("com_id") String com_id,
     		@RequestParam("rating") int rating
     		) {
-		companyMapper.addRating(com_id, user_id, rating);
-        return "Rating added successfully!";
+		
+		Integer getrating = companyMapper.KgetRating(user_id, com_id, rating);
+        
+        return getrating != null ? rating : -1;
     }
+	
+	// 구직자-기업평점(COMRATINGS TABLE)
+	@PostMapping("/ratings/add")
+	@ResponseBody
+	public String addRating(
+	    	@RequestParam("com_id") String com_id,
+	    	@RequestParam("user_id") String user_id,
+	    	@RequestParam("rating") int rating
+	    	) {
+			
+		Integer ratings = companyMapper.KgetRating(user_id, com_id, rating);
+		log.info("========Company/ratings/add=========");
+		log.info("ratings : {}", ratings);
+		log.info("====================================");
+		
+		if (ratings != null) {
+	        companyMapper.KupdateRating(com_id, user_id, rating);
+	    } else {
+	       	companyMapper.KaddRating(com_id, user_id, rating);
+	    }
+			
+		//companyMapper.KaddRating(com_id, user_id, rating);
+			
+	    return "Rating added successfully!";
+	        
+	}
 	
 	
 }

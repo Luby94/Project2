@@ -141,7 +141,28 @@
 	
 	</select>
 	
-	<insert id="addRating">
+	
+	<select id="KgetRating">
+	  SELECT
+	    RATING
+	  FROM
+	    (
+	      SELECT
+	        RATING
+	      FROM
+	        COMRATINGS
+	      WHERE
+	    	USER_ID = #{ arg0 }
+	  	  AND
+	    	COM_ID = #{ arg1 }
+	  	  ORDER BY
+	    	RATING_ID DESC
+	    )
+	  WHERE
+	    ROWNUM = 1
+	</select>
+	
+	<insert id="KaddRating">
 	  INSERT
 	    INTO COMRATINGS (
 	    COM_ID,
@@ -156,5 +177,16 @@
 	    #{ arg2 }
 	  )
 	</insert>
+	
+	<update id="KupdateRating">
+	  UPDATE
+	    COMRATINGS
+	  SET
+	    RATING = #{ arg2 }
+	  WHERE
+	    USER_ID = #{ arg1 }
+	  AND
+	    COM_ID = #{ arg0 }
+	</update>
 	
 </mapper>

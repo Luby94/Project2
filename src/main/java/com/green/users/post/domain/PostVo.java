@@ -25,4 +25,6 @@ public class PostVo {
 	private String com_adr;
 	private String com_tell;
 	
+	private int rating;
+	
 }

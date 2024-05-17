@@ -30,13 +30,20 @@
       C.COM_NUM,
 	  C.COM_BOSS,
 	  C.COM_ADR,
-	  C.COM_TELL
+	  C.COM_TELL,
+	  CR.RATING
     FROM  
       POST P
     JOIN
       COMPANY C
     ON
       P.COM_ID = C.COM_ID
+    LEFT JOIN
+      COMRATINGS CR
+    ON
+      P.COM_ID = CR.COM_ID
+    ORDER BY
+      P.PO_NUM ASC
   </select>
   
   <select id="getView" resultType="com.green.users.post.domain.PostVo">
@@ -59,7 +66,7 @@
     ON
       P.COM_ID = C.COM_ID
     WHERE
-      P.PO_NUM = #{ arg2 } 
+      P.PO_NUM = #{ arg2 }
   
   </select>
   
