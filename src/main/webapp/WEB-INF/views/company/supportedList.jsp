@@ -88,7 +88,7 @@ th {
 										<tr>
 											<th>No</th>
 											<th>id</th>
-											<th id="longLoc">제목</th>
+											<th id="longLoc">공고제목</th>
 											<th id="longLoc">이력서제목</th>
 											<th>유저아이디</th>
 
@@ -111,17 +111,12 @@ th {
 												<td>${item.ap_date }</td>
 
 												<td>
-													<div id="resultBtn_${loop.index + 1}"></div> <input
-													type="hidden" id="user_id_${loop.index + 1}" name="user_id"
-													value="${item.user_id}" /> <input type="hidden"
-													id="re_num_${loop.index + 1}" name="re_num"
-													value="${item.re_num}" /> <input type="hidden"
-													id="result_${loop.index + 1}" name="result"
-													value="${item.result}" /> <input type="hidden"
-													id="com_id_${loop.index + 1}" name="com_id"
-													value="${ sessionScope.clogin.com_id }" /> <input
-													type="hidden" id="po_num_${loop.index + 1}" name="po_num"
-													value="${item.po_num}" />
+													<div id="resultBtn_${loop.index + 1}"></div>
+													<input type="hidden" id="user_id_${loop.index + 1}" name="user_id" value="${item.user_id}" />
+													<input type="hidden" id="re_num_${loop.index + 1}" name="re_num" value="${item.re_num}" />
+													<input type="hidden" id="result_${loop.index + 1}" name="result" value="${item.result}" />
+													<input type="hidden" id="com_id_${loop.index + 1}" name="com_id" value="${ sessionScope.clogin.com_id }" />
+													<input type="hidden" id="po_num_${loop.index + 1}" name="po_num" value="${item.po_num}" />
 												</td>
 											</tr>
 											<script>
@@ -168,44 +163,47 @@ th {
 									        let po_num_${loop.index + 1} = $('#po_num_${loop.index + 1}').val();
 									        checkstatus_${loop.index + 1}(user_id_${loop.index + 1}, re_num_${loop.index + 1}, result_${loop.index + 1}, com_id_${loop.index + 1}, po_num_${loop.index + 1});
 												
-									        $('#resultBtn_${loop.index + 1}').on('click', function(e) {
-									            $.ajax({
-									                type: 'POST',
-									                url: '/Company/decision',
-									                data: {
-									                    user_id: user_id_${loop.index + 1},
-									                    re_num: re_num_${loop.index + 1},
-									                    result: result_${loop.index + 1},
-									                    com_id: com_id_${loop.index + 1},
-									                    po_num: po_num_${loop.index + 1}
-									                },
-														success : function(data) {
-															
-															console.log(data)
-															
-															const btnEl = document.querySelector('.pass');
-															console.log(btnEl)
+									        
+									        // 대기, 불합격, 합격 버튼 생성을 위한 함수
+									        function createSelectionButtons(idPrefix) {
+									            return `
+									                <button type="button" data-id="0" class="btn btn-secondary selection-btn">대기</button>
+									                <button type="button" data-id="1" class="btn btn-danger selection-btn">불합격</button>
+									                <button type="button" data-id="2" class="btn btn-info selection-btn">합격</button>
+									            `;
+									        }
 
-															const PassNum = btnEl.dataset.id;
-															console.log(PassNum)
-															
-															if ( PassNum == 0 ) {
-																$('#resultBtn').html('<button type="button" data-id="1" class="btn btn-danger">불합격</button>')		
-															} else if ( PassNum == 1 ) {
-																$('#resultBtn').html('<button type="button" data-id="2" class="btn btn-info">합격</button>')
-															} else {
-																$('#resultBtn').html('<button type="button" data-id="0" class="btn btn-secondary">대기</button>')						
-															}
-															checkstatus_${loop.index + 1}(user_id_${loop.index + 1}, re_num_${loop.index + 1}, result_${loop.index + 1}, com_id_${loop.index + 1}, po_num_${loop.index + 1});
-															location.reload(); // 페이지 새로고침
-														},
-														error : function(xhr, status, error) {
-															// 데이터 요청이 실패했을 때 처리할 내용
-															console.error(error);
-														}
-													})
-													
-												})
+									        $(document).ready(function() {
+									            $(document).on('click', '.pass', function() {
+									                // 현재 버튼의 위치를 기반으로 새로운 버튼들 추가
+									                let currentBtn = $(this);
+									                let idPrefix = currentBtn.closest('div').attr('id').match(/\d+/)[0]; // 현재 버튼의 id에서 숫자만 추출
+
+									                // 선택 버튼들 추가
+									                $('#resultBtn_' + idPrefix).html(createSelectionButtons(idPrefix));
+
+									                // 선택 버튼 클릭 이벤트 처리
+									                $('.selection-btn').on('click', function() {
+									                    let selectedId = $(this).data('id'); // 선택된 버튼의 data-id 값
+									                    let resultBtnEl = $('#resultBtn_' + idPrefix);
+
+									                    if (selectedId == 0) {
+									                        resultBtnEl.html('<button type="button" data-id="0" class="btn btn-secondary pass">대기</button>');
+									                    } else if (selectedId == 1) {
+									                        resultBtnEl.html('<button type="button" data-id="1" class="btn btn-danger pass">불합격</button>');
+									                    } else {
+									                        resultBtnEl.html('<button type="button" data-id="2" class="btn btn-info pass">합격</button>');
+									                    }
+
+									                    // 선택한 결과를 서버로 전송하여 저장하는 로직 구현...
+									                    // 예시: 
+									                    // $.ajax({...});
+									                });
+									            });
+									        });
+									    
+
+
 										        
 										    </script>
 										</c:forEach>
