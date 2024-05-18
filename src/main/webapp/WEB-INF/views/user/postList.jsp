@@ -342,94 +342,81 @@ a:hover {
    // 평점 표시
    
       $(document).ready(function() {
-    	  const user_id = $('#user_id').val();
-    	  //console.log(user_id)
-    	  //console.log('GET 시 com_id: ' + com_id)
-    	  
-    	  
-    	    // Ajax를 사용하여 서버로부터 평점을 가져옴
-		    fetch('/Company/getRating?user_id=' + user_id + '&com_id=' + com_id + '&rating=' + rating, {
-		        method : 'GET'
-		    })
-		    .then(response => response.text())
-		    .then(data => {
-		        // 서버로부터 받은 평점을 설정
-		        const rating = parseInt(data);
-		        const starEls = document.querySelectorAll('.star');
-		        starEls.forEach(star => {
-		            const starValue = parseInt(star.getAttribute('data-value'));
-		            if (starValue <= rating) {
-		                star.classList.add('filled');
-		            } else {
-		                star.classList.remove('filled');
-		            }
-		        });
-		    })
-		    .catch(error => console.error(error));
-    	  
-    	  
-   		// 별점을 클릭했을 때 이벤트 처리
-   		const starEls = document.querySelectorAll('.star');
-   		
-    	  starEls.forEach( star => {
-   			
-   			star.addEventListener('click', function() {
-   				
-   				// 클릭한 별의 값을 가져옴
-		        const value = parseInt(this.getAttribute('data-value'));
-   				console.log('클릭한 별의 값: ' + value);
-   				
-		        // 클릭한 별보다 작거나 같은 별에 'filled' 클래스 추가
-		        document.querySelectorAll('.star').forEach(star => {
-		        	
-		            const starValue = parseInt(star.getAttribute('data-value'));
-		            
-		            if (starValue <= value) {
-		                star.classList.add('filled');
-		            } else {
-		                star.classList.remove('filled');
-		            }
-		            
-		        });
-		        
-		        // 평점 제출 처리 함수
-			   const ratingSubmitBtnEl = document.querySelector('.ratingSubmitBtn');
-			
-			   ratingSubmitBtnEl.addEventListener('click', function submitRating(e) {
-				   e.preventDefault();
-			       const rating = value;
-			       const user_id = $('#user_id').val();
-			       console.log('rating: ' + rating)
-			
-			       // 서버로 평점 데이터 전송
-			       fetch('/Company/ratings/add?com_id=' + com_id + '&user_id=' + user_id + '&rating=' + rating, {
-			           method: 'POST'
-			       })
-			       .then(response => response.text())
-			       .then(data => {
-				        console.log(data);
-				        const ratingDisplayEl = document.querySelector('.ratingDisplay');
-				        
-				     	// 이전 평점을 업데이트하기 위한 FETCH 요청
-				        fetch('/Company/getRating?user_id=' + user_id + '&com_id=' + com_id + '&rating=' + rating, {
-				            method : 'GET'
-				        })
-				        .then(response => response.text())
-				        .then(data => {
-				        	
-				        	const ratingDisplayEl = document.querySelector('.ratingDisplay');
-		    	            console.log(ratingDisplayEl)
-		    	            
-				        })
-			       .catch(error => console.error(error));
-			   })
-		        
-   			})
-   			
-   		} )
-   
-      })
-      });
+	    const user_id = $('#user_id').val();
+	    
+	    // Ajax를 사용하여 서버로부터 평점을 가져옴
+	    fetch('/Company/getRating?user_id=' + user_id + '&com_id=' + com_id + '&rating=' + rating, {
+	        method : 'GET'
+	    })
+	    .then(response => response.text())
+	    .then(data => {
+	        // 서버로부터 받은 평점을 설정
+	        const rating = parseInt(data);
+	        const starEls = document.querySelectorAll('.star');
+	        starEls.forEach(star => {
+	            const starValue = parseInt(star.getAttribute('data-value'));
+	            if (starValue <= rating) {
+	                star.classList.add('filled');
+	            } else {
+	                star.classList.remove('filled');
+	            }
+	        });
+	    })
+	    .catch(error => console.error(error));
+	    
+	    // 별점을 클릭했을 때 이벤트 처리
+	    const starEls = document.querySelectorAll('.star');
+	    let selectedRating = 0; // 선택된 평점을 저장할 변수
+	    
+	    starEls.forEach( star => {    
+	        star.addEventListener('click', function() {
+	            // 클릭한 별의 값을 가져옴
+	            const value = parseInt(this.getAttribute('data-value'));
+	            console.log('클릭한 별의 값: ' + value);
+	            selectedRating = value; // 사용자가 선택한 평점을 저장
+	            
+	            // 클릭한 별보다 작거나 같은 별에 'filled' 클래스 추가
+	            document.querySelectorAll('.star').forEach(star => {    
+	                const starValue = parseInt(star.getAttribute('data-value'));
+	                
+	                if (starValue <= value) {
+	                    star.classList.add('filled');
+	                } else {
+	                    star.classList.remove('filled');
+	                }    
+	            });    
+	        })    
+	    })
+	
+	    // 평점 제출 처리 함수
+	    const ratingSubmitBtnEl = document.querySelector('.ratingSubmitBtn');
+	    // 평점 제출 버튼에 대한 이벤트 리스너를 한 번만 추가
+	    ratingSubmitBtnEl.addEventListener('click', function(e) {
+	        e.preventDefault();
+	        const rating = selectedRating;  // 사용자가 선택한 최종 평점 사용
+	        const user_id = $('#user_id').val();
+	        console.log('rating: ' + rating)
+	
+	        // 서버로 평점 데이터 전송
+	        fetch('/Company/ratings/add?com_id=' + com_id + '&user_id=' + user_id + '&rating=' + rating, {
+	            method: 'POST'
+	        })
+	        .then(response => response.text())
+	        .then(data => {
+	            console.log(data);
+	            alert('평점 제출 완료!')
+	            // 이전 평점을 업데이트하기 위한 FETCH 요청
+	            fetch('/Company/getRating?user_id=' + user_id + '&com_id=' + com_id + '&rating=' + rating, {
+	                method : 'GET'
+	            })
+	            .then(response => response.text())
+	            .then(data => {
+	                console.log(data)
+	            })
+	            .catch(error => console.error(error));
+	        })
+	    })
+	});
    }
 
    // 모달 닫기
