@@ -96,7 +96,7 @@
 	
 	<!-- ===================================================== -->
 	
-	<select id="getResumeList" resultType="com.green.users.resume.domain.ResumeVo">
+	<select id="KgetResumeList" resultType="com.green.users.resume.domain.ResumeVo">
   	  SELECT 
   	    RE_NUM,
 		USER_ID,
@@ -114,6 +114,87 @@
   	    USER_ID = #{ user_id }
   	  ORDER BY RE_NUM ASC
   </select>
+  
+  
+  <select id="KmakeResumeList" resultType="com.green.users.resume.domain.ResumeVo">
+    SELECT  
+      R.RE_NUM,
+      R.USER_ID,
+      R.RE_TITLE,
+      R.SKILL,
+      R.CAREER,
+      R.REGION,
+      R.USER_EDU,
+      R.USER_CAR,
+      R.USER_INTRO,
+      R.USER_IMG,
+      U.USER_NAME,
+      U.USER_TELL,
+      U.USER_BIRTH,
+      U.USER_ADR,
+      UR.RATING
+    FROM  
+      RESUME R
+    JOIN
+      USERS U
+    ON
+      R.USER_ID = U.USER_ID
+    LEFT JOIN
+      USERRATINGS UR
+    ON
+      R.USER_ID = UR.USER_ID
+    ORDER BY
+      R.RE_NUM ASC
+  </select>
+  
+  
+  <select id="KgetRating">
+	  SELECT
+	    RATING
+	  FROM
+	    (
+	      SELECT
+	        RATING
+	      FROM
+	        USERRATINGS
+	      WHERE
+	    	USER_ID = #{ arg0 }
+	  	  AND
+	    	COM_ID = #{ arg1 }
+	  	  ORDER BY
+	    	RATING_ID ASC
+	    )
+	  WHERE
+	    ROWNUM = 1
+	</select>
+	
+	<insert id="KaddRating">
+	  INSERT
+	    INTO USERRATINGS (
+	    COM_ID,
+	    USER_ID,
+	    RATING_ID,
+	    RATING
+	  )
+	  VALUES (
+	    #{ arg0 },
+	    #{ arg1 },
+	    NVL((SELECT MAX(RATING_ID) FROM USERRATINGS), 0) + 1,
+	    #{ arg2 }
+	  )
+	</insert>
+	
+	<update id="KupdateRating">
+	  UPDATE
+	    USERRATINGS
+	  SET
+	    RATING = #{ arg2 }
+	  WHERE
+	    USER_ID = #{ arg1 }
+	  AND
+	    COM_ID = #{ arg0 }
+	</update>
+  
 		
 </mapper>
 

@@ -21,7 +21,9 @@ public class ResumeVo {
 	private String user_img;
 	
 	private String user_name;
-	private String user_brith;
+	private String user_birth;
 	private String user_adr;
 	private String user_tell;
+	
+	private int rating;
 }

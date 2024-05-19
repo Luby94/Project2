@@ -152,6 +152,7 @@ public class CompanyController {
 	
 	//----------------------------------------------------------------------------------------------
 	
+	// 기업회원-받은 이력서 관리-result 값 확인
 	@GetMapping("/checkstatus")
 	@ResponseBody
 	public List<ApplyedVo> checkstatus(
@@ -175,7 +176,7 @@ public class CompanyController {
 		
 	}
 	
-	
+	// 기업회원-받은 이력서 관리-result 값 업뎃
 	@PostMapping("/decision")
     @ResponseBody
     public List<ApplyedVo> resultUpdate(
@@ -197,7 +198,7 @@ public class CompanyController {
 	
 	//----------------------------------------------------------------------------------------------
 	
-	// 기업정보 - 모달
+	// 기업정보 - 모달 (사용X)
 	@RequestMapping("/CompanyInfo")
 	public ModelAndView companyinfo( CompanyVo companyVo ) {
 		

@@ -204,9 +204,9 @@ th {
 		        // closest() 메서드는 조상 요소를 검색하는데 사용됨
 		        const divEl = $this.closest('.resultBtn');
 		        console.log(divEl)
-		        console.log('===============================================')
 		        
 		        divEl.html( createSelectionButtons() );
+		        console.log('===============================================')
 
 		        // 선택 버튼 클릭 이벤트 처리
 		        divEl.on('click', '.after', function() {

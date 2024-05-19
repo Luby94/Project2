@@ -21,8 +21,16 @@ public interface ResumeMapper {
 	
 	void LResumeDelete(ResumeVo resumeVo);
 
-	// PostController(/Post/GoApply)
-	List<ResumeVo> getResumeList(UserVo sessionPUser);
-	//List<ApplyVo> getResumeList(UserVo sessionPUser);
+	List<ResumeVo> KgetResumeList(UserVo sessionPUser);
+
+	List<ResumeVo> KmakeResumeList(ResumeVo resumeVo, String com_id);
+
+	Integer KgetRating(String user_id, String com_id, int rating);
+
+	void KupdateRating(String com_id, String user_id, int rating);
+
+	void KaddRating(String com_id, String user_id, int rating);
+
+
 
 }

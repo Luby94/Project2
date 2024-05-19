@@ -137,7 +137,7 @@ public class PostController {
 		log.info("vo : {}", vo);
 		log.info("=============================================");
 		
-		List<ResumeVo> goresumeList = resumeMapper.getResumeList( sessionPUser );
+		List<ResumeVo> goresumeList = resumeMapper.KgetResumeList( sessionPUser );
 		log.info("===============(/Post/GoApply)===============");
 		log.info("goresumeList : {}", goresumeList);
 		log.info("=============================================");

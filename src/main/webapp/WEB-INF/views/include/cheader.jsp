@@ -52,11 +52,24 @@
 									href="/Post/List?com_id=${ sessionScope.clogin.com_id }">채용정보</a></li>
 							</c:otherwise>
 						</c:choose>
-						<li class="nav-item" id="Jicjob"><a
-							class=" nav-link link-dark" href="#">인재정보</a></li>
+						
+						<c:choose>
+							<c:when test="${ sessionScope.clogin == null || clogin == '' }">
+								<li class="nav-item" id="main" ><a
+									class="nav-link link-dark" aria-current="page"
+									href="/Users/LoginForm">인재정보</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="nav-item" id="main"><a
+									class="nav-link link-dark" aria-current="page"
+									href="/Resume/List?com_id=${ sessionScope.clogin.com_id }">인재정보</a></li>
+							</c:otherwise>
+						</c:choose>
+													
 						<li class="nav-item" id="Jicjob"><a
 							class=" nav-link link-dark"
 							href="/Community/ComuHome?com_id=${ sessionScope.clogin.com_id}">커뮤니티</a></li>
+							
 						<li class="nav-item" id="Jicjob"><a
 							class=" nav-link link-dark" href=#">고객센터</a></li>
 
