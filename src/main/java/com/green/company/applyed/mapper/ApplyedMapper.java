@@ -13,12 +13,12 @@ public interface ApplyedMapper {
 	CompanyVo LgetCom(String com_id);
 	
 	List<ApplyedVo> getApplyedList(ApplyedVo applyedVo);
-
-	List<ApplyedVo> KgetCheckApplyedList(String user_id, int re_num, int result, String com_id, ApplyedVo applyedVo);
+	
+	//List<ApplyedVo> KgetCheckApplyedList(String user_id, int re_num, int result, String com_id, ApplyedVo applyedVo);
+	List<ApplyedVo> KgetCheckApplyedList(int ap_id, String user_id, int re_num, int result, String com_id, int po_num);
 
 	//void KupdateStatus(int re_num, int result);
 	void KupdateStatus(int re_num, int result, int po_num);
 
 
-		
 }

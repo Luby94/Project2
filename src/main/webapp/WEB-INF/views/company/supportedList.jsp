@@ -87,7 +87,7 @@ th {
 									<thead>
 										<tr>
 											<th>No</th>
-											<th>id</th>
+											<th>공고번호</th>
 											<th id="longLoc">공고제목</th>
 											<th id="longLoc">이력서제목</th>
 											<th>유저아이디</th>
@@ -98,11 +98,10 @@ th {
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach var="item" items="${applyedList}" varStatus="loop">
+										<c:forEach var="item" items="${applyedList}">
 											<tr>
-												<td>${loop.index + 1}</td>
-												<!-- 이력서 번호 -->
-												<td>${item.po_num }</td>
+												<td>${ item.ap_id }</td>
+												<td>${ item.po_num }</td>
 												<td><a
 													href="/Company/PostView?po_num=${ item.po_num }&com_id=${ sessionScope.clogin.com_id }">${item.po_title }</a></td>
 												<td><a
@@ -111,101 +110,22 @@ th {
 												<td>${item.ap_date }</td>
 
 												<td>
-													<div id="resultBtn_${loop.index + 1}"></div>
-													<input type="hidden" id="user_id_${loop.index + 1}" name="user_id" value="${item.user_id}" />
-													<input type="hidden" id="re_num_${loop.index + 1}" name="re_num" value="${item.re_num}" />
-													<input type="hidden" id="result_${loop.index + 1}" name="result" value="${item.result}" />
-													<input type="hidden" id="com_id_${loop.index + 1}" name="com_id" value="${ sessionScope.clogin.com_id }" />
-													<input type="hidden" id="po_num_${loop.index + 1}" name="po_num" value="${item.po_num}" />
+										            <div id="resultBtn_${ item.ap_id }" class="resultBtn"
+										                 data-index="${ item.ap_id }"
+										                 data-user-id="${ item.user_id }"
+										                 data-re-num="${ item.re_num }"
+										                 data-result="${ item.result }"
+										                 data-com-id="${ sessionScope.clogin.com_id }"
+										                 data-po-num="${ item.po_num }">
+										            </div>
+													<input type="hidden" id="ap_id_${ item.ap_id }" name="ap_id" value="${ item.ap_id }" />
+													<input type="hidden" id="user_id_${ item.ap_id }" name="user_id" value="${item.user_id}" />
+													<input type="hidden" id="re_num_${ item.ap_id }" name="re_num" value="${item.re_num}" />
+													<input type="hidden" id="result_${ item.ap_id }" name="result" value="${item.result}" />
+													<input type="hidden" id="com_id_${ item.ap_id }" name="com_id" value="${ sessionScope.clogin.com_id }" />
+													<input type="hidden" id="po_num_${ item.ap_id }" name="po_num" value="${item.po_num}" />
 												</td>
 											</tr>
-											<script>
-										        
-											$(document).ready(function() {
-												// 페이지 로딩
-											});
-											
-											function checkstatus_${loop.index + 1}(user_id, re_num, result, com_id, po_num) {
-									            // 각 반복 요소에 대한 결과 버튼 생성
-									            let resultBtnEl = document.querySelector('#resultBtn_${loop.index + 1}');
-									            //console.log(resultBtnEl);
-									            $.ajax({
-									                type: 'GET',
-									                url: '/Company/checkstatus',
-									                data: {
-									                    user_id: user_id,
-									                    re_num: re_num,
-									                    result: result,
-									                    com_id: com_id,
-									                    po_num: po_num
-									                },
-									                success: function(data) {
-									                    //console.log(result);
-									                    if (result == 0) {
-									                        resultBtnEl.innerHTML = '<button type="button" data-id="0" class="btn btn-secondary pass">대기</button>'
-									                    } else if (result == 1) {
-									                        resultBtnEl.innerHTML = '<button type="button" data-id="1" class="btn btn-danger pass">불합격</button>'
-									                    } else {
-									                        resultBtnEl.innerHTML = '<button type="button" data-id="2" class="btn btn-info pass">합격</button>'
-									                    }
-									                },
-									                error: function(xhr, status, error) {
-									                    // 데이터 요청이 실패했을 때 처리할 내용
-									                    console.error(error);
-									                }
-									            });
-									        };
-												
-									        let user_id_${loop.index + 1} = $('#user_id_${loop.index + 1}').val();
-									        let re_num_${loop.index + 1} = $('#re_num_${loop.index + 1}').val();
-									        let result_${loop.index + 1} = $('#result_${loop.index + 1}').val();
-									        let com_id_${loop.index + 1} = $('#com_id_${loop.index + 1}').val();
-									        let po_num_${loop.index + 1} = $('#po_num_${loop.index + 1}').val();
-									        checkstatus_${loop.index + 1}(user_id_${loop.index + 1}, re_num_${loop.index + 1}, result_${loop.index + 1}, com_id_${loop.index + 1}, po_num_${loop.index + 1});
-												
-									        
-									        // 대기, 불합격, 합격 버튼 생성을 위한 함수
-									        function createSelectionButtons(idPrefix) {
-									            return `
-									                <button type="button" data-id="0" class="btn btn-secondary selection-btn">대기</button>
-									                <button type="button" data-id="1" class="btn btn-danger selection-btn">불합격</button>
-									                <button type="button" data-id="2" class="btn btn-info selection-btn">합격</button>
-									            `;
-									        }
-
-									        $(document).ready(function() {
-									            $(document).on('click', '.pass', function() {
-									                // 현재 버튼의 위치를 기반으로 새로운 버튼들 추가
-									                let currentBtn = $(this);
-									                let idPrefix = currentBtn.closest('div').attr('id').match(/\d+/)[0]; // 현재 버튼의 id에서 숫자만 추출
-
-									                // 선택 버튼들 추가
-									                $('#resultBtn_' + idPrefix).html(createSelectionButtons(idPrefix));
-
-									                // 선택 버튼 클릭 이벤트 처리
-									                $('.selection-btn').on('click', function() {
-									                    let selectedId = $(this).data('id'); // 선택된 버튼의 data-id 값
-									                    let resultBtnEl = $('#resultBtn_' + idPrefix);
-
-									                    if (selectedId == 0) {
-									                        resultBtnEl.html('<button type="button" data-id="0" class="btn btn-secondary pass">대기</button>');
-									                    } else if (selectedId == 1) {
-									                        resultBtnEl.html('<button type="button" data-id="1" class="btn btn-danger pass">불합격</button>');
-									                    } else {
-									                        resultBtnEl.html('<button type="button" data-id="2" class="btn btn-info pass">합격</button>');
-									                    }
-
-									                    // 선택한 결과를 서버로 전송하여 저장하는 로직 구현...
-									                    // 예시: 
-									                    // $.ajax({...});
-									                });
-									            });
-									        });
-									    
-
-
-										        
-										    </script>
 										</c:forEach>
 									</tbody>
 								</table>
@@ -219,6 +139,136 @@ th {
 		</div>
 
 		<script>
+		
+		$(document).ready(function() {
+			
+			// 버튼 상태 확인
+		    function checkstatus($element, ap_id, user_id, re_num, result, com_id, po_num) {
+		        $.ajax({
+		            type: 'GET',
+		            url: '/Company/checkstatus',
+		            data: { ap_id, user_id, re_num, result, com_id, po_num },
+		            success: function(data) {
+						
+		                if (result == 0) {
+		                	$element.html('<button type="button" data-id="0" class="btn btn-secondary selection-btn">대기</button>');
+		                } else if (result == 1) {
+		                	$element.html('<button type="button" data-id="1" class="btn btn-danger selection-btn">불합격</button>');
+		                } else {
+		                	$element.html('<button type="button" data-id="2" class="btn btn-info selection-btn">합격</button>');
+		                }
+		            },
+		            error: function(xhr, status, error) {
+		                console.error(error);
+		            }
+		        });
+		    }
+		    
+		    // 초기 바인딩
+		    $('.resultBtn').each(function() {
+		        const $this = $(this);
+		        const ap_id = $this.data('index');
+		        const user_id = $this.data('user-id');
+		        const re_num = $this.data('re-num');
+		        const result = $this.data('result');
+		        const com_id = $this.data('com-id');
+		        const po_num = $this.data('po-num');
+
+		        checkstatus($this, ap_id, user_id, re_num, result, com_id, po_num);
+		    });
+
+		    // 대기, 불합격, 합격 버튼 생성을 위한 함수
+		    function createSelectionButtons() {
+		        return `
+		            <button type="button" data-id="0" class="btn btn-secondary selection-btn after">대기</button>
+		            <button type="button" data-id="1" class="btn btn-danger selection-btn after">불합격</button>
+		            <button type="button" data-id="2" class="btn btn-info selection-btn after">합격</button>
+		        `;
+		    }
+
+		    $(document).on('click', '.selection-btn', function() {
+		    	
+		    	console.log('================================================')
+		        // 현재 버튼의 위치를 기반으로 새로운 버튼들 추가
+		        const $this = $(this);
+		        console.log($this)
+		        
+		        const idPrefix = $this.attr('data-id');
+		        console.log('idPrefix: ' + idPrefix)
+		        
+		        /* const resultBtnEl = document.querySelector('.resultBtn');
+		        console.dir(resultBtnEl);
+		        resultBtnEl.innerHTML = createSelectionButtons(); */
+		        // 위에 방법 안됨
+		        // 이 부분은 $this(jQuery 객체)의 조상 요소 중에서 가장 가까운 클래스가 'resultBtn'인 요소를 선택
+		        // closest() 메서드는 조상 요소를 검색하는데 사용됨
+		        const divEl = $this.closest('.resultBtn');
+		        console.log(divEl)
+		        console.log('===============================================')
+		        
+		        divEl.html( createSelectionButtons() );
+
+		        // 선택 버튼 클릭 이벤트 처리
+		        divEl.on('click', '.after', function() {
+		        	const $this = $(this);
+			        const divEl = $this.closest('.resultBtn');
+			        console.log('=====================================')
+			        console.dir($this)
+			        console.dir(divEl)
+			        console.log('=====================================')
+		            const user_id = divEl.data('user-id');
+		            const re_num = divEl.data('re-num');
+		            const com_id = divEl.data('com-id');
+		            const po_num = divEl.data('po-num');
+			        const ap_id = divEl.data('index');
+			        const result = $this.data('id');
+			        console.log(user_id)
+			        console.log(re_num)
+			        console.log(com_id)
+			        console.log(po_num)
+			        console.log(ap_id)
+			        console.log(result)
+
+		            if (result == 0) {
+		                divEl.html('<button type="button" data-id="0" class="btn btn-secondary selection-btn">대기</button>');
+		            } else if (result == 1) {
+		                divEl.html('<button type="button" data-id="1" class="btn btn-danger selection-btn">불합격</button>');
+		            } else {
+		                divEl.html('<button type="button" data-id="2" class="btn btn-info selection-btn">합격</button>');
+		            }
+
+		            // 선택한 결과를 서버로 전송하여 저장하는 로직
+		            $.ajax({
+		                type: 'POST',
+		                url: '/Company/decision',
+		                data: {
+		                	ap_id: ap_id,
+		                    user_id: user_id,
+		                    re_num: re_num,
+		                    result: result,
+		                    com_id: com_id,
+		                    po_num: po_num
+		                },
+		                success: function(data) {
+		                    console.log(data);
+		                    alert('결과 처리 되었습니다');
+		                    location.reload();
+		                },
+		                error: function(xhr, status, error) {
+		                    console.error(error);
+		                }
+		            });
+		            
+		        });
+				})
+				
+				
+				
+		    });
+		
+
+
+		
 		</script>
 </body>
 </html>

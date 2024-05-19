@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ApplyedVo {
 	// apply 
+	private int ap_id;
 	private Long po_num;
 	private int re_num;
 	private String re_title;

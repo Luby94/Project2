@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -158,12 +159,14 @@ public class CompanyController {
 			@RequestParam(value="re_num") int re_num,
 			@RequestParam(value="result") int result,
 			@RequestParam(value="com_id") String com_id,
+			@RequestParam(value="ap_id") int ap_id,
+			@RequestParam(value="po_num") int po_num,
 			ApplyedVo applyedVo
 			) {
 		
 		//List<UserBookVo> getCheckBook = bookmarkMapper.getUserBook(user_id, po_num);
 		//List<ApplyedVo> applyedList = applyedMapper.getApplyedList(applyedVo);
-		List<ApplyedVo> applyedList = applyedMapper.KgetCheckApplyedList(user_id, re_num, result, com_id, applyedVo);
+		List<ApplyedVo> applyedList = applyedMapper.KgetCheckApplyedList(ap_id, user_id, re_num, result, com_id, po_num);
 		log.info("====================/Company/checkstatus======================");
     	log.info("applyedList : {}", applyedList);
     	log.info("==============================================================");
@@ -181,12 +184,15 @@ public class CompanyController {
             @RequestParam("result") int result,
             @RequestParam("com_id") String com_id,
             @RequestParam("po_num") int po_num,
+            @RequestParam("ap_id") int ap_id,
             ApplyedVo applyedVo) {
+		
+		System.out.println("===========================================result: " + result);
 		
         // 대기, 합격, 불합격 처리
 		applyedMapper.KupdateStatus(re_num, result, po_num);
 		
-        return applyedMapper.KgetCheckApplyedList(user_id, re_num, result, com_id, applyedVo);
+        return applyedMapper.KgetCheckApplyedList(ap_id, user_id, re_num, result, com_id, po_num);
     }
 	
 	//----------------------------------------------------------------------------------------------
