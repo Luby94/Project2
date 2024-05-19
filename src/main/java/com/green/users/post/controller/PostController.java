@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.green.bookmark.domain.UserBookVo;
+import com.green.bookmark.mapper.BookmarkMapper;
 import com.green.company.domain.CompanyVo;
 import com.green.company.mapper.CompanyMapper;
 import com.green.users.apply.domain.ApplyVo;
 import com.green.users.apply.mapper.ApplyMapper;
 import com.green.users.domain.UserVo;
 import com.green.users.post.domain.PostVo;
-import com.green.users.post.domain.UserBookVo;
-import com.green.users.post.mapper.BookmarkMapper;
 import com.green.users.post.mapper.PostMapper;
 import com.green.users.resume.domain.ResumeVo;
 import com.green.users.resume.mapper.ResumeMapper;

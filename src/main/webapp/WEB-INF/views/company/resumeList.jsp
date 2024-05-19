@@ -182,7 +182,6 @@ a:hover {
                   
 	 <section>
 	   <article>
-	   <form action="/Resume/View?re_num=${ re_num }&com_id=${ com_id }" method="post">
 	   <div class="select_box jm_select_box mt-5">
 	   
 		<select id="skill" class="jm_select selectpicker"
@@ -251,7 +250,7 @@ a:hover {
 											</td>
 											<td>${resumeList.rating}</td>
 											<td>
-											  <a href="/RESUME/View?re_num=${ resumeList.re_num }&com_id=${ sessionScope.clogin.com_id }">${ resumeList.re_title }</a>
+											  <a href="/Resume/View?re_num=${ resumeList.re_num }&com_id=${ sessionScope.clogin.com_id }">${ resumeList.re_title }</a>
 											</td>
 											<td>${ resumeList.user_car }</td>
 										</tr>
@@ -277,7 +276,6 @@ a:hover {
 											        <label for="rating">평점:</label>
 											          <!-- <input type="number" id="rating" name="rating" min="1" max="5" required> -->
 											          <input type="hidden" id="com_id" name="com_id" value="${ sessionScope.clogin.com_id }" />
-											    	  <input type="hidden" id="reNum" value="${ resumeList.re_num }"/>
 											    	  
 											    	  <div class="ratingStar">
 													    <span class="star" data-value="1">&#9733;</span>
@@ -304,12 +302,9 @@ a:hover {
 							
 							
 						</div>
-					<input type="hidden" id="com_id" value="${ sessionScope.clogin.com_id }" />
 					</div>
 				</div>
 		</div>
-		
-		</form>
 	   </article>
 	 </section>
    </main>

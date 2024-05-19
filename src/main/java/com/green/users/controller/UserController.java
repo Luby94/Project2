@@ -7,13 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.green.bookmark.domain.UserBookVo;
 import com.green.company.domain.CompanyVo;
 import com.green.users.apply.domain.ApplyVo;
 import com.green.users.apply.mapper.ApplyMapper;
 import com.green.users.domain.UserVo;
 import com.green.users.mapper.UserMapper;
 import com.green.users.post.domain.PostVo;
-import com.green.users.post.domain.UserBookVo;
 import com.green.users.post.mapper.PostMapper;
 import com.green.users.resume.domain.ResumeVo;
 import com.green.users.resume.mapper.ResumeMapper;

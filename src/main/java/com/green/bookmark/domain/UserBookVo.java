@@ -1,4 +1,4 @@
-package com.green.users.post.domain;
+package com.green.bookmark.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.green.users.domain.UserVo;
 import com.green.users.resume.domain.ResumeVo;
 import com.green.users.resume.mapper.ResumeMapper;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -40,10 +42,21 @@ public class ResumeController {
 	}
 	
 	@RequestMapping("/View")
-	public ModelAndView view() {
+	public ModelAndView view( 
+			ResumeVo resumeVo,
+			UserVo userVo,
+			@RequestParam(value="com_id") String com_id,
+			@RequestParam(value="re_num") int re_num
+			) {
+		
+		List<ResumeVo> resumeViewList = resumeMapper.KmakeResumeView( re_num, userVo, resumeVo);
+		log.info("==============Resume/View==================");
+		log.info("resumeViewList : {}", resumeViewList);
+		log.info("==============Resume/View==================");
 		
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("");
+		mv.addObject("resumeViewList", resumeViewList);
+		mv.setViewName("company/resumeListGoView");
 		return mv;
 		
 	}

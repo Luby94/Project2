@@ -148,6 +148,33 @@
   </select>
   
   
+  <select id="KmakeResumeView">
+    SELECT  
+      R.RE_NUM,
+      R.USER_ID,
+      R.RE_TITLE,
+      R.SKILL,
+      R.CAREER,
+      R.REGION,
+      R.USER_EDU,
+      R.USER_CAR,
+      R.USER_INTRO,
+      R.USER_IMG,
+      U.USER_NAME,
+      U.USER_TELL,
+      U.USER_BIRTH,
+      U.USER_ADR
+	FROM
+	  RESUME R
+	JOIN
+	  USERS U
+	ON
+	  R.USER_ID = U.USER_ID 
+	WHERE
+	  RE_NUM = #{ arg0 }
+  </select>
+  
+  
   <select id="KgetRating">
 	  SELECT
 	    RATING

@@ -1,10 +1,10 @@
-package com.green.users.post.mapper;
+package com.green.bookmark.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.green.users.post.domain.UserBookVo;
+import com.green.bookmark.domain.UserBookVo;
 
 @Mapper
 public interface BookmarkMapper {

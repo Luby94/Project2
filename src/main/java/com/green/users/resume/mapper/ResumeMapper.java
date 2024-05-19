@@ -25,11 +25,19 @@ public interface ResumeMapper {
 
 	List<ResumeVo> KmakeResumeList(ResumeVo resumeVo, String com_id);
 
+	List<ResumeVo> KmakeResumeView(int re_num, UserVo userVo, ResumeVo resumeVo);
+
 	Integer KgetRating(String user_id, String com_id, int rating);
 
 	void KupdateRating(String com_id, String user_id, int rating);
 
 	void KaddRating(String com_id, String user_id, int rating);
+
+
+
+
+			
+
 
 
 

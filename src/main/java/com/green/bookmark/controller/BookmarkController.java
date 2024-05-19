@@ -1,4 +1,4 @@
-package com.green.users.post.controller;
+package com.green.bookmark.controller;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.green.users.post.domain.UserBookVo;
-import com.green.users.post.mapper.BookmarkMapper;
+import com.green.bookmark.domain.UserBookVo;
+import com.green.bookmark.mapper.BookmarkMapper;
 
 import lombok.extern.slf4j.Slf4j;
 

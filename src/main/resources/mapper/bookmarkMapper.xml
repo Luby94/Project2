@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.green.users.post.mapper.BookmarkMapper">
+<mapper namespace="com.green.bookmark.mapper.BookmarkMapper">
  
 
-  <select id="getUserBook" resultType="com.green.users.post.domain.UserBookVo">
+  <select id="getUserBook" resultType="com.green.bookmark.domain.UserBookVo">
     SELECT
       PO_NUM,
       USER_ID,
