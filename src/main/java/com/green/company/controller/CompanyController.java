@@ -16,8 +16,11 @@ import com.green.company.applyed.domain.ApplyedVo;
 import com.green.company.applyed.mapper.ApplyedMapper;
 import com.green.company.domain.CompanyVo;
 import com.green.company.mapper.CompanyMapper;
+import com.green.users.apply.domain.ApplyVo;
 import com.green.users.post.domain.PostVo;
 import com.green.users.post.mapper.PostMapper;
+import com.green.users.resume.domain.ResumeVo;
+import com.green.users.resume.mapper.ResumeMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +35,8 @@ public class CompanyController {
 	private CompanyMapper companyMapper;
 	@Autowired
 	private ApplyedMapper applyedMapper;
+	@Autowired
+	private ResumeMapper resumeMapper;
 
 	@RequestMapping("/Chome")
 	public ModelAndView uhome() {
@@ -43,10 +48,14 @@ public class CompanyController {
 	}
 
 	@RequestMapping("/CInfo")
-	public ModelAndView cInfo(CompanyVo companyVo) {
+	public ModelAndView cInfo(CompanyVo companyVo, PostVo postVo) {
+		
 		CompanyVo vo = companyMapper.LgetCom(companyVo);
+		PostVo pVo = postMapper.KgetPost(postVo);
+		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("vo", vo);
+		mv.addObject("pVo", pVo);
 		mv.setViewName("company/cinfo");
 		return mv;
 	}
@@ -254,5 +263,46 @@ public class CompanyController {
 	        
 	}
 	
+	//--------------------------------------------------------------------------------------------------
+	
+	// 기업-구직자 스크랩 리스트
+	@RequestMapping("/ComBookmarkList")
+	public ModelAndView combookmarklist( ResumeVo resumeVo, String com_id ) {
+			
+		List<ResumeVo> resumeBookList = resumeMapper.KgetResumeBookList( resumeVo, com_id );
+		log.info("==========Company/ComBookmarkList=============");
+		log.info("resumeBookList : {}", resumeBookList);
+		log.info("==========Company/ComBookmarkList=============");
+			
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("resumeBookList", resumeBookList);
+		mv.setViewName("company/combookmarkList");
+		return mv;
+			
+	}
+	
+	//--------------------------------------------------------------------------------------------------
+	
+	// 기업-구직자 면접 제안 리스트
+	@RequestMapping("/Support")
+	public ModelAndView support( 
+			ResumeVo resumeVo,
+			ApplyVo applyVo,
+			CompanyVo companyVo,
+			PostVo postVo,
+			@RequestParam("com_id") String com_id
+			) {
+				
+		List<ResumeVo> supportList = resumeMapper.KgetSupportList( resumeVo, applyVo, companyVo, postVo, com_id );
+		log.info("==========Company/Support=============");
+		log.info("supportList : {}", supportList);
+		log.info("==========Company/Support=============");
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("supportList", supportList);
+		mv.setViewName("company/csupport");
+		return mv;
+		
+	}
 	
 }

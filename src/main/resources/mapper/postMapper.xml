@@ -242,6 +242,44 @@
 	    U.USER_ID = #{ arg1 }
 	
 	</select>
+	
+	<select id="KgetPost" resultType="com.green.users.post.domain.PostVo">
+  
+    SELECT
+      PO_NUM,
+	  COM_ID,
+	  PO_TITLE,
+	  SKILL,
+	  CAREER,
+	  REGION,
+	  PO_QUAL,
+	  PO_CONTENT,
+	  PO_IMAGE
+	FROM
+	  POST
+	WHERE
+	  COM_ID = #{ com_id }
+  	AND
+  	  ROWNUM = 1
+  
+  </select>
+  
+  <select id="KgetpostList">
+    SELECT
+      PO_NUM,
+	  COM_ID,
+	  PO_TITLE,
+	  SKILL,
+	  CAREER,
+	  REGION,
+	  PO_QUAL,
+	  PO_CONTENT,
+	  PO_IMAGE
+	FROM
+	  POST
+	WHERE
+	  COM_ID = #{ com_id }
+  </select>
 
 </mapper>
 

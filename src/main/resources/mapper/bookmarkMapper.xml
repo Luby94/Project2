@@ -15,7 +15,6 @@
       USER_ID = #{ arg0 }
     AND
       PO_NUM = #{ arg1 }
-    
   </select>
   
   
@@ -57,7 +56,42 @@
   </delete>
   
   
+  <select id="getComBook" resultType="com.green.bookmark.domain.ComBookVo">
+    SELECT
+      RE_NUM,
+      COM_ID,
+      CB_NUM
+    FROM
+      COMBOOK
+    WHERE
+      COM_ID = #{ arg0 }
+    AND
+      RE_NUM = #{ arg1 }
+  </select>
   
+  
+  <insert id="insertComBook">
+    INSERT INTO COMBOOK (
+      RE_NUM,
+      COM_ID,
+	  CB_NUM
+	)
+    VALUES (
+      #{ arg1 },
+      #{ arg0 },
+      NVL((SELECT MAX(CB_NUM) FROM COMBOOK), 0) + 1
+    )
+  </insert>
+  
+  
+  <delete id="deleteComBook">
+    DELETE
+      COMBOOK
+    WHERE
+      RE_NUM = #{ arg1 }
+    AND
+      COM_ID = #{ arg0 }
+  </delete>
   
   
       

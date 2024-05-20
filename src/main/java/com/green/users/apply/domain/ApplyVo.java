@@ -38,5 +38,7 @@ public class ApplyVo {
 	private String user_car;
 	private String user_intro;
 	private String user_img;
+	
+	private String com_name;
 
 }

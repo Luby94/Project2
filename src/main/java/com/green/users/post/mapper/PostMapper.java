@@ -37,6 +37,10 @@ public interface PostMapper {
 
 	List<PostVo> getpostbookList(PostVo postVo, String user_id);
 	List<PostVo> getpostbookList(PostVo postVo, String user_id, CompanyVo companyVo);
+	
+	PostVo KgetPost(PostVo postVo);
+	
+	List<PostVo> KgetpostList(CompanyVo sessionCUser);
 
 	
 }

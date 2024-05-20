@@ -26,6 +26,7 @@
 		WHERE
 			USER_ID = #{ user_id }
 	</select>
+
 	<insert id="LinsertResume">
 		INSERT INTO RESUME (
 		RE_NUM,
@@ -171,7 +172,7 @@
 	ON
 	  R.USER_ID = U.USER_ID 
 	WHERE
-	  RE_NUM = #{ arg0 }
+	  RE_NUM = #{ arg1 }
   </select>
   
   
@@ -221,6 +222,92 @@
 	  AND
 	    COM_ID = #{ arg0 }
 	</update>
+	
+	<select id="KgetResumeBookList">
+	  SELECT
+	    R.RE_NUM,
+		R.USER_ID,
+		R.RE_TITLE,
+		R.SKILL,
+		R.CAREER,
+		R.REGION,
+		R.USER_EDU,
+		R.USER_CAR,
+		R.USER_INTRO,
+		R.USER_IMG,
+		U.USER_NAME
+	  FROM
+	    RESUME R
+	  JOIN
+	    COMBOOK CB ON R.RE_NUM = CB.RE_NUM
+	  JOIN
+	    USERS U ON R.USER_ID = U.USER_ID
+	  WHERE
+	    CB.COM_ID = #{ arg1 }
+	</select>
+	
+	<select id="KgetResume">
+		SELECT
+			RE_NUM,
+			USER_ID,
+			RE_TITLE,
+			SKILL,
+			CAREER,
+			REGION,
+			USER_EDU,
+			USER_CAR,
+			USER_INTRO,
+			USER_IMG
+		FROM
+			RESUME
+		WHERE
+			USER_ID = #{ user_id }
+		AND
+	    	ROWNUM = 1
+	</select>
+	
+	<select id="KgetResumeInfo">
+	  SELECT
+			RE_NUM,
+			USER_ID,
+			RE_TITLE,
+			SKILL,
+			CAREER,
+			REGION,
+			USER_EDU,
+			USER_CAR,
+			USER_INTRO,
+			USER_IMG
+		FROM
+			RESUME
+		WHERE
+			RE_NUM = #{ re_num }
+	</select>
+	
+	<select id="KgetSupportList">
+	  SELECT 
+	    A.RE_NUM,
+	    A.AP_ID,
+	    A.AP_DATE,
+	    A.RESULT,
+	    R.USER_ID,
+	    U.USER_NAME,
+	    R.RE_TITLE,
+	    R.SKILL, 
+	    R.CAREER, 
+	    R.REGION,
+	    R.USER_EDU,
+	    R.USER_CAR,
+	    R.USER_INTRO,
+	    R.USER_IMG
+	FROM 
+	    APPLY A
+	    JOIN RESUME R ON A.RE_NUM = R.RE_NUM
+	    JOIN USERS U ON R.USER_ID = U.USER_ID
+	    JOIN POST P ON A.PO_NUM = P.PO_NUM
+	WHERE 
+	    P.COM_ID = #{arg4}
+	</select>
   
 		
 </mapper>

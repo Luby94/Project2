@@ -44,10 +44,14 @@ public class UserController {
 		return mv;
 	}
 	@RequestMapping("/Info")
-	   public  ModelAndView  Info(UserVo userVo) {
+	   public  ModelAndView  Info(UserVo userVo, ResumeVo resumeVo) {
+		
 		UserVo vo = userMapper.Pgetuser( userVo );
+		ResumeVo rVo = resumeMapper.KgetResume(resumeVo);
+		
 		ModelAndView   mv  =  new ModelAndView();
 		mv.addObject("vo", vo);
+		mv.addObject("rVo", rVo);
 		mv.setViewName("user/info");
 		return         mv;
 	   }

@@ -14,13 +14,13 @@ public interface ApplyMapper {
 
 	UserVo getInfo(String user_id);
 
-	//	List<HashMap<String, Object>> getApplyList(UserVo userVo, ApplyVo applyVo);
 	List<ApplyVo> getApplyList(ApplyVo applyVo);
 
-	// PostController(/Post/Apply)
-	//void insertResumeApply(ResumeVo resumeVo);
-	//void insertResumeApply(ResumeVo resumeVo, PostVo postVo);
 	void insertResumeApply(ApplyVo applyVo);
-	//void insertResumeApply(Long po_num, int re_num, String re_title, String po_title, int result);
+	
+	//----------------------------------------------------
+	
+	void KinsertPostApply(ApplyVo applyVo);
+	
 	
 }

@@ -16,4 +16,5 @@ public class UserVo {
 	private  String user_birth;
 	private  String user_adr;
 	private  String user_date;
+
 }

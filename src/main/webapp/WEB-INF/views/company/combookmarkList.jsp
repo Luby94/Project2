@@ -1,4 +1,4 @@
-<%@include file="/WEB-INF/views/include/pheader.jsp"%>
+<%@include file="/WEB-INF/views/include/cheader.jsp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -60,14 +60,13 @@ a:hover {
 	<!-- 사이드 바 -->
 	<div class="container d-flex">
 		<div class="list-group mx-2">
-			<a href="/Users/Info?user_id=${ sessionScope.plogin.user_id }"
-				class="list-group-item   shadow" style="width: 150px;">개인정보</a> <a
-				href="/Users/ResumeForm?user_id=${ sessionScope.plogin.user_id }"
-				class="list-group-item hs_list_effect shadow">이력서 관리</a> <a
-				href="/Users/ApplyList?user_id=${ sessionScope.plogin.user_id }"
-				class="list-group-item shadow">입사지원 관리</a> <a
-				href="/Users/BookmarkList?user_id=${ sessionScope.plogin.user_id }"
-				class="list-group-item shadow">스크랩</a>
+			<a href="/Company/CInfo?com_id=${ sessionScope.clogin.com_id }"
+				class="list-group-item   shadow" style="width: 150px;">회사정보</a> <a
+				href="/Company/PostForm?com_id=${ sessionScope.clogin.com_id }"
+				class="list-group-item hs_list_effect shadow">공고관리</a> <a
+				href="/Company/SupportedList?com_id=${ sessionScope.clogin.com_id }"
+				class="list-group-item shadow">받은 이력서 관리</a>
+				<a href="/Company/ComBookmarkList?com_id=${ sessionScope.clogin.com_id }" class="list-group-item shadow">스크랩</a>
 		</div>
 
 		<!-- 페이지 내용 -->
@@ -81,32 +80,32 @@ a:hover {
 								<thead>
 									<tr>
 										<th>No.</th>
-										<th>기업명</th>
-										<th>공고제목</th>
-										<th>근무조건</th>
+										<th>구직자명</th>
+										<th>이력서제목</th>
+										<th>경력</th>
 										<th>북마크</th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${postbookList}" var="post">
+									<c:forEach items="${resumeBookList}" var="resumeBookList">
 										<tr>
-											<td>${post.po_num}</td>
-											<td>${post.com_name}</td>
+											<td>${resumeBookList.re_num}</td>
+											<td>${resumeBookList.user_name}</td>
 											<td><a
-												href="/Post/View?po_num=${post.po_num}&user_id=${sessionScope.plogin.user_id}">
-													${post.po_title} </a></td>
-											<td>${post.po_qual}</td>
+												href="/Resume/View?re_num=${resumeBookList.re_num}&com_id=${sessionScope.clogin.com_id}">
+													${resumeBookList.re_title} </a></td>
+											<td>${resumeBookList.user_car}</td>
 											<td>
-												<div class="scrapBtn" 
-													 data-user-id="${sessionScope.plogin.user_id}"
-													 data-po-num="${ post.po_num }">
+												<div class="scrapBtn"
+													 data-com-id="${ sessionScope.clogin.com_id }"
+													 data-re-num="${ resumeBookList.re_num }">
 													<button class="bookmarkBtn">
 													<!-- <img src="/img/filled_bookmarks.png" class="mb-2 border border-tertiary"
 													     id="bookmarkImg" style="width: 30px; height: 30px;"> -->
 													<img src="/img/filled_bookmarks.png" class="mb-2 border border-tertiary bookmarkImg"
 													     style="width: 30px; height: 30px;">
 													</button>
-													<input type="hidden" id="po_num" value="${ post.po_num }" />
+													<input type="hidden" id="re_num" value="${ resumeBookList.re_num }" />
 												</div>
 											</td>
 										</tr>
@@ -114,7 +113,7 @@ a:hover {
 								</tbody>
 							</table>
 						</div>
-					<input type="hidden" id="user_id" value="${ sessionScope.plogin.user_id }" />
+					<input type="hidden" id="com_id" value="${ sessionScope.clogin.com_id }" />
 					</div>
 				</div>
 			</div>
@@ -125,17 +124,14 @@ a:hover {
 
 	$(document).ready(function() {
 	
-	//const user_id = $('#user_id').val();
-	//const po_num = $('#po_num').val();
-	
-	function loadUserBookInfo(user_id, po_num) {
+	function loadComBookInfo(com_id, re_num) {
 		
 		$.ajax( {
 			type : 'GET',
-			url  : '/checkUserBook',
+			url  : '/checkComBook',
 			data : {
-				user_id : user_id,
-				po_num  : po_num
+				com_id : com_id,
+				re_num : re_num
 			},
 			success : function(data) {
 				console.log(data);
@@ -149,33 +145,32 @@ a:hover {
 	
 	$('.scrapBtn').each(function() {
         const $this = $(this);
-        const user_id = $this.data('user-id');
-        const po_num = $this.data('po-num');
+        const com_id = $this.data('com-id');
+        const re_num = parseInt($this.data('re-num'), 10);
 
-        loadUserBookInfo(user_id, po_num);
+        loadComBookInfo(com_id, re_num);
     });
 
-	//-----------------------------------------------------------------
-	//const scrapBtnEl = document.querySelector('.bookmarkImg');
-	// 이유는 모르겠는데 scrapBtnEl.addEventListener 안먹음
-	
 	$('.bookmarkImg').click(function() {
 
 		const $this = $(this);
 		const divEl = $this.closest('.scrapBtn');
-		const user_id = divEl.data('user-id');
-        const po_num = divEl.data('po-num');
-        
+		const com_id = divEl.data('com-id');
+        const re_num = parseInt(divEl.data('re-num'), 10);
+        console.log('com_id: ' + com_id);
+        console.log('re_num: ' + re_num);
+		
         $.ajax({
             type: 'POST',
-            url: '/removeUserBook',
-            data: {
-                user_id: user_id,
-                po_num: po_num
-            },
+            url: '/removeComBook',
+            contentType: 'application/json',
+            data: JSON.stringify({
+            	com_id: com_id,
+            	re_num: re_num
+            }),
             success: function(data) {
                 alert('스크랩 해제되었습니다');
-                loadUserBookInfo(user_id, po_num);
+                loadComBookInfo(com_id, re_num);
                 location.reload(); // 페이지 새로고침
             },
             error: function(xhr, status, error) {

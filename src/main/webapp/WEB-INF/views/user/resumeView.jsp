@@ -114,7 +114,7 @@ textarea {
 					<div class="content-center">
 
 						<div class="jh_resume_flexbox mt-3">
-							<img src="/img/face.jpg" id="imagePreview"
+							<img src="${ rvo.user_img }" id="imagePreview"
 								style="width: 200px; height: 250px;"
 								class="mb-2 border border-tertiary">
 							<div class="jh_resume_personal_info">

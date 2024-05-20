@@ -136,7 +136,7 @@ body {
 					
 						<div class="job-details-container">
 					        <div class="job-header">
-					            <img src="/img/Rogo.png" alt="Company Logo" class="company-logo">
+					            <img src="${ post.po_image }" alt="Company Logo" class="company-logo">
 					            <div class="header-content">
 					                <h1 class="job-title">${ post.po_title }</h1>
 					                <p class="company-name">${ post.com_name }</p>
@@ -247,7 +247,7 @@ body {
 		    // Ajax 요청 보내기
 		    $.ajax({
 		        type: 'POST',
-		        url: isScraped ? '/addBookmark' : '/removeBookmark', // 스크랩 상태에 따라 요청 URL 선택
+		        url: isScraped ? '/addUserBook' : '/removeUserBook', // 스크랩 상태에 따라 요청 URL 선택
 		        data: {
 		            user_id: user_id,
 		            po_num: po_num

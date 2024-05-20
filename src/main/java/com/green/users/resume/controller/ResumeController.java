@@ -11,11 +11,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.green.bookmark.domain.ComBookVo;
+import com.green.bookmark.mapper.BookmarkMapper;
+import com.green.company.domain.CompanyVo;
+import com.green.users.apply.domain.ApplyVo;
+import com.green.users.apply.mapper.ApplyMapper;
 import com.green.users.domain.UserVo;
+import com.green.users.post.domain.PostVo;
+import com.green.users.post.mapper.PostMapper;
 import com.green.users.resume.domain.ResumeVo;
 import com.green.users.resume.mapper.ResumeMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -25,6 +33,15 @@ public class ResumeController {
 	
 	@Autowired
 	private ResumeMapper resumeMapper;
+	
+	@Autowired
+	private BookmarkMapper bookmarkMapper;
+	
+	@Autowired
+	private PostMapper postMapper;
+
+	@Autowired
+	private ApplyMapper applyMapper;
 
 	@RequestMapping("/List")
 	public ModelAndView resumelist( ResumeVo resumeVo, String com_id ) {
@@ -45,21 +62,31 @@ public class ResumeController {
 	public ModelAndView view( 
 			ResumeVo resumeVo,
 			UserVo userVo,
+			ComBookVo comBookVo,
 			@RequestParam(value="com_id") String com_id,
 			@RequestParam(value="re_num") int re_num
 			) {
 		
-		List<ResumeVo> resumeViewList = resumeMapper.KmakeResumeView( re_num, userVo, resumeVo);
+		List<ResumeVo> resumeViewList = resumeMapper.KmakeResumeView( userVo, re_num );
 		log.info("==============Resume/View==================");
 		log.info("resumeViewList : {}", resumeViewList);
 		log.info("==============Resume/View==================");
 		
+		List<ComBookVo> getbookList = bookmarkMapper.getComBook( com_id, re_num );
+		log.info("==============Resume/View==================");
+		log.info("getbookList : {}", getbookList);
+		log.info("==============Resume/View==================");
+		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("resumeViewList", resumeViewList);
+		mv.addObject("getbookList", getbookList);
+		mv.addObject("re_num", re_num);
 		mv.setViewName("company/resumeListGoView");
 		return mv;
 		
 	}
+	
+	//-----------------------------------------------------------------------------------
 	
 	@GetMapping("/getRating")
 	@ResponseBody
@@ -97,6 +124,55 @@ public class ResumeController {
 			
 	    return "Rating added successfully!";
 	        
+	}
+	
+	//-----------------------------------------------------------------------------------
+	
+	@RequestMapping("/GoRecommend")
+	public ModelAndView gorecommend( 
+			@RequestParam("re_num") int re_num,
+			PostVo postVo,
+			ResumeVo resumeVo,
+			HttpServletRequest request
+			) {
+		
+		HttpSession session = request.getSession();
+		
+		CompanyVo sessionCUser = (CompanyVo) session.getAttribute("clogin");
+	    if(sessionCUser == null) {
+	        return new ModelAndView("redirect:/LoginForm");
+	    }
+	    
+	    ResumeVo vo = resumeMapper.KgetResumeInfo( resumeVo );
+	    log.info("==============Resume/GoRecommend==================");
+		log.info("vo : {}", vo);
+		log.info("==============Resume/GoRecommend==================");
+		
+		List<PostVo> postList = postMapper.KgetpostList( sessionCUser );
+		log.info("==============Resume/GoRecommend==================");
+		log.info("postList : {}", postList);
+		log.info("==============Resume/GoRecommend==================");
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("vo", vo);
+		mv.addObject("postList", postList);
+		mv.addObject("re_num", re_num);
+		mv.setViewName("company/postChoice");
+		return mv;
+		
+	}
+	
+	@RequestMapping("/Recommend")
+	public ModelAndView recommend( 
+			ApplyVo applyVo
+			) {
+		
+		applyMapper.KinsertPostApply( applyVo );
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("company/resumeSuccess");
+		return mv;
+		
 	}
 	
 }

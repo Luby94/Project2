@@ -30,7 +30,7 @@
 			<div class=" border border-tertiary p-5 rounded shadow">
 				<div class="col-sm-9 page">
 					<div class="d-flex justify-content-center">
-						<img src="/img/face.jpg" id="imagePreview"
+						<img src="${ rVo.user_img }" id="imagePreview"
 							class="mb-2 border border-tertiary"
 							style="width: 100px; height: 100px;">
 

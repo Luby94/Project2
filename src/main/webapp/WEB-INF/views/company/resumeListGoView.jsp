@@ -102,22 +102,25 @@ textarea {
 
     <!-- 이력서 -->
 	 <div class="resume-container">
-        <form action="/Resume/recommend?re_num=${ re_num }&com_id=${ sessionScope.clogin.com_id }" method="post" enctype="multipart/form-data">
-            <%-- <input type="hidden" name="user_id" value="${sessionScope.plogin.user_id}">
-            <input type="hidden" name="user_img"> --%>
+        <form action="/Resume/GoRecommend?re_num=${ re_num }&com_id=${ sessionScope.clogin.com_id }" method="post">
+            <input type="hidden" id="com_id" name="com_id" value="${sessionScope.clogin.com_id}">
             
             <c:forEach items="${ resumeViewList }" var="resumeViewList">
+            	<input type="hidden" id="re_num" name="re_num" value="${ resumeViewList.re_num }">
             	<div class="border border-tertiary w-100 p-5 rounded shadow">
-				<h2>
+				<h2 style="display: flex; align-items: center;">
 					<input type="text" value="${ resumeViewList.re_title }" style="width: 700px"
 						class="hs_input_title" name="re_title"  >
+					<div id="scrapBtn" class="scrap-button"></div>
 				</h2>
+				
+				
 				<hr>
 				<div class="container" style="width: 85%;">
 					<div class="content-center">
 
 						<div class="jh_resume_flexbox mt-3">
-							<img src="/img/face.jpg" id="imagePreview"
+							<img src="${ resumeViewList.user_img }" id="imagePreview"
 								style="width: 200px; height: 250px;"
 								class="mb-2 border border-tertiary">
 							<div class="jh_resume_personal_info">
@@ -224,6 +227,115 @@ textarea {
 			</c:forEach>
 		</form>
 	</div>
+	
+	<script>
+	
+	  // 북마크 스크립트
+	  $(document).ready( function() {
+		  
+	  } );
+	  
+	  const com_id = $('#com_id').val();
+	  const re_num = $('#re_num').val();
+	  console.log('=========ready==========')
+	  console.log(com_id);
+	  console.log(re_num);
+	  console.log('=========ready==========')
+	  
+	  function loadComBookInfo(com_id, re_num) {
+		  
+		  fetch(`/checkComBook?com_id=` + com_id + '&re_num=' + re_num, {
+			    method: 'GET'
+			})
+			.then( response => response.json() )
+			.then(data => {
+				
+			    console.log(data);
+			    
+			    const scrapBtnEl = document.querySelector('#scrapBtn');
+			    console.log(scrapBtnEl);
+			    
+			    if (data.length > 0) {
+			        scrapBtnEl.innerHTML = '<img src="/img/filled_bookmarks.png" class="mb-2 border border-tertiary bookmarkImg" style="width: 30px; height: 30px;">';
+			    } else {
+			        scrapBtnEl.innerHTML = '<img src="/img/emptied_bookmarks.png" class="mb-2 border border-tertiary bookmarkImg" style="width: 30px; height: 30px;">';
+			    }
+			})
+			.catch(error => {
+			    console.error('Fetch error:', error);
+			});
+			
+	  }
+	  
+	  loadComBookInfo(com_id, re_num);
+	  
+	  $('#scrapBtn').on('click', 'img', function() {
+		  
+		  const com_id = $('#com_id').val();
+		  const re_num = parseInt($('#re_num').val(), 10);
+		  const imgSrc = $(this).attr('src')
+		  const isScraped = imgSrc.includes('filled_bookmarks.png')
+		  console.log('==========click============')
+		  console.log(com_id);
+		  console.log(re_num);
+		  console.dir(this);
+		  console.log(imgSrc);
+		  console.log(isScraped);
+		  console.log('==========click============')
+		  
+		  fetch( isScraped ? '/removeComBook' : '/addComBook', {
+			  method : 'POST',
+			  headers: {
+			        'Content-Type' : 'application/json;charset=UTF-8'
+			  },
+			  body: JSON.stringify({
+				  com_id: com_id,
+				  re_num: re_num
+			  })
+		  } )
+		  .then( response => response.json() )
+		  .then( data => {
+			 
+			  console.log(data)
+			  
+			  const scrapBtnEl = document.querySelector('#scrapBtn');
+			  
+			  if(isScraped) {
+				  alert('스크랩 해제되었습니다')
+				  scrapBtnEl.innerHTML = '<img src="/img/emptied_bookmarks.png" class="mb-2 border border-tertiary bookmarkImg" style="width: 30px; height: 30px;">';
+			  } else {
+				  alert('스크랩 되었습니다')
+				  scrapBtnEl.innerHTML = '<img src="/img/filled_bookmarks.png" class="mb-2 border border-tertiary bookmarkImg" style="width: 30px; height: 30px;">';
+			  }
+			  
+			  loadComBookInfo(com_id, re_num);
+		  } )
+		  .catch(error => {
+			    console.error('Fetch error:', error);
+		  });
+		  
+	  })
+	  // 북마크 End ------------------------------------------
+	  
+	  
+	
+	</script>
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

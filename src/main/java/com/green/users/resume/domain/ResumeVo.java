@@ -26,4 +26,7 @@ public class ResumeVo {
 	private String user_tell;
 	
 	private int rating;
+	
+	private String ap_date;
+	private int result;
 }
