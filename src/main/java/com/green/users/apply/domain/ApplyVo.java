@@ -15,6 +15,7 @@ public class ApplyVo {
 	private String po_title;
 	private int result;
 	private String ap_date;
+	private int ap_id;
 	
 	//  post 
 	//	private Long po_num;

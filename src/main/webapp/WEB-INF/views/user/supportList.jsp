@@ -88,6 +88,7 @@ a:hover {
 							<table>
 								<thead>
 									<tr>
+										<th>No</th>
 										<th>기업명</th>
 										<th>공고제목</th>
 										<th>이력서</th>
@@ -100,6 +101,7 @@ a:hover {
 								<tbody>
 									<c:forEach var="item" items="${applyList}">
 										<tr>
+											<td>${item.ap_id }</td>
 											<td>${item.com_name }</td>
 											<td><a href="#">${item.po_title }</a></td>
 											<td><a href="#">${item.re_title }</a></td>

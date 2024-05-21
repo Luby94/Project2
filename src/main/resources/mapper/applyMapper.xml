@@ -16,27 +16,29 @@
   </select>
   
   <select   id="getApplyList" >
-       SELECT
-  		CP.COM_NAME   
+    SELECT
+  	   CP.COM_NAME   
   	 , AP.PO_NUM
   	 , PT.CAREER
   	 , PT.REGION
-    , AP.RE_NUM
-    , AP.RE_TITLE
-    , AP.PO_TITLE
-    , AP.RESULT
-    , AP.AP_DATE
-    , AP.AP_ID
+     , AP.RE_NUM
+     , AP.RE_TITLE
+     , AP.PO_TITLE
+     , AP.RESULT
+     , AP.AP_DATE
+     , AP.AP_ID
    FROM  
-      APPLY AP, RESUME RE, COMPANY CP, POST PT
-    WHERE
-      RE.USER_ID = #{ user_id }
+       APPLY AP, RESUME RE, COMPANY CP, POST PT
+   WHERE
+       RE.USER_ID = #{ user_id }
      AND
-      AP.RE_NUM = RE.RE_NUM
+       AP.RE_NUM = RE.RE_NUM
      AND
-      AP.PO_NUM = PT.PO_NUM
+       AP.PO_NUM = PT.PO_NUM
      AND
-      PT.COM_ID = CP.COM_ID
+       PT.COM_ID = CP.COM_ID
+   ORDER BY
+       AP.AP_ID ASC
   </select>
   
   <insert id="insertResumeApply" parameterType="com.green.users.apply.domain.ApplyVo">
