@@ -4,10 +4,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.green.bookmark.domain.UserBookVo;
+import com.green.company.applyed.domain.ApplyedVo;
+import com.green.company.applyed.mapper.ApplyedMapper;
 import com.green.company.domain.CompanyVo;
 import com.green.users.apply.domain.ApplyVo;
 import com.green.users.apply.mapper.ApplyMapper;
@@ -34,6 +40,8 @@ public class UserController {
 	private PostMapper postMapper;
 	@Autowired
 	private ApplyMapper applyMapper;
+	@Autowired
+	private ApplyedMapper applyedMapper;
 	
 	@RequestMapping("/Uhome")
 	public   ModelAndView   uhome() {		
@@ -154,6 +162,7 @@ public class UserController {
 	       mv.setViewName("redirect:/");
 	       return   mv;
 	    }
+	    
 	    @RequestMapping("/BookmarkList")
 	    public ModelAndView bookmarkList( UserVo userVo, PostVo postVo, UserBookVo userBookVo, CompanyVo companyVo ) {
 	    	
@@ -161,9 +170,9 @@ public class UserController {
 	    	
 	    	//List<PostVo> postbookList = postMapper.getpostbookList( postVo, user_id );
 	    	List<PostVo> postbookList = postMapper.getpostbookList( postVo, user_id, companyVo );
-	    	log.info("===============/Post/View===============");
+	    	log.info("===============/Users/BookmarkList===============");
 	    	log.info("postbookList : {}", postbookList);
-	    	log.info("========================================");
+	    	log.info("===============/Users/BookmarkList===============");
 	    	
 	    	ModelAndView mv = new ModelAndView();
 	    	mv.addObject("postbookList", postbookList);
@@ -171,5 +180,76 @@ public class UserController {
 	    	return mv;
 	    	
 	    }
+	    
+	    @RequestMapping("/Offered")
+	    //public ModelAndView offered( PostVo postVo, ResumeVo resumeVo, String user_id ) {
+	    public ModelAndView offered( ApplyedVo applyedVo, String user_id ) {
+	    	
+	    	List<ApplyedVo> offeredList = applyedMapper.KgetofferedList( applyedVo, user_id );
+	    	log.info("===============/Users/Offered===============");
+	    	log.info("offeredList : {}", offeredList);
+	    	log.info("===============/Users/Offered===============");
+	    	
+	    	ModelAndView mv = new ModelAndView();
+	    	mv.addObject("offeredList", offeredList);
+	    	mv.setViewName("user/offered");
+	    	return mv;
+	    	
+	    }
+	    
+	    @GetMapping("/checkstatus")
+	    @ResponseBody
+	    public List<ApplyedVo> checkstatus(
+	    		@RequestParam(value="user_id") String user_id,
+				@RequestParam(value="re_num") int re_num,
+				@RequestParam(value="result") int result,
+				@RequestParam(value="com_id") String com_id,
+				@RequestParam(value="of_id") int of_id,
+				@RequestParam(value="po_num") int po_num,
+				ApplyedVo applyedVo
+	    		) {
+	    	
+	    	List<ApplyedVo> offeredList = applyedMapper.KgetCheckOfferedList(of_id, user_id, re_num, result, com_id, po_num);
+			log.info("====================/Company/checkstatus======================");
+	    	log.info("applyedList : {}", offeredList);
+	    	log.info("==============================================================");
+			
+			return offeredList;
+	    	
+	    }
+	    
+	    @PostMapping("/decision")
+	    @ResponseBody
+	    public List<ApplyedVo> resultUpdate(
+	    		@RequestParam("user_id") String user_id,
+	    		@RequestParam("re_num") int re_num,
+	            @RequestParam("result") int result,
+	            @RequestParam("com_id") String com_id,
+	            @RequestParam("po_num") int po_num,
+	            @RequestParam("of_id") int of_id,
+	            ApplyedVo applyedVo
+	    		) {
+	    	
+	    	applyedMapper.KupdateOfferStatus(re_num, result, po_num);
+	    	
+	    	return applyedMapper.KgetCheckOfferedList(of_id, user_id, re_num, result, com_id, po_num);
+	    	
+	    }
+	    
+	    
 		
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

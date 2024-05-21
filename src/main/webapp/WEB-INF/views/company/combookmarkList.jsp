@@ -68,7 +68,7 @@ a:hover {
 				class="list-group-item shadow">받은 이력서 관리</a> <a
 				href="/Company/ComBookmarkList?com_id=${ sessionScope.clogin.com_id }"
 				class="list-group-item shadow">스크랩</a> <a
-				href="/Company/CSupport?com_id=${ sessionScope.clogin.com_id }"
+				href="/Company/COffer?com_id=${ sessionScope.clogin.com_id }"
 				class="list-group-item shadow">면접 제안 목록</a>
 		</div>
 
@@ -90,9 +90,9 @@ a:hover {
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${resumeBookList}" var="resumeBookList">
+									<c:forEach items="${resumeBookList}" var="resumeBookList" varStatus="status">
 										<tr>
-											<td>${resumeBookList.re_num}</td>
+											<td>${ status.index + 1 }</td>
 											<td>${resumeBookList.user_name}</td>
 											<td><a
 												href="/Resume/View?re_num=${resumeBookList.re_num}&com_id=${sessionScope.clogin.com_id}">

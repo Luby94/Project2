@@ -20,5 +20,12 @@ public interface ApplyedMapper {
 	//void KupdateStatus(int re_num, int result);
 	void KupdateStatus(int re_num, int result, int po_num);
 
+	List<ApplyedVo> KgetofferedList(ApplyedVo applyedVo, String user_id);
+
+	List<ApplyedVo> KgetCheckOfferedList(int of_id, String user_id, int re_num, int result, String com_id, int po_num);
+
+	void KupdateOfferStatus(int re_num, int result, int po_num);
+
+
 
 }

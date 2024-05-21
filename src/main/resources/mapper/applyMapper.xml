@@ -59,16 +59,16 @@
 	  )
   </insert>
   
-  <insert id="KinsertPostApply">
-    INSERT INTO APPLY (
-      	  AP_ID,
+  <insert id="KinsertPostOffer">
+    INSERT INTO OFFER (
+      	  OF_ID,
 	      PO_NUM,
 		  RE_NUM,
 		  RE_TITLE,
 		  PO_TITLE,
 		  RESULT
 	  ) VALUES (
-	  	  NVL((SELECT MAX(AP_ID) FROM APPLY), 0) + 1,
+	  	  NVL((SELECT MAX(OF_ID) FROM OFFER), 0) + 1,
 		  #{ po_num },
 	 	  #{ re_num },
 		  #{ re_title },

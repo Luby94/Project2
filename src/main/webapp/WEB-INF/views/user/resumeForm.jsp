@@ -95,7 +95,9 @@ hr {
 			href="/Users/ApplyList?user_id=${ sessionScope.plogin.user_id }"
 			class="list-group-item shadow">입사지원 관리</a> <a
 			href="/Users/BookmarkList?user_id=${ sessionScope.plogin.user_id }"
-			class="list-group-item shadow">스크랩</a>
+			class="list-group-item shadow">스크랩</a> <a
+				href="/Users/Offered?user_id=${ sessionScope.plogin.user_id }"
+				class="list-group-item shadow">면접 제의</a>
 	</div>
 
   <!-- 페이지 내용 -->

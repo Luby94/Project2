@@ -58,4 +58,8 @@ public class ApplyedVo {
 	private String user_birth;
 	private String user_adr;
 	private String user_date;
+	
+	private int of_id;
+	private String of_date;
+	
 }

@@ -284,7 +284,7 @@
 			RE_NUM = #{ re_num }
 	</select>
 	
-	<select id="KgetSupportList">
+	<!-- <select id="KgetSupportList">
 	  SELECT 
 	    A.RE_NUM,
 	    A.AP_ID,
@@ -309,6 +309,33 @@
 	    P.COM_ID = #{arg4}
 	ORDER BY
 	    A.AP_ID ASC
+	</select> -->
+
+	<select id="KgetOfferList">
+	  SELECT 
+	    O.RE_NUM,
+	    O.OF_ID,
+	    O.OF_DATE,
+	    O.RESULT,
+	    R.USER_ID,
+	    U.USER_NAME,
+	    R.RE_TITLE,
+	    R.SKILL, 
+	    R.CAREER, 
+	    R.REGION,
+	    R.USER_EDU,
+	    R.USER_CAR,
+	    R.USER_INTRO,
+	    R.USER_IMG
+	FROM 
+	    OFFER O
+	    JOIN RESUME R ON O.RE_NUM = R.RE_NUM
+	    JOIN USERS U ON R.USER_ID = U.USER_ID
+	    JOIN POST P ON O.PO_NUM = P.PO_NUM
+	WHERE 
+	    P.COM_ID = #{arg4}
+	ORDER BY
+	    O.OF_ID ASC
 	</select>
   
 		

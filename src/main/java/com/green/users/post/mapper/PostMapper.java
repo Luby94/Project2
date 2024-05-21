@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.green.company.applyed.domain.ApplyedVo;
 import com.green.company.domain.CompanyVo;
 import com.green.users.domain.UserVo;
 import com.green.users.post.domain.PostVo;
+import com.green.users.resume.domain.ResumeVo;
 
 @Mapper
 public interface PostMapper {
@@ -41,6 +43,5 @@ public interface PostMapper {
 	PostVo KgetPost(PostVo postVo);
 	
 	List<PostVo> KgetpostList(CompanyVo sessionCUser);
-
-	
+		
 }

@@ -167,7 +167,7 @@ public class ResumeController {
 			ApplyVo applyVo
 			) {
 		
-		applyMapper.KinsertPostApply( applyVo );
+		applyMapper.KinsertPostOffer( applyVo );
 		
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("company/resumeSuccess");

@@ -67,7 +67,9 @@ a:hover {
 				href="/Users/ApplyList?user_id=${ sessionScope.plogin.user_id }"
 				class="list-group-item shadow">입사지원 관리</a> <a
 				href="/Users/BookmarkList?user_id=${ sessionScope.plogin.user_id }"
-				class="list-group-item shadow">스크랩</a>
+				class="list-group-item shadow">스크랩</a> <a
+				href="/Users/Offered?user_id=${ sessionScope.plogin.user_id }"
+				class="list-group-item shadow">면접 제의</a>
 		</div>
 
 		<!-- 페이지 내용 -->
@@ -88,9 +90,9 @@ a:hover {
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${postbookList}" var="post">
+									<c:forEach items="${postbookList}" var="post" varStatus="status">
 										<tr>
-											<td>${post.po_num}</td>
+											<td>${status.index + 1}</td>
 											<td>${post.com_name}</td>
 											<td><a
 												href="/Post/View?po_num=${post.po_num}&user_id=${sessionScope.plogin.user_id}">

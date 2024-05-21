@@ -15,7 +15,6 @@ public class ApplyVo {
 	private String po_title;
 	private int result;
 	private String ap_date;
-	private int ap_id;
 	
 	//  post 
 	//	private Long po_num;
@@ -41,5 +40,9 @@ public class ApplyVo {
 	private String user_img;
 	
 	private String com_name;
+	
+	private int ap_id;
+	private int of_id;
+	private String of_date;
 
 }

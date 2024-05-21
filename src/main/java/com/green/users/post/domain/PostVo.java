@@ -27,4 +27,6 @@ public class PostVo {
 	
 	private int rating;
 	
+	private int of_id;
+	
 }

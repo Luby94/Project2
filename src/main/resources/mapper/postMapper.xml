@@ -280,6 +280,7 @@
 	WHERE
 	  COM_ID = #{ com_id }
   </select>
+  
 
 </mapper>
 

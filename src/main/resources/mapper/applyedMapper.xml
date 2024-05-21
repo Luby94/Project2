@@ -56,28 +56,6 @@
 </select>
 
 
-<!-- <update id="KupdateStatus">
-  UPDATE
-    APPLY
-  SET
-    RESULT =
-    <choose>
-      <when test="arg1 == 0">
-        1
-      </when>
-      <when test="arg1 == 1">
-        2
-      </when>
-      <when test="arg1 == 2">
-        0
-      </when>
-    </choose>
-  WHERE
-    RE_NUM = #{ arg0 }
-  AND
-    PO_NUM = #{ arg2 }
-</update> -->
-
 <update id="KupdateStatus">
   UPDATE
     APPLY
@@ -88,6 +66,72 @@
   AND
     PO_NUM = #{ arg2 }
 </update>
+
+
+<select id="KgetofferedList">
+    SELECT
+      O.OF_ID,
+      O.RE_NUM,
+      O.PO_NUM,
+      C.COM_NAME,
+      P.PO_TITLE,
+      O.OF_DATE,
+      R.RE_TITLE,
+      O.RESULT
+    FROM
+      OFFER O, POST P, RESUME R, COMPANY C, USERS U
+    WHERE
+      R.USER_ID = #{ arg1 }
+    AND
+      O.RE_NUM = R.RE_NUM
+    AND
+      O.PO_NUM = P.PO_NUM
+    AND
+      R.USER_ID = U.USER_ID
+    AND
+      P.COM_ID = C.COM_ID
+    ORDER BY
+      O.OF_ID ASC
+  </select>
+
+
+<select id="KgetCheckOfferedList">
+  SELECT
+      P.PO_NUM   
+  	, P.PO_TITLE
+  	, R.RE_TITLE
+    , R.USER_ID
+    , R.re_num
+    , O.OF_DATE
+    , O.RESULT
+    , O.OF_ID
+    , P.COM_ID
+  FROM  
+      OFFER O, RESUME R, USERS U, POST P
+  WHERE
+      U.USER_ID = #{ arg1 }
+  AND
+      U.USER_ID = R.USER_ID
+  AND
+      P.PO_NUM = O.PO_NUM
+  AND
+      O.RE_NUM = R.RE_NUM
+  AND
+      O.OF_ID = #{ arg0 }
+</select>
+
+
+<update id="KupdateOfferStatus">
+  UPDATE
+    OFFER
+  SET
+    RESULT = #{ arg1 }
+  WHERE
+    RE_NUM = #{ arg0 }
+  AND
+    PO_NUM = #{ arg2 }
+</update>
+
 
 </mapper>
 

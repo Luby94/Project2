@@ -284,7 +284,7 @@ public class CompanyController {
 	//--------------------------------------------------------------------------------------------------
 	
 	// 기업-구직자 면접 제안 리스트
-	@RequestMapping("/CSupport")
+	@RequestMapping("/COffer")
 	public ModelAndView support( 
 			ResumeVo resumeVo,
 			ApplyVo applyVo,
@@ -293,14 +293,15 @@ public class CompanyController {
 			@RequestParam("com_id") String com_id
 			) {
 				
-		List<ResumeVo> supportList = resumeMapper.KgetSupportList( resumeVo, applyVo, companyVo, postVo, com_id );
+		//List<ResumeVo> offerList = resumeMapper.KgetSupportList( resumeVo, applyVo, companyVo, postVo, com_id );
+		List<ResumeVo> offerList = resumeMapper.KgetOfferList( resumeVo, applyVo, companyVo, postVo, com_id );
 		log.info("==========Company/Support=============");
-		log.info("supportList : {}", supportList);
+		log.info("offerList : {}", offerList);
 		log.info("==========Company/Support=============");
 		
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("supportList", supportList);
-		mv.setViewName("company/csupport");
+		mv.addObject("offerList", offerList);
+		mv.setViewName("company/coffer");
 		return mv;
 		
 	}

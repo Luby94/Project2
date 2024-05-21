@@ -13,13 +13,9 @@
 
 <style>
 
-/* 본문 */
 .page {
 	margin: 0;
-	/* margin-top: 50px; */
-	/* margin-left: 250px; */
 }
-/* 마이페이지*/
 .btn {
 	padding: 15px;
 	cursor: pointer;
@@ -37,18 +33,19 @@
 }
 
 table {
-	width: 125%;
+	width: 110%;
 	border-collapse: collapse;
 }
-
 th, td {
 	padding: 15px;
 	text-align: left;
 	border-bottom: 1px solid #ddd;
 }
-
 th {
 	background-color: #f4f4f4;
+}
+table th:nth-child(4) {
+	width: 200px;
 }
 
 #longLoc {
@@ -72,7 +69,7 @@ th {
 				class="list-group-item shadow">받은 이력서 관리</a> <a
 				href="/Company/ComBookmarkList?com_id=${ sessionScope.clogin.com_id }"
 				class="list-group-item shadow">스크랩</a> <a
-				href="/Company/CSupport?com_id=${ sessionScope.clogin.com_id }"
+				href="/Company/COffer?com_id=${ sessionScope.clogin.com_id }"
 				class="list-group-item shadow">면접 제안 목록</a>
 		</div>
 
@@ -97,14 +94,26 @@ th {
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach var="item" items="${supportList}" varStatus="status">
+										<c:forEach var="item" items="${offerList}" varStatus="status">
 											<tr>
 												<td>${ status.index + 1 }</td>
 												<td>${item.user_name }</td>
 												<td><a
 													href="/Resume/View?re_num=${ item.re_num }&com_id=${ sessionScope.clogin.com_id }">${item.re_title }</a></td>
-												<td>${item.ap_date }</td>
-												<td>${item.result }</td>
+												<td>${item.of_date }</td>
+												<td>
+												  <c:choose>
+													<c:when test="${item.result == 0}">
+														<button type="button" class="btn btn-secondary">대기</button>
+													</c:when>
+													<c:when test="${item.result == 1}">
+														<button type="button" class="btn btn-danger">거절</button>
+													</c:when>
+													<c:when test="${item.result == 2}">
+														<button type="button" class="btn btn-info">수락</button>
+													</c:when>
+												</c:choose>
+												</td>
 											</tr>
 										</c:forEach>
 									</tbody>

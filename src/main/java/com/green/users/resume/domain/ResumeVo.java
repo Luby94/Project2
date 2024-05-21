@@ -28,5 +28,6 @@ public class ResumeVo {
 	private int rating;
 	
 	private String ap_date;
+	private String of_date;
 	private int result;
 }

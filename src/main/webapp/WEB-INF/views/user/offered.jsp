@@ -66,21 +66,21 @@ th {
 </head>
 <body>
 
-	<%@include file="/WEB-INF/views/include/cheader.jsp"%>
+	<%@include file="/WEB-INF/views/include/pheader.jsp"%>
 
 	<!-- 사이드 바 -->
 	<div class="container d-flex">
 		<div class="list-group mx-2">
-			<a href="/Company/CInfo?com_id=${ sessionScope.clogin.com_id }"
-				class="list-group-item   shadow" style="width: 150px;">회사정보</a> <a
-				href="/Company/PostForm?com_id=${ sessionScope.clogin.com_id }"
-				class="list-group-item hs_list_effect shadow">공고관리</a> <a
-				href="/Company/SupportedList?com_id=${ sessionScope.clogin.com_id }"
-				class="list-group-item shadow">받은 이력서 관리</a> <a
-				href="/Company/ComBookmarkList?com_id=${ sessionScope.clogin.com_id }"
+			<a href="/Users/Info?user_id=${ sessionScope.plogin.user_id }"
+				class="list-group-item   shadow" style="width: 150px;">개인정보</a> <a
+				href="/Users/ResumeForm?user_id=${ sessionScope.plogin.user_id }"
+				class="list-group-item hs_list_effect shadow">이력서 관리</a> <a
+				href="/Users/ApplyList?user_id=${ sessionScope.plogin.user_id }"
+				class="list-group-item shadow">입사지원 관리</a> <a
+				href="/Users/BookmarkList?user_id=${ sessionScope.plogin.user_id }"
 				class="list-group-item shadow">스크랩</a> <a
-				href="/Company/COffer?com_id=${ sessionScope.clogin.com_id }"
-				class="list-group-item shadow">면접 제안 목록</a>
+				href="/Users/Offered?user_id=${ sessionScope.plogin.user_id }"
+				class="list-group-item shadow">면접 제의</a>
 		</div>
 
 		<!-- 페이지 내용 -->
@@ -97,47 +97,45 @@ th {
 									<thead>
 										<tr>
 											<th>No</th>
-											<th>공고번호</th>
-											<th id="longLoc">공고제목</th>
-											<th>지원자명</th>
+											<th>이력서번호</th>
 											<th id="longLoc">이력서제목</th>
-
-											<th>지원일자</th>
-
+											<th>기업명</th>
+											<th id="longLoc">공고제목</th>
+											<th>제의일자</th>
 											<th>결과</th>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach var="item" items="${applyedList}">
+										<c:forEach var="item" items="${offeredList}" varStatus="status">
 											<tr>
-												<td>${ item.ap_id }</td>
-												<td>${ item.po_num }</td>
+												<td>${ status.index + 1 }</td>
+												<td>${ item.re_num }</td>
 												<td><a
-													href="/Company/PostView?po_num=${ item.po_num }&com_id=${ sessionScope.clogin.com_id }">${item.po_title }</a></td>
-												<td>${item.user_name }</td>
+													href="/Users/ResumeView?re_num=${item.re_num}&user_id=${sessionScope.plogin.user_id}">${item.re_title }</a></td>
+												<td>${item.com_name }</td>
 												<td><a
-													href="/Users/ResumeView?re_num=${item.re_num}&user_id=${item.user_id}&com_id=${ sessionScope.clogin.com_id }">${item.re_title }</a></td>
-												<td>${item.ap_date }</td>
+													href="/Post/View?po_num=${ item.po_num }&user_id=${ sessionScope.plogin.user_id }&com_id=${ item.com_id }">${item.po_title }</a></td>
+												<td>${item.of_date }</td>
 
 												<td>
-													<div id="resultBtn_${ item.ap_id }" class="resultBtn"
-														data-index="${ item.ap_id }"
-														data-user-id="${ item.user_id }"
+													<div id="resultBtn_${ item.of_id }" class="resultBtn"
+														data-index="${ item.of_id }"
+														data-user-id="${ sessionScope.plogin.user_id }"
 														data-re-num="${ item.re_num }"
 														data-result="${ item.result }"
-														data-com-id="${ sessionScope.clogin.com_id }"
+														data-com-id="${ item.com_id }"
 														data-po-num="${ item.po_num }"></div> <input type="hidden"
-													id="ap_id_${ item.ap_id }" name="ap_id"
-													value="${ item.ap_id }" /> <input type="hidden"
-													id="user_id_${ item.ap_id }" name="user_id"
+													id="of_id_${ item.of_id }" name="of_id"
+													value="${ item.of_id }" /> <input type="hidden"
+													id="user_id_${ sessionScope.plogin.user_id }" name="user_id"
 													value="${item.user_id}" /> <input type="hidden"
-													id="re_num_${ item.ap_id }" name="re_num"
+													id="re_num_${ item.of_id }" name="re_num"
 													value="${item.re_num}" /> <input type="hidden"
-													id="result_${ item.ap_id }" name="result"
+													id="result_${ item.of_id }" name="result"
 													value="${item.result}" /> <input type="hidden"
-													id="com_id_${ item.ap_id }" name="com_id"
-													value="${ sessionScope.clogin.com_id }" /> <input
-													type="hidden" id="po_num_${ item.ap_id }" name="po_num"
+													id="com_id_${ item.of_id }" name="com_id"
+													value="${ item.com_id }" /> <input
+													type="hidden" id="po_num_${ item.of_id }" name="po_num"
 													value="${item.po_num}" />
 												</td>
 											</tr>
@@ -158,19 +156,19 @@ th {
 		$(document).ready(function() {
 			
 			// 버튼 상태 확인
-		    function checkstatus($element, ap_id, user_id, re_num, result, com_id, po_num) {
+		    function checkstatus($element, of_id, user_id, re_num, result, com_id, po_num) {
 		        $.ajax({
 		            type: 'GET',
-		            url: '/Company/checkstatus',
-		            data: { ap_id, user_id, re_num, result, com_id, po_num },
+		            url: '/Users/checkstatus',
+		            data: { of_id, user_id, re_num, result, com_id, po_num },
 		            success: function(data) {
 						
 		                if (result == 0) {
 		                	$element.html('<button type="button" data-id="0" class="btn btn-secondary selection-btn">대기</button>');
 		                } else if (result == 1) {
-		                	$element.html('<button type="button" data-id="1" class="btn btn-danger selection-btn">불합격</button>');
+		                	$element.html('<button type="button" data-id="1" class="btn btn-danger selection-btn">거절</button>');
 		                } else {
-		                	$element.html('<button type="button" data-id="2" class="btn btn-info selection-btn">합격</button>');
+		                	$element.html('<button type="button" data-id="2" class="btn btn-info selection-btn">수락</button>');
 		                }
 		            },
 		            error: function(xhr, status, error) {
@@ -182,22 +180,22 @@ th {
 		    // 초기 바인딩
 		    $('.resultBtn').each(function() {
 		        const $this = $(this);
-		        const ap_id = $this.data('index');
+		        const of_id = $this.data('index');
 		        const user_id = $this.data('user-id');
 		        const re_num = $this.data('re-num');
 		        const result = $this.data('result');
 		        const com_id = $this.data('com-id');
 		        const po_num = $this.data('po-num');
 
-		        checkstatus($this, ap_id, user_id, re_num, result, com_id, po_num);
+		        checkstatus($this, of_id, user_id, re_num, result, com_id, po_num);
 		    });
 
 		    // 대기, 불합격, 합격 버튼 생성을 위한 함수
 		    function createSelectionButtons() {
 		        return `
 		            <button type="button" data-id="0" class="btn btn-secondary selection-btn after">대기</button>
-		            <button type="button" data-id="1" class="btn btn-danger selection-btn after">불합격</button>
-		            <button type="button" data-id="2" class="btn btn-info selection-btn after">합격</button>
+		            <button type="button" data-id="1" class="btn btn-danger selection-btn after">거절</button>
+		            <button type="button" data-id="2" class="btn btn-info selection-btn after">수락</button>
 		        `;
 		    }
 
@@ -211,12 +209,6 @@ th {
 		        const idPrefix = $this.attr('data-id');
 		        console.log('idPrefix: ' + idPrefix)
 		        
-		        /* const resultBtnEl = document.querySelector('.resultBtn');
-		        console.dir(resultBtnEl);
-		        resultBtnEl.innerHTML = createSelectionButtons(); */
-		        // 위에 방법 안됨
-		        // 이 부분은 $this(jQuery 객체)의 조상 요소 중에서 가장 가까운 클래스가 'resultBtn'인 요소를 선택
-		        // closest() 메서드는 조상 요소를 검색하는데 사용됨
 		        const divEl = $this.closest('.resultBtn');
 		        console.log(divEl)
 		        
@@ -235,29 +227,29 @@ th {
 		            const re_num = divEl.data('re-num');
 		            const com_id = divEl.data('com-id');
 		            const po_num = divEl.data('po-num');
-			        const ap_id = divEl.data('index');
+			        const of_id = divEl.data('index');
 			        const result = $this.data('id');
 			        console.log(user_id)
 			        console.log(re_num)
 			        console.log(com_id)
 			        console.log(po_num)
-			        console.log(ap_id)
+			        console.log(of_id)
 			        console.log(result)
 
 		            if (result == 0) {
 		                divEl.html('<button type="button" data-id="0" class="btn btn-secondary selection-btn">대기</button>');
 		            } else if (result == 1) {
-		                divEl.html('<button type="button" data-id="1" class="btn btn-danger selection-btn">불합격</button>');
+		                divEl.html('<button type="button" data-id="1" class="btn btn-danger selection-btn">거절</button>');
 		            } else {
-		                divEl.html('<button type="button" data-id="2" class="btn btn-info selection-btn">합격</button>');
+		                divEl.html('<button type="button" data-id="2" class="btn btn-info selection-btn">수락</button>');
 		            }
 
 		            // 선택한 결과를 서버로 전송하여 저장하는 로직
 		            $.ajax({
 		                type: 'POST',
-		                url: '/Company/decision',
+		                url: '/Users/decision',
 		                data: {
-		                	ap_id: ap_id,
+		                	of_id: of_id,
 		                    user_id: user_id,
 		                    re_num: re_num,
 		                    result: result,

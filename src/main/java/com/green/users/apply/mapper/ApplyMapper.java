@@ -20,7 +20,7 @@ public interface ApplyMapper {
 	
 	//----------------------------------------------------
 	
-	void KinsertPostApply(ApplyVo applyVo);
+	void KinsertPostOffer(ApplyVo applyVo);
 	
 	
 }

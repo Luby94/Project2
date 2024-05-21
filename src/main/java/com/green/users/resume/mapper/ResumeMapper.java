@@ -42,8 +42,8 @@ public interface ResumeMapper {
 
 	ResumeVo KgetResumeInfo(ResumeVo resumeVo);
 
-	List<ResumeVo> KgetSupportList(ResumeVo resumeVo, ApplyVo applyVo, CompanyVo companyVo, PostVo postVo,
-			String com_id);
+	//List<ResumeVo> KgetSupportList(ResumeVo resumeVo, ApplyVo applyVo, CompanyVo companyVo, PostVo postVo, String com_id);
+	List<ResumeVo> KgetOfferList(ResumeVo resumeVo, ApplyVo applyVo, CompanyVo companyVo, PostVo postVo, String com_id);
 
 
 

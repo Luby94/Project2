@@ -49,6 +49,16 @@ th {
 	background-color: #f4f4f4;
 }
 
+table th:nth-child(2),
+table th:nth-child(5),
+table th:nth-child(7) {
+	width: 100px;
+}
+table th:nth-child(3),
+table th:nth-child(4) {
+	width: 200px;
+}
+
 a {
 	color: #0073e6;
 	text-decoration: none;
@@ -74,7 +84,9 @@ a:hover {
 				href="/Users/ApplyList?user_id=${ sessionScope.plogin.user_id }"
 				class="list-group-item shadow">입사지원 관리</a> <a
 				href="/Users/BookmarkList?user_id=${ sessionScope.plogin.user_id }"
-				class="list-group-item shadow">스크랩</a>
+				class="list-group-item shadow">스크랩</a> <a
+				href="/Users/Offered?user_id=${ sessionScope.plogin.user_id }"
+				class="list-group-item shadow">면접 제의</a>
 		</div>
 
 		<!-- 페이지 내용 -->
@@ -99,18 +111,18 @@ a:hover {
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="item" items="${applyList}">
+									<c:forEach var="item" items="${applyList}" varStatus="status">
 										<tr>
-											<td>${item.ap_id }</td>
+											<td>${status.index + 1 }</td>
 											<td>${item.com_name }</td>
-											<td><a href="#">${item.po_title }</a></td>
-											<td><a href="#">${item.re_title }</a></td>
+											<td><a href="/Post/View?po_num=${ item.po_num }&user_id=${ sessionScope.plogin.user_id }">${item.po_title }</a></td>
+											<td><a href="/Users/ResumeView?user_id=${ sessionScope.plogin.user_id }">${item.re_title }</a></td>
 											<td>${item.region }</td>
 											<td>${item.ap_date }</td>
 
 											<td><c:choose>
 													<c:when test="${item.result == 0}">
-														<button type="button" class="btn btn-danger">대기</button>
+														<button type="button" class="btn btn-secondary">대기</button>
 													</c:when>
 													<c:when test="${item.result == 1}">
 														<button type="button" class="btn btn-danger">불합격</button>
