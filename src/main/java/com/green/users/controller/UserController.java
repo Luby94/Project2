@@ -52,7 +52,9 @@ public class UserController {
 		return mv;
 	}
 	@RequestMapping("/Info")
-	   public  ModelAndView  Info(UserVo userVo, ResumeVo resumeVo) {
+	   public  ModelAndView  Info(UserVo userVo, ResumeVo resumeVo, HttpServletRequest request) {
+		
+		String user_id  = request.getParameter("user_id");
 		
 		UserVo vo = userMapper.Pgetuser( userVo );
 		ResumeVo rVo = resumeMapper.KgetResume(resumeVo);
@@ -60,6 +62,7 @@ public class UserController {
 		ModelAndView   mv  =  new ModelAndView();
 		mv.addObject("vo", vo);
 		mv.addObject("rVo", rVo);
+		mv.addObject("user_id", user_id);
 		mv.setViewName("user/info");
 		return         mv;
 	   }

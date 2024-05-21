@@ -2,13 +2,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Jik Job</title>
 <style>
+	#notification-icon {
+		color: red;
+	}
 </style>
 </head>
 <body>
@@ -22,9 +24,13 @@
 				href="/Users/ApplyList?user_id=${ sessionScope.plogin.user_id }"
 				class="list-group-item shadow">입사지원 관리</a> <a 
 				href="/Users/BookmarkList?user_id=${ sessionScope.plogin.user_id }"
-				class="list-group-item shadow">스크랩</a> <a
-				href="/Users/Offered?user_id=${ sessionScope.plogin.user_id }"
-				class="list-group-item shadow">면접 제의</a>
+				class="list-group-item shadow">스크랩</a>
+				
+			<a href="/Users/Offered?user_id=${ sessionScope.plogin.user_id }" id="read" 
+			   class="list-group-item shadow">면접 제의&nbsp;&nbsp;<span id="notification-icon"></span>
+			</a>        	
+        	
+				
 		</div>
 
 		<!-- 페이지 내용 -->
@@ -47,7 +53,7 @@
 						<div class="form-floating mb-3">
 							<span
 								class="input-group-text justify-content-center hs_span_size init_color hs_span">아이디</span>
-							<input type="text" class="form-control"
+							<input type="text" class="form-control" id="userId"
 								value="${ sessionScope.plogin.user_id }" readonly>
 						</div>
 						<div class="form-floating mb-3">
@@ -90,7 +96,7 @@
 	</div>
 
 </body>
-   <script>
+  <script>
    document.getElementById('deleteUserBtn').addEventListener('click', function() {
 	    var result = confirm('정말로 탈퇴하시겠습니까?');
 	    if (result) {
@@ -100,6 +106,71 @@
 	        window.location.href = '/';
 	    }
 	});
-   </script>
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+	
+		const user_id = $('#userId').val();
+		console.log(user_id);
+	
+        $(document).ready(function() {
+            function checkNotifications() {
+                $.ajax({
+                    url: '/notifications/hasUnread',
+                    type: 'GET',
+                    data: { 
+                    	user_id: user_id
+                    },
+                    success: function(response) {
+                    	
+                    	console.log(response)
+                    	
+                        if (response != 0) {
+                            $('#notification-icon').text('new');
+                        } else {
+                            $('#notification-icon').text('');
+                        }
+                    	
+                    }
+                });
+            }
+
+            // 페이지 로드 시 알림 확인
+            checkNotifications();
+
+            // 주기적으로 알림 확인 (예: 1분마다)
+            setInterval(checkNotifications, 60000);
+        });
+        
+        /* const readEl = document.querySelector('#read');
+        console.dir(readEl);
+        
+        readEl.addEventListener('click', function() {
+        	
+        	const user_id = $('#userId').val();
+    		console.log(user_id);
+        	
+        	$.ajax({
+                url: '/notifications/hasRead',
+                type: 'POST',
+                data: { 
+                	user_id: user_id
+                },
+                success: function(response) {
+                	
+                	console.log(response)
+                	
+                    if (response) {
+                        $('#notification-icon').text('');
+                    } else {
+                        $('#notification-icon').text('new');
+                    }
+                	checkNotifications();
+                }
+            });
+        }) */
+        
+  </script>
 
 </html>

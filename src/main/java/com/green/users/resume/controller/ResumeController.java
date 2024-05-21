@@ -14,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.green.bookmark.domain.ComBookVo;
 import com.green.bookmark.mapper.BookmarkMapper;
 import com.green.company.domain.CompanyVo;
+import com.green.notification.domain.NotificationVo;
+import com.green.notification.mapper.NotificationMapper;
 import com.green.users.apply.domain.ApplyVo;
 import com.green.users.apply.mapper.ApplyMapper;
 import com.green.users.domain.UserVo;
@@ -42,6 +44,9 @@ public class ResumeController {
 
 	@Autowired
 	private ApplyMapper applyMapper;
+	
+	@Autowired
+	private NotificationMapper notificationMapper;
 
 	@RequestMapping("/List")
 	public ModelAndView resumelist( ResumeVo resumeVo, String com_id ) {
@@ -164,15 +169,28 @@ public class ResumeController {
 	
 	@RequestMapping("/Recommend")
 	public ModelAndView recommend( 
-			ApplyVo applyVo
-			) {
-		
-		applyMapper.KinsertPostOffer( applyVo );
-		
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("company/resumeSuccess");
-		return mv;
-		
+	        ApplyVo applyVo,
+	        NotificationVo notificationVo,
+	        @RequestParam(value="re_num") int re_num
+	        ) {
+	    
+	    applyMapper.KinsertPostOffer(applyVo);
+	    
+	    List<UserVo> userInfo = notificationMapper.KgetUserInfo(re_num);
+	    
+	    String userId = userInfo.get(0).getUser_id();
+	    System.out.println("==============================" + userId);
+	    
+	    notificationVo.setUser_id(userId);
+	    
+	    System.out.println("==============================" + userInfo);
+	    
+	    notificationMapper.insertNotification(notificationVo);
+	    
+	    ModelAndView mv = new ModelAndView();
+	    mv.setViewName("company/resumeSuccess");
+	    return mv;
 	}
+
 	
 }

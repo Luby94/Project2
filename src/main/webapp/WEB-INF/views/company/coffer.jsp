@@ -127,8 +127,8 @@ table th:nth-child(4) {
 			</div>
 		</div>
 
-		<script>
-		
-		</script>
+	<script>
+	
+	</script>
 </body>
 </html>

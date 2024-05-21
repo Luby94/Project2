@@ -273,7 +273,47 @@ th {
 				
 		    });
 		
+		//----------------------------------------------------------------------------------------------
+		
+	
 
+    $(document).ready(function() {
+    	
+    	const resultBtnEl = document.querySelector('.resultBtn');
+    	console.dir(resultBtnEl);
+    	
+    	const user_id = $(resultBtnEl).data('user-id');
+    	const re_num = $(resultBtnEl).data('re-num');
+    	const po_num = $(resultBtnEl).data('po-num');
+    	console.dir(user_id);
+    	console.dir(re_num);
+    	console.dir(po_num);
+    	
+        function updateNotifications() {
+            $.ajax({
+                url: '/notifications/hasRead',
+                type: 'POST',
+                data: { 
+                	user_id: user_id,
+                	re_num : re_num,
+                	po_num : po_num
+                },
+                success: function(response) {
+                	
+                	console.log(response)
+                	
+                    if (response) {
+                        $('#notification-icon').text('');
+                    } else {
+                        $('#notification-icon').text('new');
+                    }
+                	
+                }
+            });
+        }
+
+        updateNotifications();
+    });
 
 		
 		</script>
