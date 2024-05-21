@@ -23,7 +23,7 @@
 				class="list-group-item shadow">받은 이력서 관리</a> <a
 				href="/Company/ComBookmarkList?com_id=${ sessionScope.clogin.com_id }"
 				class="list-group-item shadow">스크랩</a> <a
-				href="/Company/Support?com_id=${ sessionScope.clogin.com_id }"
+				href="/Company/CSupport?com_id=${ sessionScope.clogin.com_id }"
 				class="list-group-item shadow">면접 제안 목록</a>
 		</div>
 		<!-- 페이지 내용 -->

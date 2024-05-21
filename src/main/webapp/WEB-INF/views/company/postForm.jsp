@@ -1,100 +1,104 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Jik Job</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
 <style>
-	
-
 .p-5 {
-    padding: 3rem;
+	padding: 3rem;
 }
 
 .rounded {
-    border-radius: 0.25rem;
+	border-radius: 0.25rem;
 }
 
 .shadow {
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+	box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
 hr {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    border: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	border: 0;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .jh_resume_button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
 }
 
 .jh_resume_button:hover {
-    background-color: #0056b3;
+	background-color: #0056b3;
 }
 
 .jh_resume_content {
-    padding: 1rem;
-    background-color: white;
-    border: 1px solid #dee2e6;
-    border-radius: 0.25rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	padding: 1rem;
+	background-color: white;
+	border: 1px solid #dee2e6;
+	border-radius: 0.25rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .btn {
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.25rem;
-    cursor: pointer;
-    font-size: 0.875rem;
-    line-height: 1.5;
-    border: 1px solid transparent;
+	padding: 0.375rem 0.75rem;
+	border-radius: 0.25rem;
+	cursor: pointer;
+	font-size: 0.875rem;
+	line-height: 1.5;
+	border: 1px solid transparent;
 }
 
 .btn-success {
-    color: #fff;
-    background-color: #28a745;
-    border-color: #28a745;
+	color: #fff;
+	background-color: #28a745;
+	border-color: #28a745;
 }
 
 .btn-warning {
-    color: #212529;
-    background-color: #ffc107;
-    border-color: #ffc107;
+	color: #212529;
+	background-color: #ffc107;
+	border-color: #ffc107;
 }
 
 .btn-dark {
-    color: #fff;
-    background-color: #343a40;
-    border-color: #343a40;
+	color: #fff;
+	background-color: #343a40;
+	border-color: #343a40;
 }
-
 </style>
 
 
 </head>
 <body>
 
-  <%@include file="/WEB-INF/views/include/cheader.jsp" %>
-  
-  <!-- 사이드 바 -->
+	<%@include file="/WEB-INF/views/include/cheader.jsp"%>
+
+	<!-- 사이드 바 -->
 	<div class="container d-flex">
 		<div class="list-group mx-2">
-			<a href="/Company/Info?com_id=${ sessionScope.clogin.com_id }"
+			<a href="/Company/CInfo?com_id=${ sessionScope.clogin.com_id }"
 				class="list-group-item   shadow" style="width: 150px;">회사정보</a> <a
 				href="/Company/PostForm?com_id=${ sessionScope.clogin.com_id }"
-				class="list-group-item hs_list_effect shadow">공고 관리</a>
-				 <a href="/Company/SupportedList?com_id=${ sessionScope.clogin.com_id }"
-				class="list-group-item shadow">받은 이력서</a> <a href=""
-				class="list-group-item shadow">스크랩</a>
+				class="list-group-item hs_list_effect shadow">공고관리</a> <a
+				href="/Company/SupportedList?com_id=${ sessionScope.clogin.com_id }"
+				class="list-group-item shadow">받은 이력서 관리</a> <a
+				href="/Company/ComBookmarkList?com_id=${ sessionScope.clogin.com_id }"
+				class="list-group-item shadow">스크랩</a> <a
+				href="/Company/CSupport?com_id=${ sessionScope.clogin.com_id }"
+				class="list-group-item shadow">면접 제안 목록</a>
 		</div>
 
 		<!-- 페이지 내용 -->
@@ -112,7 +116,8 @@ hr {
 							style="display: flex; justify-content: space-between">
 
 							<div class="postList_st" style="">
-								<a href="/Company/PostView?po_num=${Po.po_num}&com_id=${ sessionScope.clogin.com_id }">
+								<a
+									href="/Company/PostView?po_num=${Po.po_num}&com_id=${ sessionScope.clogin.com_id }">
 									${Po.po_title} </a>
 							</div>
 							<form

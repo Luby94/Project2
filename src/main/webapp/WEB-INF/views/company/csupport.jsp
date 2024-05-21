@@ -67,11 +67,12 @@ th {
 			<a href="/Company/CInfo?com_id=${ sessionScope.clogin.com_id }"
 				class="list-group-item   shadow" style="width: 150px;">회사정보</a> <a
 				href="/Company/PostForm?com_id=${ sessionScope.clogin.com_id }"
-				class="list-group-item hs_list_effect shadow">공고관리 관리</a> <a
+				class="list-group-item hs_list_effect shadow">공고관리</a> <a
 				href="/Company/SupportedList?com_id=${ sessionScope.clogin.com_id }"
-				class="list-group-item shadow">받은 이력서 관리</a> <a href="#"
+				class="list-group-item shadow">받은 이력서 관리</a> <a
+				href="/Company/ComBookmarkList?com_id=${ sessionScope.clogin.com_id }"
 				class="list-group-item shadow">스크랩</a> <a
-				href="/Company/Support?com_id=${ sessionScope.clogin.com_id }"
+				href="/Company/CSupport?com_id=${ sessionScope.clogin.com_id }"
 				class="list-group-item shadow">면접 제안 목록</a>
 		</div>
 
@@ -89,7 +90,7 @@ th {
 									<thead>
 										<tr>
 											<th>No</th>
-											<th>유저아이디</th>
+											<th>인재명</th>
 											<th id="longLoc">이력서제목</th>
 											<th>면접 제안 일자</th>
 											<th>결과</th>

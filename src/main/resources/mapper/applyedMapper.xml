@@ -12,8 +12,9 @@
     , AP.AP_DATE
     , AP.RESULT
     , AP.AP_ID
+    , U.USER_NAME
   FROM  
-      APPLY AP, RESUME RE, COMPANY CP, POST PT
+      APPLY AP, RESUME RE, COMPANY CP, POST PT, USERS U
   WHERE
       CP.COM_ID = #{ com_id }
   AND
@@ -22,6 +23,10 @@
       PT.PO_NUM = AP.PO_NUM
   AND
       AP.RE_NUM = RE.RE_NUM
+  AND
+      RE.USER_ID = U.USER_ID
+  ORDER BY
+      AP.AP_ID ASC
 </select>
 
 

@@ -47,6 +47,13 @@ th, td {
 	border-bottom: 1px solid #ddd;
 }
 
+table th:nth-child(2) {
+	width: 100px;
+}
+table th:nth-child(4) {
+	width: 100px;
+}
+
 th {
 	background-color: #f4f4f4;
 }
@@ -67,10 +74,13 @@ th {
 			<a href="/Company/CInfo?com_id=${ sessionScope.clogin.com_id }"
 				class="list-group-item   shadow" style="width: 150px;">회사정보</a> <a
 				href="/Company/PostForm?com_id=${ sessionScope.clogin.com_id }"
-				class="list-group-item hs_list_effect shadow">공고관리 관리</a> <a
+				class="list-group-item hs_list_effect shadow">공고관리</a> <a
 				href="/Company/SupportedList?com_id=${ sessionScope.clogin.com_id }"
-				class="list-group-item shadow">받은 이력서 관리</a> <a href="#"
-				class="list-group-item shadow">스크랩</a>
+				class="list-group-item shadow">받은 이력서 관리</a> <a
+				href="/Company/ComBookmarkList?com_id=${ sessionScope.clogin.com_id }"
+				class="list-group-item shadow">스크랩</a> <a
+				href="/Company/CSupport?com_id=${ sessionScope.clogin.com_id }"
+				class="list-group-item shadow">면접 제안 목록</a>
 		</div>
 
 		<!-- 페이지 내용 -->
@@ -89,8 +99,8 @@ th {
 											<th>No</th>
 											<th>공고번호</th>
 											<th id="longLoc">공고제목</th>
+											<th>지원자명</th>
 											<th id="longLoc">이력서제목</th>
-											<th>유저아이디</th>
 
 											<th>지원일자</th>
 
@@ -104,26 +114,31 @@ th {
 												<td>${ item.po_num }</td>
 												<td><a
 													href="/Company/PostView?po_num=${ item.po_num }&com_id=${ sessionScope.clogin.com_id }">${item.po_title }</a></td>
+												<td>${item.user_name }</td>
 												<td><a
 													href="/Users/ResumeView?re_num=${item.re_num}&user_id=${item.user_id}&com_id=${ sessionScope.clogin.com_id }">${item.re_title }</a></td>
-												<td>${item.user_id }</td>
 												<td>${item.ap_date }</td>
 
 												<td>
-										            <div id="resultBtn_${ item.ap_id }" class="resultBtn"
-										                 data-index="${ item.ap_id }"
-										                 data-user-id="${ item.user_id }"
-										                 data-re-num="${ item.re_num }"
-										                 data-result="${ item.result }"
-										                 data-com-id="${ sessionScope.clogin.com_id }"
-										                 data-po-num="${ item.po_num }">
-										            </div>
-													<input type="hidden" id="ap_id_${ item.ap_id }" name="ap_id" value="${ item.ap_id }" />
-													<input type="hidden" id="user_id_${ item.ap_id }" name="user_id" value="${item.user_id}" />
-													<input type="hidden" id="re_num_${ item.ap_id }" name="re_num" value="${item.re_num}" />
-													<input type="hidden" id="result_${ item.ap_id }" name="result" value="${item.result}" />
-													<input type="hidden" id="com_id_${ item.ap_id }" name="com_id" value="${ sessionScope.clogin.com_id }" />
-													<input type="hidden" id="po_num_${ item.ap_id }" name="po_num" value="${item.po_num}" />
+													<div id="resultBtn_${ item.ap_id }" class="resultBtn"
+														data-index="${ item.ap_id }"
+														data-user-id="${ item.user_id }"
+														data-re-num="${ item.re_num }"
+														data-result="${ item.result }"
+														data-com-id="${ sessionScope.clogin.com_id }"
+														data-po-num="${ item.po_num }"></div> <input type="hidden"
+													id="ap_id_${ item.ap_id }" name="ap_id"
+													value="${ item.ap_id }" /> <input type="hidden"
+													id="user_id_${ item.ap_id }" name="user_id"
+													value="${item.user_id}" /> <input type="hidden"
+													id="re_num_${ item.ap_id }" name="re_num"
+													value="${item.re_num}" /> <input type="hidden"
+													id="result_${ item.ap_id }" name="result"
+													value="${item.result}" /> <input type="hidden"
+													id="com_id_${ item.ap_id }" name="com_id"
+													value="${ sessionScope.clogin.com_id }" /> <input
+													type="hidden" id="po_num_${ item.ap_id }" name="po_num"
+													value="${item.po_num}" />
 												</td>
 											</tr>
 										</c:forEach>

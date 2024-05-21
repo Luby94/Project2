@@ -307,6 +307,8 @@
 	    JOIN POST P ON A.PO_NUM = P.PO_NUM
 	WHERE 
 	    P.COM_ID = #{arg4}
+	ORDER BY
+	    A.AP_ID ASC
 	</select>
   
 		

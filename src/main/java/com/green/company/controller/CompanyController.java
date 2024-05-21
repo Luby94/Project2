@@ -284,7 +284,7 @@ public class CompanyController {
 	//--------------------------------------------------------------------------------------------------
 	
 	// 기업-구직자 면접 제안 리스트
-	@RequestMapping("/Support")
+	@RequestMapping("/CSupport")
 	public ModelAndView support( 
 			ResumeVo resumeVo,
 			ApplyVo applyVo,
