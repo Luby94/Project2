@@ -5,10 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- 부트스트랩 CDN 링크 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
  
 <style>
 
@@ -21,15 +17,21 @@
   <%@include file="/WEB-INF/views/include/pheader.jsp" %>
   
   <!-- 사이드 바 -->
-  <nav class="col-sm-3 sidenav">
-      <h4> 개인정보</h4>
-      <ul class="nav nav-pills nav-stacked">
-        <li class="active"><a href="/Users/Info?user_id=${ sessionScope.plogin.user_id }">개인정보</a></li>
-        <li><a href="/Users/ResumeForm?user_id=${ sessionScope.plogin.user_id }">이력서 관리</a></li>
-        <li><a href="#">입사지원 관리</a></li>
-        <li><a href="#">스크랩</a></li>
-      </ul>
-    </nav>
+	<div class="container d-flex">
+		<div class="list-group mx-2">
+			<a href="/Users/Info?user_id=${ sessionScope.plogin.user_id }"
+				class="list-group-item   shadow" style="width: 150px;">개인정보</a> <a
+				href="/Users/ResumeForm?user_id=${ sessionScope.plogin.user_id }"
+				class="list-group-item hs_list_effect shadow">이력서 관리</a> <a
+				href="/Users/ApplyList?user_id=${ sessionScope.plogin.user_id }"
+				class="list-group-item shadow">입사지원 관리</a> <a 
+				href="/Users/BookmarkList?user_id=${ sessionScope.plogin.user_id }"
+				class="list-group-item shadow">스크랩</a>
+			<a href="/Users/Offered?user_id=${ sessionScope.plogin.user_id }" 
+			   class="list-group-item shadow">면접 제의</a>
+        	
+				
+		</div>
 
   <!-- 페이지 내용 -->
             <div class="container">

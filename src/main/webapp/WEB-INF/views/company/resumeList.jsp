@@ -261,13 +261,11 @@ a:hover {
 										  <div class="modal-content">
 										    <span class="close" onclick="closePopup()">&times;</span>
 										    <div class="modal-header">
-											    <img src="/img/face.jpg" alt="유저 프로필" class="user-img">
+											    <img src="${ resumeList.user_img }" alt="유저 프로필" class="user-img">
 											    <h3 id="popupTitle"></h3>
 										    </div>
 										    <div class="modal-body">
 											    <p id="popupContent"></p>
-											    <p id="popupReNum"></p>
-											    <p id="popupUserName"></p>
 											    <p id="popupUserAdr"></p>
 											    <p id="popupUserTell"></p>
 											    <p id="popupUserEdu"></p>
